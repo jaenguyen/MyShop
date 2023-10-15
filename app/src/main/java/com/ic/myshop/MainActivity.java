@@ -1,54 +1,77 @@
 package com.ic.myshop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    private final static String MAP = "map";
-    private final static String IS_FIRST_TIME = "isFirstTime";
 
-    private Button start_btn;
-    private SharedPreferences sharedPreferences;
+    private BottomNavigationView navView;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        init();
 
-        Intent intent = new Intent(this, MainActivity2.class);
-        if (isFirstTime()) {
-            start_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(intent);
-                    finish();
+        navView = findViewById(R.id.nav_view);
+        viewPager = findViewById(R.id.view_pager);
+
+        setUpViewPager();
+
+        navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.navigation_home) {
+                    viewPager.setCurrentItem(0);
+                } else if (itemId == R.id.navigation_notification) {
+                    viewPager.setCurrentItem(1);
+                } else if (itemId == R.id.navigation_user) {
+                    viewPager.setCurrentItem(2);
                 }
-            });
-            updateFirstTime();
-        } else {
-            startActivity(intent);
-            finish();
-        }
+                return true;
+            }
+        });
     }
 
-    private void init() {
-        start_btn = findViewById(R.id.start_btn);
-        sharedPreferences = getSharedPreferences(MAP, MODE_PRIVATE);
-    }
+    private void setUpViewPager() {
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),
+                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPager.setAdapter(viewPagerAdapter);
 
-    private boolean isFirstTime() {
-        return sharedPreferences.getBoolean(IS_FIRST_TIME, true);
-    }
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-    private void updateFirstTime() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(IS_FIRST_TIME, false);
-        editor.apply();
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        navView.getMenu().findItem(R.id.navigation_home).setChecked(true);
+                        break;
+                    case 1:
+                        navView.getMenu().findItem(R.id.navigation_notification).setChecked(true);
+                        break;
+                    case 2:
+                        navView.getMenu().findItem(R.id.navigation_user).setChecked(true);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 }

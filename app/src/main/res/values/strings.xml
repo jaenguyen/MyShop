@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">My Shop</string>
+    <string name="ic_home">Home</string>
+    <string name="ic_notification">Thông báo</string>
+    <string name="ic_user">Tôi</string>
 </resources>

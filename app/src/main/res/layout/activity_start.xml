@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_color"
-    tools:context=".StartActivity">
+    tools:context=".activity.StartActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -16,8 +16,9 @@
     <Button
         android:id="@+id/start_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="BẮT ĐẦU"
+        android:textSize="20dp"
         android:textColor="@color/primary_color"
         android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"

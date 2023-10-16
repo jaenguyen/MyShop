@@ -1,4 +1,4 @@
-package com.ic.myshop;
+package com.ic.myshop.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,9 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.ic.myshop.R;
+import com.ic.myshop.constant.Constant;
+
 public class StartActivity extends AppCompatActivity {
-    private final static String MAP = "map";
-    private final static String IS_FIRST_TIME = "isFirstTime";
 
     private Button start_btn;
     private SharedPreferences sharedPreferences;
@@ -21,7 +22,7 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         init();
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         if (isFirstTime()) {
             start_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -39,16 +40,16 @@ public class StartActivity extends AppCompatActivity {
 
     private void init() {
         start_btn = findViewById(R.id.start_btn);
-        sharedPreferences = getSharedPreferences(MAP, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(Constant.MAP, MODE_PRIVATE);
     }
 
     private boolean isFirstTime() {
-        return sharedPreferences.getBoolean(IS_FIRST_TIME, true);
+        return sharedPreferences.getBoolean(Constant.IS_FIRST_TIME, true);
     }
 
     private void updateFirstTime() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(IS_FIRST_TIME, false);
+        editor.putBoolean(Constant.IS_FIRST_TIME, false);
         editor.apply();
     }
 }

@@ -1,4 +1,4 @@
-package com.ic.myshop;
+package com.ic.myshop.fragment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

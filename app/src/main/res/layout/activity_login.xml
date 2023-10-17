@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".activity.LoginActivity">
 
     <!--    Toolbar -->
     <include
-        layout="@layout/extra_toolbar"
+        layout="@layout/login_toolbar"
         android:id="@+id/toolbar_layout" />
 
     <!--    Logo    -->
@@ -131,7 +131,7 @@
                 />
 
             <TextView
-                android:id="@+id/text_signup"
+                android:id="@+id/txt_signup"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginLeft="5dp"

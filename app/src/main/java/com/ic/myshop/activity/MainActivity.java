@@ -1,4 +1,4 @@
-package com.ic.myshop;
+package com.ic.myshop.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,9 +7,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ic.myshop.R;
+import com.ic.myshop.fragment.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

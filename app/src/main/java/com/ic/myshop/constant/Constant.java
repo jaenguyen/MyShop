@@ -7,4 +7,6 @@ public class Constant {
     public static final String SIGN_UP = "Đăng ký";
     public static final String FORGOT_PASSWORD ="Quên mật khẩu";
     public static final String EMAIL = "email";
+    public static final String PHONE = "số điện thoại";
+    public static final String PASSWORD = "mật khẩu";
 }

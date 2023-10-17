@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ic.myshop.R;
+import com.ic.myshop.auth.AuthService;
 import com.ic.myshop.constant.Constant;
 
 public class StartActivity extends AppCompatActivity {
 
     private Button start_btn;
     private SharedPreferences sharedPreferences;
+    private static final AuthService authService = AuthService.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,12 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         init();
 
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent;
+        if (authService.isLogin()) {
+            intent = new Intent(this, MainActivity.class);
+        } else {
+            intent = new Intent(this, LoginActivity.class);
+        }
         if (isFirstTime()) {
             start_btn.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -6,4 +6,5 @@
     <string name="login">Đăng nhập</string>
     <string name="sign_up">Đăng ký</string>
     <string name="forgot_password">Quên mật khẩu</string>
+    <string name="notification">Thông báo</string>
 </resources>

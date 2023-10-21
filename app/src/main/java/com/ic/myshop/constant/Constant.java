@@ -9,4 +9,5 @@ public class Constant {
     public static final String EMAIL = "email";
     public static final String PHONE = "số điện thoại";
     public static final String PASSWORD = "mật khẩu";
+    public static final String ACCOUNT_SETTING = "Thiết lập tài khoản";
 }

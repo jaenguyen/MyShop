@@ -31,4 +31,8 @@ public class AuthService {
     public Task<Void> resetPassword(String email) {
         return firebaseAuth.sendPasswordResetEmail(email);
     }
+
+    public void logout() {
+        firebaseAuth.signOut();
+    }
 }

@@ -13,6 +13,9 @@
         android:theme="@style/Theme.MyShop"
         tools:targetApi="31">
         <activity
+            android:name=".activity.account.AccountSettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ForgotActivity"
             android:exported="false" />
         <activity
@@ -20,8 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.LoginActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".activity.MainActivity"
             android:exported="false" />

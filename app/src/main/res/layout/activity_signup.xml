@@ -69,7 +69,7 @@
         android:layout_marginLeft="64dp"
         android:layout_marginRight="30dp"
         android:hint="Nhập số điện thoại"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:paddingStart="20dp"
         android:background="@android:color/transparent"
         />

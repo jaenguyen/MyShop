@@ -14,12 +14,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ic.myshop.R;
+import com.ic.myshop.activity.MyProductActivity;
 import com.ic.myshop.activity.account.AccountSettingActivity;
 
 public class UserFragment extends Fragment {
 
     private ImageView btn_setting;
-    private TextView txtAccountSetting;
+    private TextView txtAccountSetting, txtMyProduct;
 
     @Nullable
     @Override
@@ -34,19 +35,28 @@ public class UserFragment extends Fragment {
 
         btn_setting = view.findViewById(R.id.btn_setting);
         txtAccountSetting = view.findViewById(R.id.txt_account_setting);
+        txtMyProduct = view.findViewById(R.id.txt_my_product);
 
-        Intent intent = new Intent(getContext(), AccountSettingActivity.class);
+        Intent intentAccountSetting = new Intent(getContext(), AccountSettingActivity.class);
+        Intent intentMyProduct = new Intent(getContext(), MyProductActivity.class);
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(intent);
+                startActivity(intentAccountSetting);
             }
         });
 
         txtAccountSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(intent);
+                startActivity(intentAccountSetting);
+            }
+        });
+
+        txtMyProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentMyProduct);
             }
         });
     }

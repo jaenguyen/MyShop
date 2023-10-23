@@ -19,6 +19,8 @@ import com.ic.myshop.R;
 import com.ic.myshop.auth.AuthService;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.MessageConstant;
+import com.ic.myshop.db.DbFactory;
+import com.ic.myshop.model.User;
 import com.ic.myshop.validator.AuthValidator;
 
 public class SignupActivity extends AppCompatActivity {
@@ -28,6 +30,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText txtEmail, txtPhone, txtPassword, txtPassword2;
     private Button btnSignup;
     private static final AuthService authService = AuthService.getInstance();
+    private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +73,13 @@ public class SignupActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+                                        dbFactory.addUser(new User(authService.getUserId(), email, password, phone));
                                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                         Toast.makeText(getApplicationContext(), MessageConstant.SIGNUP_SUCCESS, Toast.LENGTH_LONG).show();
                                         startActivity(intent);
                                         finish();
                                     } else {
+                                        Toast.makeText(getApplicationContext(), "Error"+ task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                         Toast.makeText(getApplicationContext(), MessageConstant.SIGNUP_FAILURE, Toast.LENGTH_LONG).show();
                                     }
                                 }

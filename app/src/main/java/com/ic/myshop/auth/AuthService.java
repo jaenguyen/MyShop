@@ -35,4 +35,8 @@ public class AuthService {
     public void logout() {
         firebaseAuth.signOut();
     }
+
+    public String getUserId() {
+        return firebaseAuth.getUid();
+    }
 }

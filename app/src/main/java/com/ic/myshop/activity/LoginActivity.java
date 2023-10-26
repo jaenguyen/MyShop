@@ -28,12 +28,10 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private static final AuthService authService = AuthService.getInstance();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         init();
 
         txtSignup.setOnClickListener(new View.OnClickListener() {
@@ -58,9 +56,13 @@ public class LoginActivity extends AppCompatActivity {
                 String email = txtEmail.getText().toString().toLowerCase().trim();
                 String password = txtPassword.getText().toString().trim();
                 if (!AuthValidator.checkEmail(email)) {
-                    Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, Constant.EMAIL), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            String.format(MessageConstant.ENTER_AGAIN, Constant.EMAIL),
+                            Toast.LENGTH_SHORT).show();
                 } else if (AuthValidator.isNone(password)) {
-                    Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, Constant.PASSWORD), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            String.format(MessageConstant.ENTER_AGAIN, Constant.PASSWORD),
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     authService.login(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -68,11 +70,15 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                        Toast.makeText(getApplicationContext(), MessageConstant.LOGIN_SUCCESS, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(),
+                                                MessageConstant.LOGIN_SUCCESS,
+                                                Toast.LENGTH_LONG).show();
                                         startActivity(intent);
                                         finish();
                                     } else {
-                                        Toast.makeText(getApplicationContext(), MessageConstant.EMAIL_PASSWORD_NOT_CORRECT, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(),
+                                                MessageConstant.EMAIL_PASSWORD_NOT_CORRECT,
+                                                Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });

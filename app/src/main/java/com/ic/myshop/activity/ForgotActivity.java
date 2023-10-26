@@ -27,12 +27,10 @@ public class ForgotActivity extends AppCompatActivity {
     private Button btnResetPassword;
     private static final AuthService authService = AuthService.getInstance();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot);
-
         init();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -47,14 +45,18 @@ public class ForgotActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = txtEmail.getText().toString().toLowerCase().trim();
                 if (!AuthValidator.checkEmail(email)) {
-                    Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, Constant.EMAIL), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            String.format(MessageConstant.ENTER_AGAIN, Constant.EMAIL),
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     authService.resetPassword(email)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(getApplicationContext(), MessageConstant.CHECK_EMAIL_RESET_PASSWORD, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(),
+                                                MessageConstant.CHECK_EMAIL_RESET_PASSWORD,
+                                                Toast.LENGTH_SHORT).show();
                                     } else {
 
                                     }

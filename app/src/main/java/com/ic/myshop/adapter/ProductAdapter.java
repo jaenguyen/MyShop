@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
 import com.ic.myshop.model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
@@ -23,6 +24,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     public ProductAdapter(Context context) {
         this.context = context;
+        products = new ArrayList<>();
     }
 
     public ProductAdapter(Context context, List<Product> products) {
@@ -30,8 +32,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.products = products;
     }
 
-    public void setData(List<Product> products) {
-        this.products = products;
+    public void addProduct(Product product) {
+        this.products.add(product);
+        notifyDataSetChanged();
+    }
+
+    public void addProducts(List<Product> products) {
+        this.products.addAll(products);
         notifyDataSetChanged();
     }
 
@@ -63,6 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         private ImageView imgProduct;
         private TextView nameProduct;
+
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
 

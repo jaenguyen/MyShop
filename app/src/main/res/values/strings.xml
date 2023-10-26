@@ -7,4 +7,13 @@
     <string name="sign_up">Đăng ký</string>
     <string name="forgot_password">Quên mật khẩu</string>
     <string name="notification">Thông báo</string>
+    <string name="account_security">Tài khoản và bảo mật</string>
+    <string name="address">Địa chỉ</string>
+    <string name="my_shop_account">Tài khoản MyShop</string>
+    <string name="product_name">Tên sản phẩm</string>
+    <string name="product_description">Thông tin chi tiết</string>
+    <string name="product_price">Giá bán</string>
+    <string name="product_category">Loại</string>
+    <string name="product_sell_number">Số lượng bán</string>
+    <string name="product_image">Ảnh mô tả</string>
 </resources>

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.ic.myshop.R;
 import com.ic.myshop.activity.MyProductActivity;
-import com.ic.myshop.activity.account.AccountSettingActivity;
+import com.ic.myshop.activity.AccountSettingActivity;
 
 public class UserFragment extends Fragment {
 

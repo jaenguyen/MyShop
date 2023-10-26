@@ -10,29 +10,33 @@
         layout="@layout/extra_toolbar"
         android:id="@+id/toolbar_account_setting" />
 
-    <Button
-        android:id="@+id/btn_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="add sản phẩm"
-        android:layout_below="@id/toolbar_account_setting"
-        />
-    
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_product"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_add"
+        android:layout_below="@id/toolbar_account_setting"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         />
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
+        />
+    
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        app:backgroundTint="@color/primary_color"
+        android:src="@drawable/ic_add"
         />
 </RelativeLayout>

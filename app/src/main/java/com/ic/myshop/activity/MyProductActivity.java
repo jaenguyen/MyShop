@@ -6,13 +6,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
@@ -32,8 +36,9 @@ public class MyProductActivity extends AppCompatActivity {
     private List<Product> productList;
     private FirebaseFirestore db;
     private GridLayoutManager layoutManager;
-    private String lastVisibleProductName;
-    private boolean isLoading;
+    ProgressBar progressBar;
+    private long maxScore;
+    private boolean isScrolling = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,18 +54,18 @@ public class MyProductActivity extends AppCompatActivity {
         productAdapter = new ProductAdapter(this, productList);
         rcvProduct.setAdapter(productAdapter);
 
-        db.collection("products").orderBy("name").startAt("p1").limit(2).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("products").orderBy("createdTime", Query.Direction.DESCENDING).
+                startAt(Long.MAX_VALUE).limit(4).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    isLoading = false;
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Product product = document.toObject(Product.class);
                         productList.add(product);
                         productAdapter.notifyDataSetChanged();
                     }
                     if (!task.getResult().isEmpty()) {
-                        lastVisibleProductName = task.getResult().getDocuments().get(task.getResult().size() - 1).getString("name");
+                        maxScore = task.getResult().getDocuments().get(task.getResult().size() - 1).getLong("createdTime");
                     }
                 } else {
 
@@ -77,17 +82,22 @@ public class MyProductActivity extends AppCompatActivity {
 
         rcvProduct.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                    isScrolling = true;
+            }
+
+            @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                int currentItem = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
-                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                int scrollOutItem = layoutManager.findFirstVisibleItemPosition();
 
-                if (!isLoading && totalItemCount <= (lastVisibleItem + 4)) {
-                    // Xác định rằng bạn đang trong quá trình nạp dữ liệu để tránh nạp dữ liệu quá nhiều lần
-                    isLoading = true;
-
-                    // Thực hiện truy vấn Firestore mới để lấy dữ liệu tiếp theo
+                if (isScrolling && currentItem+scrollOutItem==totalItemCount) {
+                    isScrolling = false;
                     loadMoreData();
                 }
             }
@@ -98,37 +108,38 @@ public class MyProductActivity extends AppCompatActivity {
         toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText(Constant.MY_PRODUCT);
         btnBack = findViewById(R.id.toolbar_back_button);
+        progressBar = findViewById(R.id.progress);
     }
 
     private void loadMoreData() {
-        // Tăng giới hạn và nạp thêm dữ liệu
-        db.collection("products")
-                .orderBy("name")
-                .startAfter(lastVisibleProductName) // Truyền tên của sản phẩm cuối cùng hiển thị
-                .limit(4)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // Xóa indicator "isLoading"
-                            isLoading = false;
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Product product = document.toObject(Product.class);
-                                productList.add(product);
-                                productAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                db.collection("products")
+                        .orderBy("createdTime", Query.Direction.DESCENDING)
+                        .startAfter(maxScore) // Truyền tên của sản phẩm cuối cùng hiển thị
+                        .limit(4)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Product product = document.toObject(Product.class);
+                                        productList.add(product);
+                                        productAdapter.notifyDataSetChanged();
+                                    }
+                                    progressBar.setVisibility(View.GONE);
+                                    if (!task.getResult().isEmpty()) {
+                                        maxScore = task.getResult().getDocuments().get(task.getResult().size() - 1).getLong("createdTime");
+                                    }
+                                } else {
+                                    isScrolling = false;
+                                }
                             }
-
-                            // Cập nhật tên của sản phẩm cuối cùng
-                            if (!task.getResult().isEmpty()) {
-                                lastVisibleProductName = task.getResult().getDocuments().get(task.getResult().size() - 1).getString("name");
-                            }
-                        } else {
-                            // Xóa indicator "isLoading" nếu có lỗi
-                            isLoading = false;
-                        }
-                    }
-                });
+                        });
+            }
+        }, 2000);
     }
 }

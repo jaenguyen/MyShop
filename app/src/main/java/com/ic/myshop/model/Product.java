@@ -7,15 +7,17 @@ public class Product {
     private String imageUrl;
     private String name;
     private String parentId;
+    private long createdTime;
 
     public Product() {
 
     }
 
-    public Product(String imageUrl, String name, String parentId) {
+    public Product(String imageUrl, String name, String parentId, long createdTime) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.parentId = parentId;
+        this.createdTime = createdTime;
     }
 
     public String getImageUrl() {
@@ -40,5 +42,13 @@ public class Product {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
     }
 }

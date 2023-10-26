@@ -1,4 +1,4 @@
-package com.ic.myshop.activity.account;
+package com.ic.myshop.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.ic.myshop.R;
-import com.ic.myshop.activity.LoginActivity;
 import com.ic.myshop.auth.AuthService;
 import com.ic.myshop.constant.Constant;
 
@@ -25,8 +24,8 @@ public class AccountSettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_setting);
-
         init();
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,7 +43,6 @@ public class AccountSettingActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void init() {
         toolbarTitle = findViewById(R.id.toolbar_title);

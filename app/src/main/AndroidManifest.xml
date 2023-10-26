@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <application
         android:allowBackup="true"
@@ -11,9 +11,15 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyShop"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
-            android:name=".activity.account.AccountSettingActivity"
+            android:name=".activity.AddProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MyProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AccountSettingActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ForgotActivity"
@@ -23,13 +29,13 @@
             android:exported="false" />
         <activity
             android:name=".activity.LoginActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".activity.StartActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

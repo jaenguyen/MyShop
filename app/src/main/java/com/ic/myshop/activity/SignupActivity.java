@@ -62,11 +62,17 @@ public class SignupActivity extends AppCompatActivity {
                 String password = txtPassword.getText().toString();
                 String password2 = txtPassword2.getText().toString();
                 if (!AuthValidator.checkEmail(email)) {
-                    Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, Constant.EMAIL), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            String.format(MessageConstant.ENTER_AGAIN, Constant.EMAIL),
+                            Toast.LENGTH_SHORT).show();
                 } else if (!AuthValidator.checkPhone(phone)) {
-                    Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, Constant.PHONE), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            String.format(MessageConstant.ENTER_AGAIN, Constant.PHONE),
+                            Toast.LENGTH_SHORT).show();
                 } else if (!AuthValidator.checkPassword(password, password2)) {
-                    Toast.makeText(getApplicationContext(), MessageConstant.PASSWORD_NOT_CORRECT, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            MessageConstant.PASSWORD_NOT_CORRECT,
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     authService.createUser(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -75,12 +81,15 @@ public class SignupActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         dbFactory.addUser(new User(authService.getUserId(), email, password, phone));
                                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                        Toast.makeText(getApplicationContext(), MessageConstant.SIGNUP_SUCCESS, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(),
+                                                MessageConstant.SIGNUP_SUCCESS,
+                                                Toast.LENGTH_LONG).show();
                                         startActivity(intent);
                                         finish();
                                     } else {
-                                        Toast.makeText(getApplicationContext(), "Error"+ task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                        Toast.makeText(getApplicationContext(), MessageConstant.SIGNUP_FAILURE, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(),
+                                                MessageConstant.SIGNUP_FAILURE,
+                                                Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });

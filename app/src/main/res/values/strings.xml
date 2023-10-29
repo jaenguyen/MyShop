@@ -16,4 +16,12 @@
     <string name="product_category">Loại</string>
     <string name="product_sell_number">Số lượng bán</string>
     <string name="product_image">Ảnh mô tả</string>
+    <string-array name="type">
+        <item>Thời trang</item>
+        <item>Điện tử</item>
+        <item>Sức khỏe</item>
+        <item>Sắc đẹp</item>
+        <item>Thể thao, du lịch</item>
+        <item>Khác</item>
+    </string-array>
 </resources>

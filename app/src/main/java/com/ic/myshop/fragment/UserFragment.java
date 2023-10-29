@@ -13,12 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ic.myshop.R;
+import com.ic.myshop.activity.CartActivity;
 import com.ic.myshop.activity.MyProductActivity;
 import com.ic.myshop.activity.AccountSettingActivity;
 
 public class UserFragment extends Fragment {
 
-    private ImageView btn_setting;
+    private ImageView btnSetting, btnCart;
     private TextView txtAccountSetting, txtMyProduct;
 
     @Nullable
@@ -32,16 +33,25 @@ public class UserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btn_setting = view.findViewById(R.id.btn_setting);
+        btnSetting = view.findViewById(R.id.btn_setting);
+        btnCart = view.findViewById(R.id.btn_cart);
         txtAccountSetting = view.findViewById(R.id.txt_account_setting);
         txtMyProduct = view.findViewById(R.id.txt_my_product);
 
         Intent intentAccountSetting = new Intent(getContext(), AccountSettingActivity.class);
         Intent intentMyProduct = new Intent(getContext(), MyProductActivity.class);
-        btn_setting.setOnClickListener(new View.OnClickListener() {
+        Intent intentCart = new Intent(getContext(), CartActivity.class);
+        btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(intentAccountSetting);
+            }
+        });
+
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentCart);
             }
         });
 

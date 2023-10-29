@@ -14,7 +14,7 @@ import com.ic.myshop.constant.Constant;
 
 public class StartActivity extends AppCompatActivity {
 
-    private Button start_btn;
+    private Button btnStart;
     private SharedPreferences sharedPreferences;
     private static final AuthService authService = AuthService.getInstance();
 
@@ -31,7 +31,7 @@ public class StartActivity extends AppCompatActivity {
             intent = new Intent(this, LoginActivity.class);
         }
         if (isFirstTime()) {
-            start_btn.setOnClickListener(new View.OnClickListener() {
+            btnStart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(intent);
@@ -46,7 +46,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void init() {
-        start_btn = findViewById(R.id.start_btn);
+        btnStart = findViewById(R.id.btn_start);
         sharedPreferences = getSharedPreferences(Constant.MAP, MODE_PRIVATE);
     }
 

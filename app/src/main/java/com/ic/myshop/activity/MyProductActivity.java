@@ -54,6 +54,7 @@ public class MyProductActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Product product = document.toObject(Product.class);
+                        product.setId(document.getId());
                         productAdapter.addProduct(product);
                     }
                     if (!task.getResult().isEmpty()) {
@@ -136,6 +137,7 @@ public class MyProductActivity extends AppCompatActivity {
                                     QuerySnapshot queryDocumentSnapshot = task.getResult();
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Product product = document.toObject(Product.class);
+                                        product.setId(document.getId());
                                         productAdapter.addProduct(product);
                                     }
                                     progressBar.setVisibility(View.GONE);

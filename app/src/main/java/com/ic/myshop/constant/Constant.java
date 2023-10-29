@@ -11,4 +11,5 @@ public class Constant {
     public static final String PASSWORD = "mật khẩu";
     public static final String ACCOUNT_SETTING = "Thiết lập tài khoản";
     public static final String MY_PRODUCT = "Sản phẩm của tôi";
+    public static final String ADD_PRODUCT = "Thêm sản phẩm";
 }

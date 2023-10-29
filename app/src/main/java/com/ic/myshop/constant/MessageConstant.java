@@ -9,4 +9,7 @@ public class MessageConstant {
     public static final String EMAIL_PASSWORD_NOT_CORRECT = "Email hoặc mật khẩu không đúng";
     public static final String LOGIN_SUCCESS = "Đăng nhập thành công";
     public static final String CHECK_EMAIL_RESET_PASSWORD = "Kiểm tra email để cập nhập lại mật khẩu";
+    public static final String UPLOAD_FAILURE = "Upload fail";
+    public static final String UPLOAD_SUCCESS = "Upload success";
+
 }

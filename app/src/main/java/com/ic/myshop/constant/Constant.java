@@ -13,4 +13,5 @@ public class Constant {
     public static final String MY_PRODUCT = "Sản phẩm của tôi";
     public static final String ADD_PRODUCT = "Thêm sản phẩm";
     public static final String CART = "Giỏ hàng";
+    public static final String PRODUCT_DETAIL = "Chi tiết sản phẩm";
 }

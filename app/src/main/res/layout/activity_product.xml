@@ -115,14 +115,15 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true">
-        <ImageView
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="centerInside"
             android:src="@drawable/ic_message"
             android:background="@color/green_pastel" />
-        <ImageView
+        <ImageButton
+            android:id="@+id/btn_add_to_cart"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -11,14 +11,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
 import com.ic.myshop.constant.Constant;
+import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Product;
 
 public class ProductActivity extends AppCompatActivity {
 
     private TextView toolbarTitle, txtName, txtPrice, txtSoldNumber, txtType, txtDescription;
-    private ImageButton btnBack;
+    private ImageButton btnBack, btnAddToCart;
     private ImageView imageView;
     private Product product;
+    private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,13 @@ public class ProductActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        btnAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dbFactory.addToCart(product.getId(), 1);
+            }
+        });
     }
 
     private void init() {
@@ -57,5 +66,6 @@ public class ProductActivity extends AppCompatActivity {
         txtSoldNumber = findViewById(R.id.txt_sold_number);
         txtType = findViewById(R.id.txt_type);
         txtDescription = findViewById(R.id.txt_description);
+        btnAddToCart = findViewById(R.id.btn_add_to_cart);
     }
 }

@@ -1,40 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary_color">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        app:queryHint="Nhập tên sản phẩm"
-        android:layout_toLeftOf="@id/btn_cart"
-        app:iconifiedByDefault="false"
         android:layout_margin="11dp"
+        android:layout_toLeftOf="@id/btn_cart"
         android:background="@drawable/search_background"
-        />
+        app:iconifiedByDefault="false"
+        app:queryHint="Nhập tên sản phẩm" />
 
     <ImageView
         android:id="@+id/btn_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/btn_chat"
         android:layout_margin="15dp"
-        android:src="@drawable/ic_cart"
-        />
-
-    <TextView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:text="10"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:layout_toRightOf="@id/btn_cart"
-        android:layout_marginLeft="-20dp"
-        android:layout_marginTop="4dp"
-        />
+        android:layout_toLeftOf="@id/btn_chat"
+        android:src="@drawable/ic_cart" />
 
     <ImageView
         android:id="@+id/btn_chat"
@@ -42,6 +29,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_margin="15dp"
-        android:src="@drawable/ic_message"
-        />
+        android:src="@drawable/ic_message" />
 </RelativeLayout>

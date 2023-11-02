@@ -12,6 +12,7 @@ public class AuthService {
     private AuthService() {
         firebaseAuth = FirebaseAuth.getInstance();
     }
+
     public static AuthService getInstance() {
         return firebaseAuthService;
     }

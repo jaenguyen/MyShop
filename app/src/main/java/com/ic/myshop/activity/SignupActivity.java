@@ -79,7 +79,7 @@ public class SignupActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        dbFactory.addUser(new User(authService.getUserId(), email, password, phone));
+                                        dbFactory.addUser(new User(dbFactory.getUserId(), email, password, phone));
                                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                         Toast.makeText(getApplicationContext(),
                                                 MessageConstant.SIGNUP_SUCCESS,

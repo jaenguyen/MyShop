@@ -69,7 +69,7 @@ public class ProductActivity extends AppCompatActivity {
                 ImageView btnRemove1 = dialogView.findViewById(R.id.btn_remove);
                 ImageView btnAdd1 = dialogView.findViewById(R.id.btn_add);
                 TextView txtQuantity1 = dialogView.findViewById(R.id.txt_quantity);
-                Button btnAddToCart1 =  dialogView.findViewById(R.id.btn_add_to_cart);
+                Button btnAddToCart1 = dialogView.findViewById(R.id.btn_add_to_cart);
                 // Set giá trị cho các thành phần trong dialog
                 Glide.with(getApplicationContext())
                         .load(product.getImageUrl())

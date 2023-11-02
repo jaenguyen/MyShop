@@ -4,7 +4,6 @@
     android:layout_height="match_parent">
 
     <include
-        layout="@layout/home_toolbar"
-        android:id="@+id/toolbar_home" />
-
+        android:id="@+id/toolbar_home"
+        layout="@layout/home_toolbar" />
 </RelativeLayout>

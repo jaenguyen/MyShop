@@ -7,21 +7,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/notification"
-        android:textColor="@color/white"
-        android:textSize="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="15dp"
-        />
+        android:text="@string/notification"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
 
     <ImageView
         android:id="@+id/btn_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/btn_chat"
         android:layout_margin="15dp"
-        android:src="@drawable/ic_cart"
-        />
+        android:layout_toLeftOf="@id/btn_chat"
+        android:src="@drawable/ic_cart" />
 
     <ImageView
         android:id="@+id/btn_chat"
@@ -29,7 +27,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_margin="15dp"
-        android:src="@drawable/ic_message"
-        />
-
+        android:src="@drawable/ic_message" />
 </RelativeLayout>

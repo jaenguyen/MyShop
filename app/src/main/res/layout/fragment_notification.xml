@@ -4,7 +4,6 @@
     android:layout_height="match_parent">
 
     <include
-        layout="@layout/notification_toolbar"
-        android:id="@+id/toolbar_notification" />
-
+        android:id="@+id/toolbar_notification"
+        layout="@layout/notification_toolbar" />
 </RelativeLayout>

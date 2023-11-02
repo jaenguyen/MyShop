@@ -53,7 +53,6 @@ public class AddProductActivity extends AppCompatActivity {
     private Uri imageUri;
     // firebase
     private StorageTask uploadTask;
-    private static final AuthService authService = AuthService.getInstance();
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override
@@ -144,7 +143,7 @@ public class AddProductActivity extends AppCompatActivity {
                                     int sellNumber = Integer.parseInt(txtSellNumber.getText().toString());
                                     String type = typeSpinner.getSelectedItem().toString();
                                     Product product = new Product(name, description, price, sellNumber,
-                                            type, uri.toString(), authService.getUserId());
+                                            type, uri.toString(), dbFactory.getUserId());
                                     dbFactory.addProduct(product);
                                 }
                             });

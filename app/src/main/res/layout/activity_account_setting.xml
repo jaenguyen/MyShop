@@ -7,18 +7,17 @@
     tools:context=".activity.AccountSettingActivity">
 
     <include
-        layout="@layout/extra_toolbar"
-        android:id="@+id/toolbar_account_setting" />
+        android:id="@+id/toolbar_account_setting"
+        layout="@layout/extra_toolbar" />
 
     <TextView
         android:id="@+id/txt_account"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_margin="20dp"
         android:layout_below="@id/toolbar_account_setting"
+        android:layout_margin="20dp"
         android:text="Tài khoản"
-        android:textSize="20dp"
-        />
+        android:textSize="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,17 +27,20 @@
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="@string/account_security"
             android:gravity="center_vertical"
+            android:text="@string/account_security"
             android:textColor="@color/black"
             android:textSize="20dp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -46,10 +48,12 @@
             android:text="@string/address"
             android:textColor="@color/black"
             android:textSize="20dp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -65,6 +69,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:backgroundTint="@color/white_gray"
-        android:text="Đăng xuất"/>
-
+        android:text="Đăng xuất" />
 </RelativeLayout>

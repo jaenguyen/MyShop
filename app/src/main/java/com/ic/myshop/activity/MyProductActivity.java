@@ -49,23 +49,23 @@ public class MyProductActivity extends AppCompatActivity {
 
         db.collection(DatabaseConstant.PRODUCTS).orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING).
                 startAt(Long.MAX_VALUE).limit(4).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Product product = document.toObject(Product.class);
-                        product.setId(document.getId());
-                        productAdapter.addProduct(product);
-                    }
-                    if (!task.getResult().isEmpty()) {
-                        maxScore = task.getResult().getDocuments().
-                                get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
-                    }
-                } else {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                product.setId(document.getId());
+                                productAdapter.addProduct(product);
+                            }
+                            if (!task.getResult().isEmpty()) {
+                                maxScore = task.getResult().getDocuments().
+                                        get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
+                            }
+                        } else {
 
-                }
-            }
-        });
+                        }
+                    }
+                });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +90,7 @@ public class MyProductActivity extends AppCompatActivity {
                 int totalItemCount = layoutManager.getItemCount();
                 int scrollOutItem = layoutManager.findFirstVisibleItemPosition();
 
-                if (isScrolling && currentItem+scrollOutItem==totalItemCount) {
+                if (isScrolling && currentItem + scrollOutItem == totalItemCount) {
                     isScrolling = false;
                     loadMoreProduct();
                 }

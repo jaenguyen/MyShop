@@ -8,37 +8,34 @@
 
     <!--    Toolbar -->
     <include
-        layout="@layout/login_toolbar"
-        android:id="@+id/toolbar_layout" />
+        android:id="@+id/toolbar_layout"
+        layout="@layout/login_toolbar" />
 
     <!--    Logo    -->
     <ImageView
-        android:src="@drawable/ic_launcher"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="100dp"
-        />
+        android:src="@drawable/ic_launcher" />
 
     <!--    Email   -->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="240dp"
         android:layout_marginLeft="36dp"
-        android:src="@drawable/ic_user_login"
-        />
+        android:layout_marginTop="240dp"
+        android:src="@drawable/ic_user_login" />
 
     <EditText
         android:id="@+id/txt_email"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="240dp"
         android:layout_marginLeft="64dp"
+        android:layout_marginTop="240dp"
         android:layout_marginRight="30dp"
-        android:hint="Nhập email"
-        android:paddingStart="20dp"
         android:background="@android:color/transparent"
-        />
+        android:hint="Nhập email"
+        android:paddingStart="20dp" />
 
     <View
         android:layout_width="match_parent"
@@ -46,32 +43,29 @@
         android:layout_below="@id/txt_email"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="#ccc"
-    />
+        android:background="#ccc" />
 
     <!--    Password   -->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_email"
-        android:layout_marginTop="16dp"
         android:layout_marginLeft="36dp"
-        android:src="@drawable/ic_password_login"
-        />
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_password_login" />
 
     <EditText
         android:id="@+id/txt_password"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@id/txt_email"
-        android:layout_marginTop="16dp"
         android:layout_marginLeft="64dp"
+        android:layout_marginTop="16dp"
         android:layout_marginRight="30dp"
+        android:background="@android:color/transparent"
         android:hint="Nhập mật khẩu"
         android:inputType="textPassword"
-        android:paddingStart="20dp"
-        android:background="@android:color/transparent"
-        />
+        android:paddingStart="20dp" />
 
     <View
         android:layout_width="match_parent"
@@ -79,8 +73,7 @@
         android:layout_below="@id/txt_password"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="@color/gray"
-        />
+        android:background="@color/gray" />
 
     <!--    Button login    -->
     <Button
@@ -88,14 +81,13 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@id/txt_password"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="26dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="26dp"
-        android:text="Đăng nhập"
         android:backgroundTint="@color/primary_color"
+        android:text="Đăng nhập"
         android:textColor="@color/white"
-        android:textSize="16dp"
-        />
+        android:textSize="16dp" />
 
     <!--    Forgot Password    -->
     <TextView
@@ -108,27 +100,27 @@
         android:gravity="center"
         android:text="Quên mật khẩu ?"
         android:textColor="@color/blue"
-        android:textSize="15dp"
         android:textFontWeight="1000"
-        />
+        android:textSize="15dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white_gray">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:text="Bạn chưa có tài khoản?"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/txt_signup"
@@ -139,5 +131,4 @@
                 android:textColor="@color/blue" />
         </LinearLayout>
     </RelativeLayout>
-
 </RelativeLayout>

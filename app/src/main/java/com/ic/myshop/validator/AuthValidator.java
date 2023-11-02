@@ -25,7 +25,7 @@ public class AuthValidator {
         return password.equals(password2);
     }
 
-    public static boolean isNone (String input) {
+    public static boolean isNone(String input) {
         if (input.isEmpty() || input == null) {
             return true;
         }

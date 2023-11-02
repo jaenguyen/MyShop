@@ -11,11 +11,23 @@ public class User implements Serializable {
     private String phone;
     private List<Address> addresses;
 
+    public User() {
+
+    }
+
     public User(String id, String email, String password, String phone) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.phone = phone;
+    }
+
+    public User(String id, String email, String password, String phone, List<Address> addresses) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.addresses = addresses;
     }
 
     public String getId() {

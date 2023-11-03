@@ -48,7 +48,9 @@ public class DbFactory {
     }
 
     public void addProduct(Product product) {
-        firebaseFirestore.collection(DatabaseConstant.PRODUCTS).add(product);
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document();
+        product.setId(documentReference.getId());
+        documentReference.set(product);
     }
 
     public void addToCart(String productId, int quantity) {

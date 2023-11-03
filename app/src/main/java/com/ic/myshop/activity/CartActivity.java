@@ -1,20 +1,46 @@
 package com.ic.myshop.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.ic.myshop.R;
+import com.ic.myshop.adapter.CartItemAdapter;
 import com.ic.myshop.constant.Constant;
+import com.ic.myshop.constant.DatabaseConstant;
+import com.ic.myshop.db.DbFactory;
+import com.ic.myshop.model.Cart;
+import com.ic.myshop.model.Product;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class CartActivity extends AppCompatActivity {
 
     private TextView toolbarTitle;
     private ImageButton btnBack;
+    //empty cart
+    private ImageView imageEmptyCart;
+    private TextView txtEmptyCart;
+    // rcv
+    private RecyclerView rcvCartItem;
+    private LinearLayoutManager linearLayoutManager;
+    private CartItemAdapter cartItemAdapter;
+    //db
+    private FirebaseFirestore db;
+    private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +54,53 @@ public class CartActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        db.collection(DatabaseConstant.CARTS).document("cart_" + dbFactory.getUserId())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            Cart cart = documentSnapshot.toObject(Cart.class);
+                            Map<String, Integer> quantityProducts = cart.getQuantityProducts();
+                            if (quantityProducts.isEmpty()) {
+                                imageEmptyCart.setVisibility(View.VISIBLE);
+                                txtEmptyCart.setVisibility(View.VISIBLE);
+                            }
+                            for (String cartItemId : quantityProducts.keySet()) {
+                                db.collection(DatabaseConstant.PRODUCTS).document(cartItemId).get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                                    Product product = documentSnapshot.toObject(Product.class);
+                                                    cartItemAdapter.addCartItem(product, quantityProducts.get(product.getId()));
+                                                } else {
+                                                    // TODO: xử lý sản phẩm ko get được
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
     }
 
     private void init() {
         toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText(Constant.CART);
         btnBack = findViewById(R.id.toolbar_back_button);
+        //empty
+        imageEmptyCart = findViewById(R.id.image_empty_cart);
+        txtEmptyCart = findViewById(R.id.txt_empty_cart);
+        // rcv
+        rcvCartItem = findViewById(R.id.rcv_cart_item);
+        linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        rcvCartItem.setLayoutManager(linearLayoutManager);
+        cartItemAdapter = new CartItemAdapter(this);
+        rcvCartItem.setAdapter(cartItemAdapter);
+        //db
+        db = FirebaseFirestore.getInstance();
     }
 }

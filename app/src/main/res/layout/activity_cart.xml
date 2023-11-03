@@ -15,26 +15,28 @@
         android:layout_width="200dp"
         android:layout_height="150dp"
         android:layout_centerInParent="true"
+        android:visibility="gone"
         android:src="@drawable/add_to_cart" />
 
     <TextView
+        android:id="@+id/txt_empty_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/image_empty_cart"
         android:layout_centerInParent="true"
         android:layout_margin="10dp"
         android:text="Giỏ hàng trống, hãy thêm sản phẩm vào giỏ"
+        android:visibility="gone"
         android:textColor="@color/black"
         android:textSize="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_cart"
+        android:id="@+id/rcv_cart_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/cart_footer"
         android:layout_below="@id/toolbar_account_setting"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_margin="10dp" />
 
     <LinearLayout
         android:id="@+id/cart_footer"
@@ -62,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="₫ 500"
+            android:text="₫ 0"
             android:textColor="@color/primary_color" />
 
         <TextView

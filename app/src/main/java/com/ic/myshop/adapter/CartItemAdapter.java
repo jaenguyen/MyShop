@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,22 +22,48 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder>{
+public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder> {
 
     private Context context;
     private List<Product> products;
     private Map<String, Integer> quantityProducts;
+    private List<String> selected;
+
+    // event
+    private CartItemClickListener cartItemClickListener;
 
     public CartItemAdapter(Context context) {
         this.context = context;
         products = new ArrayList<>();
         quantityProducts = new HashMap<>();
+        selected = new ArrayList<>();
     }
 
-    public CartItemAdapter(Context context, List<Product> products, Map<String, Integer> quantityProducts) {
-        this.context = context;
-        this.products = products;
-        this.quantityProducts = quantityProducts;
+    public Product getProduct(int position) {
+        return products.get(position);
+    }
+
+    public int getQuantity(String id) {
+        return quantityProducts.get(id);
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void updateSelected(String id, boolean add, boolean remove) {
+        if (add) selected.add(id);
+        if (remove) selected.remove(id);
+        notifyDataSetChanged();
+    }
+
+    public void updateQuantity(String id, int quantity) {
+        quantityProducts.put(id, quantity);
+        notifyDataSetChanged();
+    }
+
+    public boolean isSelected(String id) {
+        return selected.contains(id);
     }
 
     public void addCartItem(Product product, int quantity) {
@@ -90,6 +117,43 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             sellNumber = itemView.findViewById(R.id.txt_quantity);
             btnRemove = itemView.findViewById(R.id.btn_remove);
             btnAdd = itemView.findViewById(R.id.btn_add);
+
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (cartItemClickListener != null) {
+                        cartItemClickListener.onCheckboxClick(getAdapterPosition(), checkBox.isChecked());
+                    }
+                }
+            });
+
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (cartItemClickListener != null) {
+                        cartItemClickListener.onAddButtonClick(getAdapterPosition());
+                    }
+                }
+            });
+
+            btnRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (cartItemClickListener != null) {
+                        cartItemClickListener.onRemoveButtonClick(getAdapterPosition());
+                    }
+                }
+            });
         }
+    }
+
+    public interface CartItemClickListener {
+        void onCheckboxClick(int position, boolean isChecked);
+        void onAddButtonClick(int position);
+        void onRemoveButtonClick(int position);
+    }
+
+    public void setCartItemClickListener(CartItemClickListener listener) {
+        this.cartItemClickListener = listener;
     }
 }

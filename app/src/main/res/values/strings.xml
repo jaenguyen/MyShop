@@ -16,6 +16,7 @@
     <string name="product_category">Loại</string>
     <string name="product_sell_number">Số lượng bán</string>
     <string name="product_image">Ảnh mô tả</string>
+    <string name="add_product">Thêm địa chỉ</string>
     <string-array name="type">
         <item>Thời trang</item>
         <item>Điện tử</item>

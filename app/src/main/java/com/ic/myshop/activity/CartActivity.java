@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,14 +27,13 @@ import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Cart;
 import com.ic.myshop.model.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class CartActivity extends AppCompatActivity {
 
     private long totalPrice = 0;
-    private TextView txtTotalPrice;
+    private TextView txtTotalPrice, btnBuy;
     private TextView toolbarTitle;
     private ImageButton btnBack;
     //empty cart
@@ -160,6 +158,19 @@ public class CartActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> selected = cartItemAdapter.getSelected();
+                if (selected == null || selected.isEmpty()) {
+                    Toast.makeText(CartActivity.this, MessageConstant.NOT_SELECTED_PRODUCT, Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private void init() {
@@ -167,6 +178,7 @@ public class CartActivity extends AppCompatActivity {
         toolbarTitle.setText(Constant.CART);
         btnBack = findViewById(R.id.toolbar_back_button);
         txtTotalPrice = findViewById(R.id.txt_total_price);
+        btnBuy = findViewById(R.id.btn_buy);
         //empty
         imageEmptyCart = findViewById(R.id.image_empty_cart);
         txtEmptyCart = findViewById(R.id.txt_empty_cart);

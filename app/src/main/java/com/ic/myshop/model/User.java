@@ -1,6 +1,7 @@
 package com.ic.myshop.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User implements Serializable {
@@ -20,6 +21,7 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.addresses = new ArrayList<>();
     }
 
     public User(String id, String email, String password, String phone, List<Address> addresses) {

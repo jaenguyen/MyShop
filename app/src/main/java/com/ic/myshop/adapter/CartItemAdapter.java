@@ -51,6 +51,10 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         return products.get(position).getId();
     }
 
+    public List<String> getSelected() {
+        return selected;
+    }
+
     public int getQuantity(String id) {
         return quantityProducts.get(id);
     }

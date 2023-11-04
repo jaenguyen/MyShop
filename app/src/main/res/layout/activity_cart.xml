@@ -59,6 +59,7 @@
             android:textColor="@color/primary_color" />
 
         <TextView
+            android:id="@+id/btn_buy"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@color/primary_color"

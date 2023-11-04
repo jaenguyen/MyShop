@@ -12,9 +12,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
+import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
+
+import java.util.List;
 
 public class DbFactory {
 
@@ -85,5 +88,10 @@ public class DbFactory {
 
     public String getUserId() {
         return FirebaseAuth.getInstance().getUid();
+    }
+
+    public void updateAddresses(List<Address> addresses) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.USERS).document(getUserId());
+        documentReference.update("addresses", addresses);
     }
 }

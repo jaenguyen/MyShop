@@ -47,6 +47,10 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         return products.get(position);
     }
 
+    public String getCartItemId(int position) {
+        return products.get(position).getId();
+    }
+
     public int getQuantity(String id) {
         return quantityProducts.get(id);
     }
@@ -73,6 +77,13 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public void addCartItem(Product product, int quantity) {
         this.products.add(product);
         quantityProducts.put(product.getId(), quantity);
+        notifyDataSetChanged();
+    }
+
+    public void deleteCartItem(Product product) {
+        products.remove(product);
+        selected.remove(product.getId());
+        quantityProducts.remove(product.getId());
         notifyDataSetChanged();
     }
 

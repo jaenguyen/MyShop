@@ -103,7 +103,7 @@ public class ProductActivity extends AppCompatActivity {
                 btnAddToCart1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dbFactory.addToCart(product.getId(), quantity);
+                        dbFactory.updateCart(product.getId(), quantity);
                         dialog.dismiss();
                         Toast.makeText(ProductActivity.this, MessageConstant.ADD_TO_CART, Toast.LENGTH_SHORT).show();
                     }

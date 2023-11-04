@@ -96,7 +96,19 @@ public class CartActivity extends AppCompatActivity {
         cartItemAdapter.setCartItemClickListener(new CartItemAdapter.CartItemClickListener() {
             @Override
             public void onDeleteCartItem(int position) {
-                Toast.makeText(CartActivity.this, cartItemAdapter.getProduct(position).getName(), Toast.LENGTH_SHORT).show();
+                Product product = cartItemAdapter.getProduct(position);
+                String id = product.getId();
+                dbFactory.deleteCart(id);
+                if (cartItemAdapter.isSelected(id)) {
+                    int quantity = cartItemAdapter.getQuantity(id);
+                    totalPrice -= product.getPrice() * quantity;
+                    txtTotalPrice.setText(String.format("₫ %s", ConversionHelper.formatNumber(totalPrice)));
+                }
+                cartItemAdapter.deleteCartItem(product);
+                if (cartItemAdapter.getItemCount() == 0) {
+                    imageEmptyCart.setVisibility(View.VISIBLE);
+                    txtEmptyCart.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -121,7 +133,7 @@ public class CartActivity extends AppCompatActivity {
                 int currentQuantity = cartItemAdapter.getQuantity(product.getId());
                 if (currentQuantity < product.getSellNumber()) {
                     currentQuantity++;
-                    dbFactory.addToCart(id, currentQuantity);
+                    dbFactory.updateCart(id, currentQuantity);
                     cartItemAdapter.updateQuantity(id, currentQuantity);
                     if (cartItemAdapter.isSelected(id)) {
                         totalPrice += product.getPrice();

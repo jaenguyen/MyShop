@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -66,6 +67,16 @@ public class DbFactory {
                 }
             }
         });
+    }
+
+    public void updateCart(String productId, int quantity) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.CARTS).document(getCartId(getUserId()));
+        documentReference.update(String.format("quantityProducts.%s", productId), quantity);
+    }
+
+    public void deleteCart(String productId) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.CARTS).document(getCartId(getUserId()));
+        documentReference.update(String.format("quantityProducts.%s", productId), FieldValue.delete());
     }
 
     public String getCartId(String userId) {

@@ -48,12 +48,10 @@ public class Product implements Serializable {
         this.parentId = parentId;
     }
 
-    @Exclude
     public String getId() {
         return id;
     }
 
-    @Exclude
     public void setId(String id) {
         this.id = id;
     }

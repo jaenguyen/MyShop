@@ -7,13 +7,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
+import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
+import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
+import com.ic.myshop.output.BuyItem;
+
+import java.util.List;
 
 public class DbFactory {
 
@@ -48,7 +54,9 @@ public class DbFactory {
     }
 
     public void addProduct(Product product) {
-        firebaseFirestore.collection(DatabaseConstant.PRODUCTS).add(product);
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document();
+        product.setId(documentReference.getId());
+        documentReference.set(product);
     }
 
     public void addToCart(String productId, int quantity) {
@@ -66,11 +74,33 @@ public class DbFactory {
         });
     }
 
+    public void updateCart(String productId, int quantity) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.CARTS).document(getCartId(getUserId()));
+        documentReference.update(String.format("quantityProducts.%s", productId), quantity);
+    }
+
+    public void deleteCart(String productId) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.CARTS).document(getCartId(getUserId()));
+        documentReference.update(String.format("quantityProducts.%s", productId), FieldValue.delete());
+    }
+
     public String getCartId(String userId) {
         return "cart_" + userId;
     }
 
     public String getUserId() {
         return FirebaseAuth.getInstance().getUid();
+    }
+
+    public void updateAddresses(User user) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.USERS).document(getUserId());
+        documentReference.update("addresses", user.getAddresses());
+    }
+
+    public void createOrder(BuyItem buyItem) {
+        Order order = new Order(buyItem.getId(), buyItem.getQuantity(), buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId());
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.ORDERS).document();
+        order.setId(documentReference.getId());
+        documentReference.set(order);
     }
 }

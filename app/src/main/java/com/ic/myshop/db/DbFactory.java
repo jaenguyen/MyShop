@@ -14,8 +14,10 @@ import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
+import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
+import com.ic.myshop.output.BuyItem;
 
 import java.util.List;
 
@@ -90,8 +92,15 @@ public class DbFactory {
         return FirebaseAuth.getInstance().getUid();
     }
 
-    public void updateAddresses(List<Address> addresses) {
+    public void updateAddresses(User user) {
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.USERS).document(getUserId());
-        documentReference.update("addresses", addresses);
+        documentReference.update("addresses", user.getAddresses());
+    }
+
+    public void createOrder(BuyItem buyItem) {
+        Order order = new Order(buyItem.getId(), buyItem.getQuantity(), buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId());
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.ORDERS).document();
+        order.setId(documentReference.getId());
+        documentReference.set(order);
     }
 }

@@ -27,6 +27,7 @@ import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Cart;
 import com.ic.myshop.model.Product;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -167,7 +168,9 @@ public class CartActivity extends AppCompatActivity {
                     Toast.makeText(CartActivity.this, MessageConstant.NOT_SELECTED_PRODUCT, Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
+                    intent.putExtra("cartItems", (Serializable) cartItemAdapter.getBuyProducts(selected));
                     startActivity(intent);
+                    finish();
                 }
             }
         });

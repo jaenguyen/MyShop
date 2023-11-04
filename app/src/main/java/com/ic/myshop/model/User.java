@@ -32,6 +32,10 @@ public class User implements Serializable {
         this.addresses = addresses;
     }
 
+    public void addAddress(Address address) {
+        this.addresses.add(address);
+    }
+
     public String getId() {
         return id;
     }

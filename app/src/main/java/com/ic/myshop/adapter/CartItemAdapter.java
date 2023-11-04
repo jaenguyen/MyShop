@@ -117,6 +117,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         return 0;
     }
 
+    public Map<String, Integer> getBuyProducts(List<String> selected) {
+        Map<String, Integer> result = new HashMap<>();
+        for (String id : selected) {
+            result.put(id, quantityProducts.get(id));
+        }
+        return result;
+    }
+
     public class CartItemViewHolder extends RecyclerView.ViewHolder implements
             View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener{
 

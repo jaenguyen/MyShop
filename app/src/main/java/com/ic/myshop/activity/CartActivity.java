@@ -95,6 +95,11 @@ public class CartActivity extends AppCompatActivity {
 
         cartItemAdapter.setCartItemClickListener(new CartItemAdapter.CartItemClickListener() {
             @Override
+            public void onDeleteCartItem(int position) {
+                Toast.makeText(CartActivity.this, cartItemAdapter.getProduct(position).getName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
             public void onCheckboxClick(int position, boolean isChecked) {
                 Product product = cartItemAdapter.getProduct(position);
                 String id = product.getId();

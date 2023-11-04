@@ -1,7 +1,11 @@
 package com.ic.myshop.adapter;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -98,7 +102,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         return 0;
     }
 
-    public class CartItemViewHolder extends RecyclerView.ViewHolder {
+    public class CartItemViewHolder extends RecyclerView.ViewHolder implements
+            View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener{
 
         private CheckBox checkBox;
         private ImageView imageView;
@@ -117,6 +122,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             sellNumber = itemView.findViewById(R.id.txt_quantity);
             btnRemove = itemView.findViewById(R.id.btn_remove);
             btnAdd = itemView.findViewById(R.id.btn_add);
+
+            itemView.setOnCreateContextMenuListener(this);
 
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -145,9 +152,31 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                 }
             });
         }
+
+        @Override
+        public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+            if (cartItemClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    switch (menuItem.getItemId()) {
+                        case 1:
+                            cartItemClickListener.onDeleteCartItem(position);
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            MenuItem deleteCartItem = contextMenu.add(Menu.NONE, 1, 1, "Xóa khỏi giỏ hàng");
+            deleteCartItem.setOnMenuItemClickListener(this);
+        }
     }
 
     public interface CartItemClickListener {
+        void onDeleteCartItem(int position);
         void onCheckboxClick(int position, boolean isChecked);
         void onAddButtonClick(int position);
         void onRemoveButtonClick(int position);

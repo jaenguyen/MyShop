@@ -40,7 +40,8 @@ public class AccountSettingActivity extends AppCompatActivity {
         addressFunc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
+                startActivity(intent);
             }
         });
 

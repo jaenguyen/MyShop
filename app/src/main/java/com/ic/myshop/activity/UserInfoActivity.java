@@ -121,7 +121,7 @@ public class UserInfoActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
                 && data != null && data.getData() != null) {
             imageUri = data.getData();
-            Glide.with(this).load(imageUri).into(avatar);
+            Glide.with(this).load(imageUri).fitCenter().into(avatar);
         }
     }
 

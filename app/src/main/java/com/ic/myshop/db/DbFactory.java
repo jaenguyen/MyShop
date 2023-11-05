@@ -42,6 +42,14 @@ public class DbFactory {
         createCart(userId);
     }
 
+    public void updatePhoneUser(String id, String phone) {
+        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update("phone", phone);
+    }
+
+    public void updateAvatarUser(String id, String avatar) {
+        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update("avatar", avatar);
+    }
+
     public void createCart(String userId) {
         String id = getCartId(userId);
         Cart cart = new Cart(id, userId);

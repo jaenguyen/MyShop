@@ -15,4 +15,5 @@ public class Constant {
     public static final String CART = "Giỏ hàng";
     public static final String BUY = "Thanh toán";
     public static final String PRODUCT_DETAIL = "Chi tiết sản phẩm";
+    public static final String EDIT_USER_FILE = "Sửa hồ sơ";
 }

@@ -68,7 +68,7 @@
         android:id="@+id/btn_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="220dp"
+        android:layout_marginLeft="160dp"
         android:layout_marginTop="44dp"
         android:src="@drawable/ic_remove"
         app:layout_constraintLeft_toRightOf="@id/txt_so_luong"

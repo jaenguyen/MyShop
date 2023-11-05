@@ -20,17 +20,17 @@ import com.ic.myshop.model.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.ProductViewHolder> {
 
     private Context context;
     private List<Product> products;
 
-    public ProductAdapter(Context context) {
+    public MyProductAdapter(Context context) {
         this.context = context;
         products = new ArrayList<>();
     }
 
-    public ProductAdapter(Context context, List<Product> products) {
+    public MyProductAdapter(Context context, List<Product> products) {
         this.context = context;
         this.products = products;
     }
@@ -38,10 +38,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void addProduct(Product product) {
         this.products.add(product);
         notifyDataSetChanged();
-    }
-
-    public void clear() {
-        this.products.clear();
     }
 
     public void addProducts(List<Product> products) {
@@ -71,9 +67,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ProductActivity.class);
-                intent.putExtra("product", products.get(position));
-                context.startActivity(intent);
+
             }
         });
     }

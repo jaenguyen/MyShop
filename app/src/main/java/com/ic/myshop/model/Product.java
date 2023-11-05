@@ -17,6 +17,7 @@ public class Product implements Serializable {
     private long createdTime;
     private long updatedTime;
     private String parentId;
+    private long likes;
 
     public Product() {
 
@@ -48,12 +49,10 @@ public class Product implements Serializable {
         this.parentId = parentId;
     }
 
-    @Exclude
     public String getId() {
         return id;
     }
 
-    @Exclude
     public void setId(String id) {
         this.id = id;
     }
@@ -136,5 +135,13 @@ public class Product implements Serializable {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(long likes) {
+        this.likes = likes;
     }
 }

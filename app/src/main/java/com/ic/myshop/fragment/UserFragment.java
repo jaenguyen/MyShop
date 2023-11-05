@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.CartActivity;
+import com.ic.myshop.activity.LikeProductsActivity;
 import com.ic.myshop.activity.MyProductActivity;
 import com.ic.myshop.activity.AccountSettingActivity;
 import com.ic.myshop.constant.DatabaseConstant;
@@ -30,7 +31,7 @@ import com.ic.myshop.model.User;
 public class UserFragment extends Fragment {
 
     private ImageView btnSetting, btnCart, avatar;
-    private TextView txtAccountSetting, txtMyProduct, txtEmail;
+    private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts;
     //db
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
@@ -52,6 +53,7 @@ public class UserFragment extends Fragment {
         txtMyProduct = view.findViewById(R.id.txt_my_product);
         avatar = view.findViewById(R.id.avatar);
         txtEmail = view.findViewById(R.id.txt_email);
+        txtLikeProducts = view.findViewById(R.id.txt_like_product);
         db = FirebaseFirestore.getInstance();
 
         // get info user
@@ -73,6 +75,7 @@ public class UserFragment extends Fragment {
         Intent intentAccountSetting = new Intent(getContext(), AccountSettingActivity.class);
         Intent intentMyProduct = new Intent(getContext(), MyProductActivity.class);
         Intent intentCart = new Intent(getContext(), CartActivity.class);
+        Intent intentLikeProducts = new Intent(getContext(), LikeProductsActivity.class);
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +101,13 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(intentMyProduct);
+            }
+        });
+
+        txtLikeProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentLikeProducts);
             }
         });
     }

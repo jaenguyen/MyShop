@@ -5,31 +5,35 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
-import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
+import com.ic.myshop.model.Like;
 import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
 import com.ic.myshop.output.BuyItem;
-
-import java.util.List;
 
 public class DbFactory {
 
     private static final DbFactory dbFactory = new DbFactory();
     private FirebaseFirestore firebaseFirestore;
     private FirebaseStorage firebaseStorage;
+    WriteBatch batch;
 
     private DbFactory() {
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
+        batch = firebaseFirestore.batch();
     }
 
     public static DbFactory getInstance() {
@@ -122,5 +126,43 @@ public class DbFactory {
         deleteCart(buyItem.getId());
         createOrder(buyItem);
         updateSellNumber(buyItem);
+    }
+
+    public void updateLikeProduct(String userId, String productId, boolean isLiked) {
+        CollectionReference collectionReference = firebaseFirestore.collection(DatabaseConstant.LIKES);
+        if (isLiked) {
+            collectionReference
+                    .whereEqualTo("userId", userId)
+                    .whereEqualTo("productId", productId)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    batch.delete(document.getReference());
+                                }
+                                // Thực hiện xóa các tài liệu trong batched write
+                                batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            // Xóa thành công
+                                        } else {
+                                            // Xóa thất bại
+                                        }
+                                    }
+                                });
+                            } else {
+                                // Lỗi khi lấy dữ liệu
+                            }
+                        }
+                    });
+            firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId)
+                    .update(DatabaseConstant.LIKES, FieldValue.increment(-1));
+        } else {
+            collectionReference.document().set(new Like(userId, productId, System.currentTimeMillis()));
+            firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId)
+                    .update(DatabaseConstant.LIKES, FieldValue.increment(1));
+        }
     }
 }

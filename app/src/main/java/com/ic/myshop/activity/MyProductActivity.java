@@ -22,7 +22,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
-import com.ic.myshop.adapter.ProductAdapter;
+import com.ic.myshop.adapter.MyProductAdapter;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
@@ -37,7 +37,7 @@ public class MyProductActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private RecyclerView rcvProduct;
     private GridLayoutManager layoutManager;
-    private ProductAdapter productAdapter;
+    private MyProductAdapter myProductAdapter;
     private long maxScore = Long.MAX_VALUE;
     private boolean isScrolling = false;
     private FirebaseFirestore db;
@@ -58,7 +58,7 @@ public class MyProductActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Product product = document.toObject(Product.class);
-                                productAdapter.addProduct(product);
+                                myProductAdapter.addProduct(product);
                             }
                             if (!task.getResult().isEmpty()) {
                                 maxScore = task.getResult().getDocuments().
@@ -119,8 +119,8 @@ public class MyProductActivity extends AppCompatActivity {
         rcvProduct = findViewById(R.id.rcv_product);
         layoutManager = new GridLayoutManager(this, 2);
         rcvProduct.setLayoutManager(layoutManager);
-        productAdapter = new ProductAdapter(this);
-        rcvProduct.setAdapter(productAdapter);
+        myProductAdapter = new MyProductAdapter(this);
+        rcvProduct.setAdapter(myProductAdapter);
         db = FirebaseFirestore.getInstance();
     }
 
@@ -141,7 +141,7 @@ public class MyProductActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Product product = document.toObject(Product.class);
-                                        productAdapter.addProduct(product);
+                                        myProductAdapter.addProduct(product);
                                     }
                                     progressBar.setVisibility(View.GONE);
                                     if (!task.getResult().isEmpty()) {

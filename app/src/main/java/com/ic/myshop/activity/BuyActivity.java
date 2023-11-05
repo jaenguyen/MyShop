@@ -145,8 +145,7 @@ public class BuyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 List<BuyItem> buyItems = buyItemAdapter.getCartItems();
                 for (BuyItem buyItem : buyItems) {
-                    dbFactory.deleteCart(buyItem.getId());
-                    dbFactory.createOrder(buyItem);
+                    dbFactory.buyProduct(buyItem);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();

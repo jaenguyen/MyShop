@@ -15,4 +15,5 @@ public class MessageConstant {
     public static final String ADD_WARNING = "Bạn chỉ có thể mua tối đa %d sản phẩm";
     public static final String NOT_SELECTED_PRODUCT = "Bạn vẫn chưa chọn sản phẩm nào để mua";
     public static final String NOT_HAVE_FUNCTION = "Tính năng đang phát triển";
+    public static final String SOLD_OUT = "Sản phẩm đã hết hàng";
 }

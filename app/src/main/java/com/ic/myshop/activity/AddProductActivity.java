@@ -164,4 +164,11 @@ public class AddProductActivity extends AppCompatActivity {
                     });
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MyProductActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

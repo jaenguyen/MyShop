@@ -111,4 +111,16 @@ public class DbFactory {
         order.setId(documentReference.getId());
         documentReference.set(order);
     }
+
+    public void updateSellNumber(BuyItem buyItem) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(buyItem.getId());
+        documentReference.update("sellNumber", FieldValue.increment(buyItem.getQuantity() * -1));
+        // TODO: đánh giá cập nhập luôn số lượng bán
+    }
+
+    public void buyProduct(BuyItem buyItem) {
+        deleteCart(buyItem.getId());
+        createOrder(buyItem);
+        updateSellNumber(buyItem);
+    }
 }

@@ -6,4 +6,20 @@
     <include
         android:id="@+id/toolbar_notification"
         layout="@layout/notification_toolbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_notification"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
 </RelativeLayout>

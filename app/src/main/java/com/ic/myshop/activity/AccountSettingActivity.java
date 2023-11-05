@@ -8,16 +8,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ic.myshop.R;
 import com.ic.myshop.auth.AuthService;
 import com.ic.myshop.constant.Constant;
+import com.ic.myshop.constant.MessageConstant;
 
 public class AccountSettingActivity extends AppCompatActivity {
 
     private TextView toolbarTitle;
     private ImageButton btnBack;
     private Button btnLogout;
+    private TextView accPriFunc, addressFunc, creditFunc;
     private static final AuthService authService = AuthService.getInstance();
 
     @Override
@@ -25,6 +28,30 @@ public class AccountSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_setting);
         init();
+
+        accPriFunc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        addressFunc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        creditFunc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(AccountSettingActivity.this, MessageConstant.NOT_HAVE_FUNCTION, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,5 +76,8 @@ public class AccountSettingActivity extends AppCompatActivity {
         toolbarTitle.setText(Constant.ACCOUNT_SETTING);
         btnBack = findViewById(R.id.toolbar_back_button);
         btnLogout = findViewById(R.id.btn_logout);
+        accPriFunc = findViewById(R.id.acc_pri_func);
+        addressFunc = findViewById(R.id.address_func);
+        creditFunc = findViewById(R.id.credit_func);
     }
 }

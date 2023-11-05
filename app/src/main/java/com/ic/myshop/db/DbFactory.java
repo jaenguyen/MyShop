@@ -42,6 +42,14 @@ public class DbFactory {
         createCart(userId);
     }
 
+    public void updatePhoneUser(String id, String phone) {
+        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update("phone", phone);
+    }
+
+    public void updateAvatarUser(String id, String avatar) {
+        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update("avatar", avatar);
+    }
+
     public void createCart(String userId) {
         String id = getCartId(userId);
         Cart cart = new Cart(id, userId);
@@ -102,5 +110,17 @@ public class DbFactory {
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.ORDERS).document();
         order.setId(documentReference.getId());
         documentReference.set(order);
+    }
+
+    public void updateSellNumber(BuyItem buyItem) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(buyItem.getId());
+        documentReference.update("sellNumber", FieldValue.increment(buyItem.getQuantity() * -1));
+        // TODO: đánh giá cập nhập luôn số lượng bán
+    }
+
+    public void buyProduct(BuyItem buyItem) {
+        deleteCart(buyItem.getId());
+        createOrder(buyItem);
+        updateSellNumber(buyItem);
     }
 }

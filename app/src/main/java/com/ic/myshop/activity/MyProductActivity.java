@@ -22,10 +22,11 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
-import com.ic.myshop.adapter.ProductAdapter;
+import com.ic.myshop.adapter.MyProductAdapter;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
+import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Product;
 
 public class MyProductActivity extends AppCompatActivity {
@@ -36,25 +37,28 @@ public class MyProductActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private RecyclerView rcvProduct;
     private GridLayoutManager layoutManager;
-    private ProductAdapter productAdapter;
+    private MyProductAdapter myProductAdapter;
     private long maxScore = Long.MAX_VALUE;
     private boolean isScrolling = false;
     private FirebaseFirestore db;
+    private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_product);
         init();
-
-        db.collection(DatabaseConstant.PRODUCTS).orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING).
-                startAt(Long.MAX_VALUE).limit(4).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection(DatabaseConstant.PRODUCTS)
+                .whereEqualTo("parentId", dbFactory.getUserId())
+                .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
+                .startAt(Long.MAX_VALUE).limit(4)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Product product = document.toObject(Product.class);
-                                productAdapter.addProduct(product);
+                                myProductAdapter.addProduct(product);
                             }
                             if (!task.getResult().isEmpty()) {
                                 maxScore = task.getResult().getDocuments().
@@ -101,6 +105,7 @@ public class MyProductActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AddProductActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -114,8 +119,8 @@ public class MyProductActivity extends AppCompatActivity {
         rcvProduct = findViewById(R.id.rcv_product);
         layoutManager = new GridLayoutManager(this, 2);
         rcvProduct.setLayoutManager(layoutManager);
-        productAdapter = new ProductAdapter(this);
-        rcvProduct.setAdapter(productAdapter);
+        myProductAdapter = new MyProductAdapter(this);
+        rcvProduct.setAdapter(myProductAdapter);
         db = FirebaseFirestore.getInstance();
     }
 
@@ -125,6 +130,7 @@ public class MyProductActivity extends AppCompatActivity {
             @Override
             public void run() {
                 db.collection(DatabaseConstant.PRODUCTS)
+                        .whereEqualTo("parentId", dbFactory.getUserId())
                         .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
                         .startAfter(maxScore)
                         .limit(4)
@@ -133,10 +139,9 @@ public class MyProductActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    QuerySnapshot queryDocumentSnapshot = task.getResult();
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Product product = document.toObject(Product.class);
-                                        productAdapter.addProduct(product);
+                                        myProductAdapter.addProduct(product);
                                     }
                                     progressBar.setVisibility(View.GONE);
                                     if (!task.getResult().isEmpty()) {

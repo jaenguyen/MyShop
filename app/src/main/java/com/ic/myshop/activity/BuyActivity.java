@@ -53,6 +53,7 @@ public class BuyActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
     private User user;
+    private Address address;
     private Map<String, Integer> cartItems;
 
     @Override
@@ -74,69 +75,69 @@ public class BuyActivity extends AppCompatActivity {
 
         db.collection("users").document(dbFactory.getUserId())
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    user = documentSnapshot.toObject(User.class);
-                    List<Address> addresses = user.getAddresses();
-                    if (addresses == null || addresses.isEmpty()) {
-                        // Tạo một Dialog
-                        AlertDialog.Builder builder = new AlertDialog.Builder(BuyActivity.this);
-                        // Inflate layout cho dialog từ tệp XML
-                        View dialogView = getLayoutInflater().inflate(R.layout.new_address_dialog, null);
-                        builder.setView(dialogView);
-                        // Khởi tạo các thành phần trong dialog
-                        TextView txtName = dialogView.findViewById(R.id.txt_name);
-                        TextView txtPhone = dialogView.findViewById(R.id.txt_phone);
-                        TextView txtStreet = dialogView.findViewById(R.id.txt_street);
-                        Button btnAddAddress = dialogView.findViewById(R.id.btn_add_address);
-                        // Tạo và hiển thị dialog
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                        // Thiết lập sự kiện cho nút add, remove
-                        btnAddAddress.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String name = txtName.getText().toString().trim();
-                                String phone = txtPhone.getText().toString().trim();
-                                String street = txtStreet.getText().toString();
-                                Address address = new Address(name, phone, street);
-                                txtNameAddress.setText(address.getName());
-                                txtPhoneAddress.setText(address.getPhone());
-                                txtStreetAddress.setText(address.getStreet());
-                                user.addAddress(address);
-                                dbFactory.updateAddresses(user);
-                                dialog.dismiss();
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            user = documentSnapshot.toObject(User.class);
+                            List<Address> addresses = user.getAddresses();
+                            if (addresses == null || addresses.isEmpty()) {
+                                // Tạo một Dialog
+                                AlertDialog.Builder builder = new AlertDialog.Builder(BuyActivity.this);
+                                // Inflate layout cho dialog từ tệp XML
+                                View dialogView = getLayoutInflater().inflate(R.layout.new_address_dialog, null);
+                                builder.setView(dialogView);
+                                // Khởi tạo các thành phần trong dialog
+                                TextView txtName = dialogView.findViewById(R.id.txt_name);
+                                TextView txtPhone = dialogView.findViewById(R.id.txt_phone);
+                                TextView txtStreet = dialogView.findViewById(R.id.txt_street);
+                                Button btnAddAddress = dialogView.findViewById(R.id.btn_add_address);
+                                // Tạo và hiển thị dialog
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                                // Thiết lập sự kiện cho nút add, remove
+                                btnAddAddress.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        String name = txtName.getText().toString().trim();
+                                        String phone = txtPhone.getText().toString().trim();
+                                        String street = txtStreet.getText().toString();
+                                        Address address = new Address(name, phone, street);
+                                        txtNameAddress.setText(String.format("Họ tên: %s", address.getName()));
+                                        txtPhoneAddress.setText(String.format("Số điện thoại: %s", address.getPhone()));
+                                        txtStreetAddress.setText(String.format("Địa chỉ: %s", address.getStreet()));
+                                        user.addAddress(address);
+                                        dbFactory.updateAddresses(user);
+                                        dialog.dismiss();
+                                    }
+                                });
+                            } else {
+                                Address address = user.getAddresses().get(0);
+                                txtNameAddress.setText(String.format("Họ tên: %s", address.getName()));
+                                txtPhoneAddress.setText(String.format("Số điện thoại: %s", address.getPhone()));
+                                txtStreetAddress.setText(String.format("Địa chỉ: %s", address.getStreet()));
                             }
-                        });
-                    } else {
-                        Address address = user.getAddresses().get(0);
-                        txtNameAddress.setText(address.getName());
-                        txtPhoneAddress.setText(address.getPhone());
-                        txtStreetAddress.setText(address.getStreet());
+                        }
                     }
-                }
-            }
-        });
+                });
 
         for (String id : cartItems.keySet()) {
             db.collection("products").document(id)
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        Product product = documentSnapshot.toObject(Product.class);
-                        int quantity = cartItems.get(id);
-                        BuyItem buyItem = new BuyItem(product.getId(), product.getImageUrl(), product.getName(), product.getPrice(), product.getParentId());
-                        buyItem.setQuantity(quantity);
-                        buyItemAdapter.addProduct(buyItem);
-                        totalPrice += product.getPrice() * quantity;
-                        txtTotalPrice.setText(String.format("₫ %s", ConversionHelper.formatNumber(totalPrice)));
-                    }
-                }
-            });
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                Product product = documentSnapshot.toObject(Product.class);
+                                int quantity = cartItems.get(id);
+                                BuyItem buyItem = new BuyItem(product.getId(), product.getImageUrl(), product.getName(), product.getPrice(), product.getParentId());
+                                buyItem.setQuantity(quantity);
+                                buyItemAdapter.addProduct(buyItem);
+                                totalPrice += product.getPrice() * quantity;
+                                txtTotalPrice.setText(String.format("₫ %s", ConversionHelper.formatNumber(totalPrice)));
+                            }
+                        }
+                    });
         }
 
         btnBuy.setOnClickListener(new View.OnClickListener() {
@@ -144,14 +145,20 @@ public class BuyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 List<BuyItem> buyItems = buyItemAdapter.getCartItems();
                 for (BuyItem buyItem : buyItems) {
-                    dbFactory.deleteCart(buyItem.getId());
-                    dbFactory.createOrder(buyItem);
+                    dbFactory.buyProduct(buyItem);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void init() {

@@ -42,7 +42,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/img" />
+        android:src="@drawable/avatar_null" />
 
     <TextView
         android:id="@+id/txt_email"
@@ -52,7 +52,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:layout_toEndOf="@id/avatar"
-        android:text="Email test"
+        android:text="user@myshop.com"
         android:textColor="@color/white"
         android:textSize="13dp" />
 

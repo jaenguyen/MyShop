@@ -17,6 +17,7 @@ public class Product implements Serializable {
     private long createdTime;
     private long updatedTime;
     private String parentId;
+    private long likes;
 
     public Product() {
 
@@ -134,5 +135,13 @@ public class Product implements Serializable {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(long likes) {
+        this.likes = likes;
     }
 }

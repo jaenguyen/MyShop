@@ -154,6 +154,13 @@ public class BuyActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void init() {
         toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText(Constant.BUY);

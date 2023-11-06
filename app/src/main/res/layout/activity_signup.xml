@@ -9,7 +9,7 @@
     <!--    Toolbar -->
     <include
         android:id="@+id/toolbar_layout"
-        layout="@layout/extra_toolbar" />
+        layout="@layout/toolbar_extra" />
 
     <!--    Logo    -->
     <ImageView

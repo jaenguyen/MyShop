@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -16,55 +15,61 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
-import com.ic.myshop.adapter.MyProductAdapter;
+import com.ic.myshop.adapter.ProductAdapter;
 import com.ic.myshop.constant.Constant;
-import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Product;
 
-public class MyProductActivity extends AppCompatActivity {
+public class ListProductActivity extends AppCompatActivity {
 
     private TextView toolbarTitle;
     private ImageButton btnBack;
-    private FloatingActionButton btnAddProduct;
     private ProgressBar progressBar;
     private RecyclerView rcvProduct;
     private GridLayoutManager layoutManager;
-    private MyProductAdapter myProductAdapter;
+    private ProductAdapter productAdapter;
     private long maxScore = Long.MAX_VALUE;
     private boolean isScrolling = false;
     private static final DbFactory dbFactory = DbFactory.getInstance();
+    private String type, field;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_product);
-        init();
-        dbFactory.getProductsSelfDefault(maxScore, 4)
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Product product = document.toObject(Product.class);
-                                myProductAdapter.addProduct(product);
-                            }
-                            if (!task.getResult().isEmpty()) {
-                                maxScore = task.getResult().getDocuments().
-                                        get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
-                            }
-                        } else {
 
+        type = (String) getIntent().getSerializableExtra(InputParam.TYPE);
+        field = (String) getIntent().getSerializableExtra(InputParam.FIELD);
+
+        init();
+        dbFactory.getListProduct(type, field, maxScore, 4).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Product product = document.toObject(Product.class);
+                        productAdapter.addProduct(product);
+                    }
+                    if (!task.getResult().isEmpty()) {
+                        if (type != null) {
+                            maxScore = task.getResult().getDocuments().
+                                    get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
+                        }
+                        if (field != null) {
+                            maxScore = task.getResult().getDocuments().
+                                    get(task.getResult().size() - 1).getLong(field);
                         }
                     }
-                });
+                } else {
+
+                }
+            }
+        });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,28 +100,18 @@ public class MyProductActivity extends AppCompatActivity {
                 }
             }
         });
-
-        btnAddProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddProductActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
 
     private void init() {
         toolbarTitle = findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(Constant.MY_PRODUCT);
+        toolbarTitle.setText(Constant.LIST_PRODUCT);
         btnBack = findViewById(R.id.toolbar_back_button);
         progressBar = findViewById(R.id.progress_bar);
-        btnAddProduct = findViewById(R.id.btn_add);
         rcvProduct = findViewById(R.id.rcv_product);
         layoutManager = new GridLayoutManager(this, 2);
         rcvProduct.setLayoutManager(layoutManager);
-        myProductAdapter = new MyProductAdapter(this);
-        rcvProduct.setAdapter(myProductAdapter);
+        productAdapter = new ProductAdapter(this);
+        rcvProduct.setAdapter(productAdapter);
     }
 
     private void loadMoreProduct() {
@@ -124,25 +119,30 @@ public class MyProductActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dbFactory.getProductsSelfDefault(maxScore, 4)
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Product product = document.toObject(Product.class);
-                                        myProductAdapter.addProduct(product);
-                                    }
-                                    progressBar.setVisibility(View.GONE);
-                                    if (!task.getResult().isEmpty()) {
-                                        maxScore = task.getResult().getDocuments().
-                                                get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
-                                    }
-                                } else {
-                                    isScrolling = false;
+                dbFactory.getListProduct(type, field, maxScore, 4).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                productAdapter.addProduct(product);
+                            }
+                            progressBar.setVisibility(View.GONE);
+                            if (!task.getResult().isEmpty()) {
+                                if (type != null) {
+                                    maxScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
+                                }
+                                if (field != null) {
+                                    maxScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(field);
                                 }
                             }
-                        });
+                        } else {
+                            isScrolling = false;
+                        }
+                    }
+                });
             }
         }, 2000);
     }

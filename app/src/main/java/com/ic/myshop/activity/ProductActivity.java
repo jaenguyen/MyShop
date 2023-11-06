@@ -95,7 +95,7 @@ public class ProductActivity extends AppCompatActivity {
                 // Tạo một Dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this);
                 // Inflate layout cho dialog từ tệp XML
-                View dialogView = getLayoutInflater().inflate(R.layout.add_cart_dialog, null);
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_cart, null);
                 builder.setView(dialogView);
                 // Khởi tạo các thành phần trong dialog
                 ImageView imageView1 = dialogView.findViewById(R.id.image_view);

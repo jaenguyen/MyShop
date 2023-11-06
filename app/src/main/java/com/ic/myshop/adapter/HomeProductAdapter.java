@@ -20,38 +20,29 @@ import com.ic.myshop.model.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+public class HomeProductAdapter extends RecyclerView.Adapter<HomeProductAdapter.ProductViewHolder> {
 
     private Context context;
     private List<Product> products;
-    private List<String> productIds;
 
-    public ProductAdapter(Context context) {
+    public HomeProductAdapter(Context context) {
         this.context = context;
         products = new ArrayList<>();
-        productIds = new ArrayList<>();
     }
 
     public void addProduct(Product product) {
-        if (isExist(product.getId())) return;
         this.products.add(product);
-        productIds.add(product.getId());
         notifyDataSetChanged();
     }
 
     public void clear() {
         this.products.clear();
-        this.productIds.clear();
-    }
-
-    public boolean isExist(String id) {
-        return productIds.contains(id);
     }
 
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_product, parent, false);
         return new ProductViewHolder(view);
     }
 

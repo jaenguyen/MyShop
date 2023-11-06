@@ -64,7 +64,7 @@ public class UserFragment extends Fragment {
                         if (value != null && value.exists()) {
                             User user = value.toObject(User.class);
                             txtEmail.setText(user.getEmail());
-                            Glide.with(getContext())
+                            Glide.with(getActivity())
                                     .load(user.getAvatar())
                                     .fitCenter()
                                     .into(avatar);

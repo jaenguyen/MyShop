@@ -5,7 +5,7 @@
 
     <include
         android:id="@+id/toolbar_notification"
-        layout="@layout/notification_toolbar" />
+        layout="@layout/toolbar_notification" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_product"

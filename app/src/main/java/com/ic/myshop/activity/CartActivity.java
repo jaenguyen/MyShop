@@ -45,7 +45,6 @@ public class CartActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private CartItemAdapter cartItemAdapter;
     //db
-    private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override
@@ -61,8 +60,8 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-        db.collection(DatabaseConstant.CARTS).document("cart_" + dbFactory.getUserId())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        dbFactory.getCart(dbFactory.getUserId())
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -74,7 +73,7 @@ public class CartActivity extends AppCompatActivity {
                                 txtEmptyCart.setVisibility(View.VISIBLE);
                             }
                             for (String cartItemId : quantityProducts.keySet()) {
-                                db.collection(DatabaseConstant.PRODUCTS).document(cartItemId).get()
+                                dbFactory.getProduct(cartItemId)
                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -191,7 +190,5 @@ public class CartActivity extends AppCompatActivity {
         rcvCartItem.setLayoutManager(linearLayoutManager);
         cartItemAdapter = new CartItemAdapter(this);
         rcvCartItem.setAdapter(cartItemAdapter);
-        //db
-        db = FirebaseFirestore.getInstance();
     }
 }

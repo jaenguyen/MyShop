@@ -5,7 +5,7 @@
 
     <include
         android:id="@+id/toolbar_user"
-        layout="@layout/user_toolbar" />
+        layout="@layout/toolbar_user" />
 
     <LinearLayout
         android:layout_width="match_parent"

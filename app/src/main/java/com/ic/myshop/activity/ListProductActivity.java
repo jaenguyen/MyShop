@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
@@ -37,6 +37,7 @@ public class ListProductActivity extends AppCompatActivity {
     private boolean isScrolling = false;
     private static final DbFactory dbFactory = DbFactory.getInstance();
     private String type, field;
+    FloatingActionButton btnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,8 @@ public class ListProductActivity extends AppCompatActivity {
         rcvProduct.setLayoutManager(layoutManager);
         productAdapter = new ProductAdapter(this);
         rcvProduct.setAdapter(productAdapter);
+        btnAdd = findViewById(R.id.btn_add);
+        btnAdd.setVisibility(View.GONE);
     }
 
     private void loadMoreProduct() {

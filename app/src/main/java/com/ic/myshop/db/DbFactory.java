@@ -22,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
+import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
 import com.ic.myshop.model.Like;
 import com.ic.myshop.model.Order;
@@ -183,14 +184,14 @@ public class DbFactory {
     /*
         Order
      */
-    public void buyProduct(BuyItem buyItem) {
+    public void buyProduct(BuyItem buyItem, Address address) {
         deleteCart(buyItem.getId());
-        createOrder(buyItem);
+        createOrder(buyItem, address);
         updateSellNumber(buyItem);
     }
 
-    public void createOrder(BuyItem buyItem) {
-        Order order = new Order(buyItem.getId(), buyItem.getQuantity(), buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId());
+    public void createOrder(BuyItem buyItem, Address address) {
+        Order order = new Order(buyItem.getId(), buyItem.getQuantity(), buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId(), address);
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.ORDERS).document();
         order.setId(documentReference.getId());
         documentReference.set(order);

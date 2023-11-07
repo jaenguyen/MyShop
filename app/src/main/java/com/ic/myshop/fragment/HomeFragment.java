@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
         rcvLikedProduct.setAdapter(likedProductAdapter);
         rcvTypeProduct.setAdapter(typeProduceAdapter);
 
-        dbFactory.getListProductByField(InputParam.SOLD_NUMBER, Integer.MAX_VALUE, 10)
+        dbFactory.getListProductByField(InputParam.SOLD_NUMBER, Long.MAX_VALUE, 10)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -122,7 +122,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-        dbFactory.getProductsDefault(Integer.MAX_VALUE, 10)
+        dbFactory.getProductsDefault(Long.MAX_VALUE, 10)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-        dbFactory.getListProductByField(InputParam.LIKES, Integer.MAX_VALUE, 10)
+        dbFactory.getListProductByField(InputParam.LIKES, Long.MAX_VALUE, 10)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

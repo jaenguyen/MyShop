@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.ic.myshop.R;
 import com.ic.myshop.adapter.BuyItemAdapter;
 import com.ic.myshop.constant.Constant;
@@ -93,7 +92,7 @@ public class BuyActivity extends AppCompatActivity {
                                         String name = txtName.getText().toString().trim();
                                         String phone = txtPhone.getText().toString().trim();
                                         String street = txtStreet.getText().toString();
-                                        Address address = new Address(name, phone, street);
+                                        address = new Address(name, phone, street);
                                         txtNameAddress.setText(String.format("Họ tên: %s", address.getName()));
                                         txtPhoneAddress.setText(String.format("Số điện thoại: %s", address.getPhone()));
                                         txtStreetAddress.setText(String.format("Địa chỉ: %s", address.getStreet()));
@@ -103,7 +102,7 @@ public class BuyActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
-                                Address address = user.getAddresses().get(0);
+                                address = user.getAddresses().get(0);
                                 txtNameAddress.setText(String.format("Họ tên: %s", address.getName()));
                                 txtPhoneAddress.setText(String.format("Số điện thoại: %s", address.getPhone()));
                                 txtStreetAddress.setText(String.format("Địa chỉ: %s", address.getStreet()));
@@ -136,7 +135,7 @@ public class BuyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 List<BuyItem> buyItems = buyItemAdapter.getCartItems();
                 for (BuyItem buyItem : buyItems) {
-                    dbFactory.buyProduct(buyItem);
+                    dbFactory.buyProduct(buyItem, address);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();

@@ -1,9 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
         android:id="@+id/toolbar_home"
-        layout="@layout/home_toolbar" />
+        layout="@layout/toolbar_home" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_home">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager_slider"
+                android:layout_width="match_parent"
+                android:layout_height="240dp" />
+
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/circle_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_below="@id/view_pager_slider"
+                android:layout_centerHorizontal="true"
+                app:ci_drawable="@drawable/circle_radius_selected"
+                app:ci_drawable_unselected="@drawable/circle_radius_unselected" />
+
+            <TextView
+                android:id="@+id/txt_hot_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/circle_indicator"
+                android:layout_marginLeft="20dp"
+                android:text="Sản phẩm bán chạy"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/get_all_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txt_hot_product"
+                android:layout_marginRight="20dp"
+                android:layout_toRightOf="@id/txt_hot_product"
+                android:gravity="right"
+                android:text="Xem tất cả"
+                android:textColor="@color/primary_color"
+                android:textSize="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_hot_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_hot_product" />
+
+            <TextView
+                android:id="@+id/txt_new_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rcv_hot_product"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Sản phẩm mới ra"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/get_all_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txt_new_product"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_toRightOf="@id/txt_new_product"
+                android:gravity="right"
+                android:text="Xem tất cả"
+                android:textColor="@color/primary_color"
+                android:textSize="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_new_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_new_product" />
+
+            <TextView
+                android:id="@+id/txt_liked_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rcv_new_product"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Sản phẩm được yêu thích"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/get_all_liked"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txt_liked_product"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_toRightOf="@id/txt_liked_product"
+                android:gravity="right"
+                android:text="Xem tất cả"
+                android:textColor="@color/primary_color"
+                android:textSize="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_like_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_liked_product" />
+
+            <TextView
+                android:id="@+id/txt_category_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rcv_like_product"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Danh mục"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_category_product"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@id/txt_category_product" />
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

@@ -5,26 +5,30 @@ public class Order {
     private String id;
     private String productId;
     private int quantity;
+    private long price;
     private long totalPrice;
     private String parentId;
     private String sellerId;
     private long createdTime;
     private long updatedTime;
+    private Address address;
     private int status;
 
     public Order() {
 
     }
 
-    public Order(String productId, int quantity, long totalPrice, String parentId, String sellerId) {
+    public Order(String productId, int quantity, long price, long totalPrice, String parentId, String sellerId, Address address) {
         this.productId = productId;
         this.quantity = quantity;
+        this.price = price;
         this.totalPrice = totalPrice;
         this.parentId = parentId;
         this.sellerId = sellerId;
         status = 0;
         createdTime = System.currentTimeMillis();
         updatedTime = System.currentTimeMillis();
+        this.address = address;
     }
 
     public String getId() {
@@ -49,6 +53,14 @@ public class Order {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public long getPrice() {
+        return price;
+    }
+
+    public void setPrice(long price) {
+        this.price = price;
     }
 
     public long getTotalPrice() {
@@ -97,5 +109,13 @@ public class Order {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

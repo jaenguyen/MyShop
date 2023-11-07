@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.CartActivity;
 import com.ic.myshop.activity.LikeProductsActivity;
+import com.ic.myshop.activity.MyOrderActivity;
 import com.ic.myshop.activity.MyProductActivity;
 import com.ic.myshop.activity.AccountSettingActivity;
 import com.ic.myshop.constant.DatabaseConstant;
@@ -31,7 +32,7 @@ import com.ic.myshop.model.User;
 public class UserFragment extends Fragment {
 
     private ImageView btnSetting, btnCart, avatar;
-    private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts;
+    private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts, txtMyOrder;
     //db
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
@@ -54,6 +55,7 @@ public class UserFragment extends Fragment {
         avatar = view.findViewById(R.id.avatar);
         txtEmail = view.findViewById(R.id.txt_email);
         txtLikeProducts = view.findViewById(R.id.txt_like_product);
+        txtMyOrder = view.findViewById(R.id.txt_my_order);
         db = FirebaseFirestore.getInstance();
 
         // get info user
@@ -64,7 +66,7 @@ public class UserFragment extends Fragment {
                         if (value != null && value.exists()) {
                             User user = value.toObject(User.class);
                             txtEmail.setText(user.getEmail());
-                            Glide.with(getContext())
+                            Glide.with(getActivity())
                                     .load(user.getAvatar())
                                     .fitCenter()
                                     .into(avatar);
@@ -76,6 +78,7 @@ public class UserFragment extends Fragment {
         Intent intentMyProduct = new Intent(getContext(), MyProductActivity.class);
         Intent intentCart = new Intent(getContext(), CartActivity.class);
         Intent intentLikeProducts = new Intent(getContext(), LikeProductsActivity.class);
+        Intent intentMyOrder = new Intent(getContext(), MyOrderActivity.class);
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +111,13 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(intentLikeProducts);
+            }
+        });
+
+        txtMyOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentMyOrder);
             }
         });
     }

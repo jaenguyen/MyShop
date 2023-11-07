@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -59,20 +60,26 @@ public class LikeProductsActivity extends AppCompatActivity {
                         }
                         productAdapter.clear();
                         for (String likeProductId : likeProductIds) {
-                            db.collection("products").document(likeProductId)
-                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                DocumentSnapshot documentSnapshot = task.getResult();
-                                                Product product = documentSnapshot.toObject(Product.class);
-                                                productAdapter.addProduct(product);
-                                            }
-                                        }
-                                    });
+                            dbFactory.getProduct(likeProductId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot documentSnapshot = task.getResult();
+                                        Product product = documentSnapshot.toObject(Product.class);
+                                        productAdapter.addProduct(product);
+                                    }
+                                }
+                            });
                         }
                     }
                 });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void init() {

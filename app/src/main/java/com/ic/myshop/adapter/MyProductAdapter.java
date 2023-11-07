@@ -30,18 +30,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.Prod
         products = new ArrayList<>();
     }
 
-    public MyProductAdapter(Context context, List<Product> products) {
-        this.context = context;
-        this.products = products;
-    }
-
     public void addProduct(Product product) {
         this.products.add(product);
-        notifyDataSetChanged();
-    }
-
-    public void addProducts(List<Product> products) {
-        this.products.addAll(products);
         notifyDataSetChanged();
     }
 

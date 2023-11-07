@@ -5,7 +5,7 @@
 
     <include
         android:id="@+id/toolbar_user"
-        layout="@layout/user_toolbar" />
+        layout="@layout/toolbar_user" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,6 +53,7 @@
                 android:src="@drawable/ic_order" />
 
             <TextView
+                android:id="@+id/txt_my_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

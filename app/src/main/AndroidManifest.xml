@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MyShop"
         tools:targetApi="31">
         <activity
+            android:name=".activity.DetailConfirmOrderMainActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.MyOrderActivity"
             android:exported="false" />
         <activity

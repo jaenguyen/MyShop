@@ -30,6 +30,9 @@ import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
 import com.ic.myshop.output.BuyItem;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DbFactory {
 
     private static final DbFactory dbFactory = new DbFactory();
@@ -191,7 +194,8 @@ public class DbFactory {
     }
 
     public void createOrder(BuyItem buyItem, Address address) {
-        Order order = new Order(buyItem.getId(), buyItem.getQuantity(), buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId(), address);
+        Order order = new Order(buyItem.getId(), buyItem.getQuantity(), buyItem.getPrice(),
+                buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId(), address);
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.ORDERS).document();
         order.setId(documentReference.getId());
         documentReference.set(order);
@@ -236,5 +240,12 @@ public class DbFactory {
             firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId)
                     .update(DatabaseConstant.LIKES, FieldValue.increment(1));
         }
+    }
+
+    public void updateStatusOrder(String id, int status) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(InputParam.STATUS, status);
+        data.put(InputParam.UPDATED_TIME, System.currentTimeMillis());
+        firebaseFirestore.collection(DatabaseConstant.ORDERS).document(id).update(data);
     }
 }

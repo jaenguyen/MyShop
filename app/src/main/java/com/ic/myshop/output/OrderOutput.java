@@ -1,6 +1,11 @@
-package com.ic.myshop.model;
+package com.ic.myshop.output;
 
-public class Order {
+import com.ic.myshop.model.Address;
+import com.ic.myshop.model.Order;
+
+import java.io.Serializable;
+
+public class OrderOutput implements Serializable {
 
     private String id;
     private String productId;
@@ -13,12 +18,31 @@ public class Order {
     private long updatedTime;
     private Address address;
     private int status;
+    private String imageUrl;
 
-    public Order() {
+    private String nameProduct;
+
+    public OrderOutput() {
 
     }
 
-    public Order(String productId, int quantity, long price, long totalPrice, String parentId, String sellerId, Address address) {
+    public OrderOutput(Order order, String imageUrl, String nameProduct) {
+        this.id = order.getId();
+        this.productId = order.getProductId();
+        this.quantity = order.getQuantity();
+        this.price = order.getPrice();
+        this.totalPrice = order.getTotalPrice();
+        this.parentId = order.getParentId();
+        this.sellerId = order.getSellerId();
+        this.createdTime = order.getCreatedTime();
+        this.updatedTime = order.getUpdatedTime();
+        this.address = order.getAddress();
+        this.status = order.getStatus();
+        this.imageUrl = imageUrl;
+        this.nameProduct = nameProduct;
+    }
+
+    public OrderOutput(String productId, int quantity, long price, long totalPrice, String parentId, String sellerId, Address address) {
         this.productId = productId;
         this.quantity = quantity;
         this.price = price;
@@ -117,5 +141,21 @@ public class Order {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getNameProduct() {
+        return nameProduct;
+    }
+
+    public void setNameProduct(String nameProduct) {
+        this.nameProduct = nameProduct;
     }
 }

@@ -41,10 +41,9 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private boolean getSuccess = false;
-    private TextView toolbarTitle;
+    private TextView toolbarTitle, txtEmail, txtPhone, txtChangeAvatar, txtChangePassword;
     private ImageButton btnBack;
     private ImageView avatar;
-    private TextView txtEmail, txtPhone, txtChangeAvatar, txtChangePassword;
     private Button btnUpload;
     private Uri imageUri;
     // db

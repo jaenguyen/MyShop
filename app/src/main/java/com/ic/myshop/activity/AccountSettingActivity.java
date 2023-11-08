@@ -17,10 +17,9 @@ import com.ic.myshop.constant.MessageConstant;
 
 public class AccountSettingActivity extends AppCompatActivity {
 
-    private TextView toolbarTitle;
+    private TextView toolbarTitle, accPriFunc, addressFunc, creditFunc;
     private ImageButton btnBack;
     private Button btnLogout;
-    private TextView accPriFunc, addressFunc, creditFunc;
     private static final AuthService authService = AuthService.getInstance();
 
     @Override

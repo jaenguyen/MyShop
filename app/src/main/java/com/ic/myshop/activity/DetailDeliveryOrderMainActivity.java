@@ -1,13 +1,13 @@
 package com.ic.myshop.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
@@ -16,10 +16,10 @@ import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.output.OrderOutput;
 
-public class DetailConfirmOrderMainActivity extends AppCompatActivity {
+public class DetailDeliveryOrderMainActivity extends AppCompatActivity {
 
     private TextView toolbarTitle, txtNameAddress, txtPhoneAddress, txtStreetAddress, txtName,
-            txtPrice, txtQuantity, totalPrice, txtId, txtCreatedTime;
+            txtPrice, txtQuantity, totalPrice, txtId, txtCreatedTime, txtUpdatedTime;
     private ImageButton btnBack;
     private ImageView imageView;
     private Button btnCancel;
@@ -29,7 +29,7 @@ public class DetailConfirmOrderMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_confirm_order_main);
+        setContentView(R.layout.activity_detail_delivery_order_main);
         orderOutput = (OrderOutput) getIntent().getSerializableExtra("order");
         init();
         txtNameAddress.setText(String.format("Họ và tên: %s", orderOutput.getAddress().getName()));
@@ -41,6 +41,7 @@ public class DetailConfirmOrderMainActivity extends AppCompatActivity {
         totalPrice.setText(String.format("₫ %d", orderOutput.getTotalPrice()));
         txtId.setText(orderOutput.getId());
         txtCreatedTime.setText(ConversionHelper.formatDate(orderOutput.getCreatedTime()));
+        txtUpdatedTime.setText(ConversionHelper.formatDate(orderOutput.getUpdatedTime()));
         Glide.with(this).load(orderOutput.getImageUrl()).into(imageView);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +54,7 @@ public class DetailConfirmOrderMainActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbFactory.updateStatusOrder(orderOutput.getId(), 1);
+                dbFactory.updateStatusOrder(orderOutput.getId(), 2);
                 onBackPressed();
             }
         });
@@ -72,6 +73,7 @@ public class DetailConfirmOrderMainActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.total_price);
         txtId = findViewById(R.id.txt_id);
         txtCreatedTime = findViewById(R.id.txt_createdTime);
+        txtUpdatedTime = findViewById(R.id.txt_updatedTime);
         imageView = findViewById(R.id.image_view);
         btnCancel = findViewById(R.id.btn_cancel);
     }

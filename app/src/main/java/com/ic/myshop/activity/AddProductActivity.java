@@ -39,15 +39,11 @@ public class AddProductActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private TextView toolbarTitle;
     private ImageButton btnBack;
-    private EditText txtName;
-    private EditText txtDescription;
-    private EditText txtPrice;
-    private EditText txtSellNumber;
+    private EditText txtName, txtDescription, txtPrice, txtSellNumber;
     private Spinner typeSpinner;
     private ImageView imageView;
     private ProgressBar progressBar;
-    private Button btnChooseImage;
-    private Button btnUpload;
+    private Button btnChooseImage, btnUpload;
     private Uri imageUri;
     // firebase
     private StorageTask uploadTask;

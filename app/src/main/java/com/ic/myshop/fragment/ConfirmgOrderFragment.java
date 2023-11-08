@@ -76,5 +76,26 @@ public class ConfirmgOrderFragment extends Fragment {
                         }
                     }
                 });
+
+        // TODO: FIX CODE
+        db.collection(DatabaseConstant.ORDERS)
+                .whereEqualTo(InputParam.PARENT_ID, dbFactory.getUserId())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        boolean notStatus = true;
+                        for (QueryDocumentSnapshot documentSnapshot : value) {
+                            Order order = documentSnapshot.toObject(Order.class);
+                            if (order.getStatus() == 0) {
+                                notStatus = false;
+                                break;
+                            }
+                        }
+                        if (notStatus) {
+                            cfOrderAdapter.clear();
+                            cfOrderAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
     }
 }

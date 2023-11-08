@@ -13,19 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
-import com.ic.myshop.activity.DetailConfirmOrderMainActivity;
+import com.ic.myshop.activity.DetailDeliveryOrderMainActivity;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.output.OrderOutput;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CfOrderAdapter extends RecyclerView.Adapter<CfOrderAdapter.CfOrderViewHolder> {
+public class DvOrderAdapter extends RecyclerView.Adapter<DvOrderAdapter.CfOrderViewHolder> {
 
     private Context context;
     private List<OrderOutput> orders;
 
-    public CfOrderAdapter(Context context) {
+    public DvOrderAdapter(Context context) {
         this.context = context;
         orders = new ArrayList<>();
     }
@@ -42,7 +42,7 @@ public class CfOrderAdapter extends RecyclerView.Adapter<CfOrderAdapter.CfOrderV
     @NonNull
     @Override
     public CfOrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_confirm_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_delivery_order, parent, false);
         return new CfOrderViewHolder(view);
     }
 
@@ -63,7 +63,7 @@ public class CfOrderAdapter extends RecyclerView.Adapter<CfOrderAdapter.CfOrderV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, DetailConfirmOrderMainActivity.class);
+                Intent intent = new Intent(context, DetailDeliveryOrderMainActivity.class);
                 intent.putExtra("order", orders.get(position));
                 context.startActivity(intent);
             }

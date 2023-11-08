@@ -28,18 +28,8 @@ public class BuyItemAdapter extends RecyclerView.Adapter<BuyItemAdapter.BuyItemV
         products = new ArrayList<>();
     }
 
-    public BuyItemAdapter(Context context, List<BuyItem> products) {
-        this.context = context;
-        this.products = products;
-    }
-
     public void addProduct(BuyItem product) {
         this.products.add(product);
-        notifyDataSetChanged();
-    }
-
-    public void addProducts(List<BuyItem> products) {
-        this.products.addAll(products);
         notifyDataSetChanged();
     }
 

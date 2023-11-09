@@ -36,9 +36,9 @@ public class DetailDeliveryOrderMainActivity extends AppCompatActivity {
         txtPhoneAddress.setText(String.format("Số điện thoại: %s", orderOutput.getAddress().getPhone()));
         txtStreetAddress.setText(String.format("Địa chỉ: %s", orderOutput.getAddress().getStreet()));
         txtName.setText(orderOutput.getNameProduct());
-        txtPrice.setText(String.format("₫ %d", orderOutput.getPrice()));
+        txtPrice.setText(String.format("₫ %s", ConversionHelper.formatNumber(orderOutput.getPrice())));
         txtQuantity.setText(String.format("x%d", orderOutput.getQuantity()));
-        totalPrice.setText(String.format("₫ %d", orderOutput.getTotalPrice()));
+        totalPrice.setText(String.format("₫ %s", ConversionHelper.formatNumber(orderOutput.getTotalPrice())));
         txtId.setText(orderOutput.getId());
         txtCreatedTime.setText(ConversionHelper.formatDate(orderOutput.getCreatedTime()));
         txtUpdatedTime.setText(ConversionHelper.formatDate(orderOutput.getUpdatedTime()));

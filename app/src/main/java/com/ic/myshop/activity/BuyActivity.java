@@ -32,9 +32,7 @@ import java.util.Map;
 public class BuyActivity extends AppCompatActivity {
 
     private long totalPrice = 0;
-    private TextView txtTotalPrice, btnBuy;
-    private TextView toolbarTitle;
-    private TextView txtNameAddress, txtPhoneAddress, txtStreetAddress;
+    private TextView txtTotalPrice, btnBuy, toolbarTitle, txtNameAddress, txtPhoneAddress, txtStreetAddress;
     private ImageButton btnBack;
     // rcv
     private RecyclerView rcvBuyItem;

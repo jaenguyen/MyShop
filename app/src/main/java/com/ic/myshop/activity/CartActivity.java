@@ -16,11 +16,9 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.ic.myshop.R;
 import com.ic.myshop.adapter.CartItemAdapter;
 import com.ic.myshop.constant.Constant;
-import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ConversionHelper;
@@ -34,12 +32,10 @@ import java.util.Map;
 public class CartActivity extends AppCompatActivity {
 
     private long totalPrice = 0;
-    private TextView txtTotalPrice, btnBuy;
-    private TextView toolbarTitle;
+    private TextView txtTotalPrice, btnBuy, toolbarTitle, txtEmptyCart;
     private ImageButton btnBack;
     //empty cart
     private ImageView imageEmptyCart;
-    private TextView txtEmptyCart;
     // rcv
     private RecyclerView rcvCartItem;
     private LinearLayoutManager linearLayoutManager;

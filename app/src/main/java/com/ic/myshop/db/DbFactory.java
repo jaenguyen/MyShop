@@ -1,7 +1,6 @@
 package com.ic.myshop.db;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -9,11 +8,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -159,7 +155,11 @@ public class DbFactory {
                 if (task.isComplete()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     Cart cart = documentSnapshot.toObject(Cart.class);
-                    cart.getQuantityProducts().put(productId, quantity);
+                    int currentQuantity = 0;
+                    if (cart.getQuantityProducts().containsKey(productId)) {
+                        currentQuantity = cart.getQuantityProducts().get(productId);
+                    }
+                    cart.getQuantityProducts().put(productId, quantity + currentQuantity);
                     documentReference.set(cart);
                 }
             }

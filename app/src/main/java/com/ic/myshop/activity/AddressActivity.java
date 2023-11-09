@@ -28,7 +28,6 @@ import java.util.List;
 
 public class AddressActivity extends AppCompatActivity {
 
-    private User user;
     private TextView toolbarTitle, btnAddAddress;
     private ImageButton btnBack;
     // rcv
@@ -36,6 +35,7 @@ public class AddressActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private AddressAdapter addressAdapter;
     // db
+    private User user;
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 

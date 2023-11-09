@@ -14,12 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.ListProductActivity;
-import com.ic.myshop.activity.ProductActivity;
 import com.ic.myshop.constant.InputParam;
-import com.ic.myshop.model.Address;
 import com.ic.myshop.output.TypeProductItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TypeProduceAdapter extends RecyclerView.Adapter<TypeProduceAdapter.AddressViewHolder> {

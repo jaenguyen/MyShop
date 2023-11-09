@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,19 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
-import com.ic.myshop.activity.DetailConfirmOrderMainActivity;
+import com.ic.myshop.activity.DetailCompleteOrderMainActivity;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.output.OrderOutput;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CfOrderAdapter extends RecyclerView.Adapter<CfOrderAdapter.CfOrderViewHolder> {
+public class CpOrderAdapter extends RecyclerView.Adapter<CpOrderAdapter.CfOrderViewHolder> {
 
     private Context context;
     private List<OrderOutput> orders;
 
-    public CfOrderAdapter(Context context) {
+    public CpOrderAdapter(Context context) {
         this.context = context;
         orders = new ArrayList<>();
     }
@@ -42,7 +43,7 @@ public class CfOrderAdapter extends RecyclerView.Adapter<CfOrderAdapter.CfOrderV
     @NonNull
     @Override
     public CfOrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_confirm_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_complete_order, parent, false);
         return new CfOrderViewHolder(view);
     }
 
@@ -63,7 +64,7 @@ public class CfOrderAdapter extends RecyclerView.Adapter<CfOrderAdapter.CfOrderV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, DetailConfirmOrderMainActivity.class);
+                Intent intent = new Intent(context, DetailCompleteOrderMainActivity.class);
                 intent.putExtra("order", orders.get(position));
                 context.startActivity(intent);
             }
@@ -88,6 +89,7 @@ public class CfOrderAdapter extends RecyclerView.Adapter<CfOrderAdapter.CfOrderV
         private TextView quantity;
         private TextView reQuantity;
         private TextView totalPrice;
+        private Button buyAgain;
 
 
         public CfOrderViewHolder(@NonNull View itemView) {

@@ -10,4 +10,5 @@ public class InputParam {
     public static final String PARENT_ID = "parentId";
     public static final String STATUS = "status";
     public static final String UPDATED_TIME = "updatedTime";
+    public static final String USER_ID = "userId";
 }

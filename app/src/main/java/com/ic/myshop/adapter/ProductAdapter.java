@@ -42,6 +42,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void clear() {
         this.products.clear();
         this.productIds.clear();
+        notifyDataSetChanged();
     }
 
     public boolean isExist(String id) {

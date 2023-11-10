@@ -22,6 +22,7 @@ import com.ic.myshop.R;
 import com.ic.myshop.adapter.ProductAdapter;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.DatabaseConstant;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Like;
 import com.ic.myshop.model.Product;
@@ -47,7 +48,7 @@ public class LikeProductsActivity extends AppCompatActivity {
         init();
 
         db.collection(DatabaseConstant.LIKES)
-                .whereEqualTo("userId", dbFactory.getUserId())
+                .whereEqualTo(InputParam.USER_ID, dbFactory.getUserId())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

@@ -34,12 +34,10 @@ public class DbFactory {
     private static final DbFactory dbFactory = new DbFactory();
     private FirebaseFirestore firebaseFirestore;
     private FirebaseStorage firebaseStorage;
-    WriteBatch batch;
 
     private DbFactory() {
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        batch = firebaseFirestore.batch();
     }
 
     public static DbFactory getInstance() {
@@ -214,6 +212,7 @@ public class DbFactory {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
+                                WriteBatch batch = firebaseFirestore.batch();
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     batch.delete(document.getReference());
                                 }

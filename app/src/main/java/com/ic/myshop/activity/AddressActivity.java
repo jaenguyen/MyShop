@@ -1,13 +1,11 @@
 package com.ic.myshop.activity;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +28,6 @@ import java.util.List;
 
 public class AddressActivity extends AppCompatActivity {
 
-    private User user;
     private TextView toolbarTitle, btnAddAddress;
     private ImageButton btnBack;
     // rcv
@@ -38,6 +35,7 @@ public class AddressActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private AddressAdapter addressAdapter;
     // db
+    private User user;
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
@@ -70,7 +68,7 @@ public class AddressActivity extends AppCompatActivity {
                 // Tạo một Dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddressActivity.this);
                 // Inflate layout cho dialog từ tệp XML
-                View dialogView = getLayoutInflater().inflate(R.layout.new_address_dialog, null);
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_address, null);
                 builder.setView(dialogView);
                 // Khởi tạo các thành phần trong dialog
                 TextView txtName = dialogView.findViewById(R.id.txt_name);
@@ -100,7 +98,7 @@ public class AddressActivity extends AppCompatActivity {
 
     private void init() {
         toolbarTitle = findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(Constant.BUY);
+        toolbarTitle.setText(Constant.EDIT_ADDRESS);
         btnBack = findViewById(R.id.toolbar_back_button);
         btnAddAddress = findViewById(R.id.btn_add_address);
 

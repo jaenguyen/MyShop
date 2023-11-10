@@ -9,7 +9,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
@@ -30,7 +29,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.ic.myshop.R;
-import com.ic.myshop.auth.AuthService;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.db.DbFactory;
@@ -41,15 +39,11 @@ public class AddProductActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private TextView toolbarTitle;
     private ImageButton btnBack;
-    private EditText txtName;
-    private EditText txtDescription;
-    private EditText txtPrice;
-    private EditText txtSellNumber;
+    private EditText txtName, txtDescription, txtPrice, txtSellNumber;
     private Spinner typeSpinner;
     private ImageView imageView;
     private ProgressBar progressBar;
-    private Button btnChooseImage;
-    private Button btnUpload;
+    private Button btnChooseImage, btnUpload;
     private Uri imageUri;
     // firebase
     private StorageTask uploadTask;
@@ -79,7 +73,7 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (uploadTask != null && uploadTask.isInProgress()) {
-                    Toast.makeText(getApplicationContext(), "Upload in progress", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), MessageConstant.UPLOADING, Toast.LENGTH_SHORT).show();
                 } else {
                     uploadProduct();
                 }
@@ -96,7 +90,7 @@ public class AddProductActivity extends AppCompatActivity {
         txtPrice = findViewById(R.id.txt_price);
         txtSellNumber = findViewById(R.id.txt_sell_number);
         typeSpinner = findViewById(R.id.typeSpinner);
-        typeSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.type_spinner,
+        typeSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_type_product,
                 getResources().getStringArray(R.array.type)));
         imageView = findViewById(R.id.image_view);
         progressBar = findViewById(R.id.progress_bar);

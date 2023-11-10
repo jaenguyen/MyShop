@@ -17,14 +17,11 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
 import com.ic.myshop.adapter.MyProductAdapter;
 import com.ic.myshop.constant.Constant;
-import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Product;
@@ -40,7 +37,6 @@ public class MyProductActivity extends AppCompatActivity {
     private MyProductAdapter myProductAdapter;
     private long maxScore = Long.MAX_VALUE;
     private boolean isScrolling = false;
-    private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override
@@ -48,11 +44,8 @@ public class MyProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_product);
         init();
-        db.collection(DatabaseConstant.PRODUCTS)
-                .whereEqualTo("parentId", dbFactory.getUserId())
-                .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
-                .startAt(Long.MAX_VALUE).limit(4)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        dbFactory.getProductsSelfDefault(maxScore, 4)
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -121,7 +114,6 @@ public class MyProductActivity extends AppCompatActivity {
         rcvProduct.setLayoutManager(layoutManager);
         myProductAdapter = new MyProductAdapter(this);
         rcvProduct.setAdapter(myProductAdapter);
-        db = FirebaseFirestore.getInstance();
     }
 
     private void loadMoreProduct() {
@@ -129,12 +121,7 @@ public class MyProductActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                db.collection(DatabaseConstant.PRODUCTS)
-                        .whereEqualTo("parentId", dbFactory.getUserId())
-                        .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
-                        .startAfter(maxScore)
-                        .limit(4)
-                        .get()
+                dbFactory.getProductsSelfDefault(maxScore, 4)
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -154,6 +141,6 @@ public class MyProductActivity extends AppCompatActivity {
                             }
                         });
             }
-        }, 1000);
+        }, 2000);
     }
 }

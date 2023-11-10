@@ -1,7 +1,6 @@
 package com.ic.myshop.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
-import com.ic.myshop.activity.ProductActivity;
 import com.ic.myshop.helper.ConversionHelper;
-import com.ic.myshop.model.Product;
 import com.ic.myshop.output.BuyItem;
 
 import java.util.ArrayList;
@@ -31,25 +28,15 @@ public class BuyItemAdapter extends RecyclerView.Adapter<BuyItemAdapter.BuyItemV
         products = new ArrayList<>();
     }
 
-    public BuyItemAdapter(Context context, List<BuyItem> products) {
-        this.context = context;
-        this.products = products;
-    }
-
     public void addProduct(BuyItem product) {
         this.products.add(product);
-        notifyDataSetChanged();
-    }
-
-    public void addProducts(List<BuyItem> products) {
-        this.products.addAll(products);
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public BuyItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.buy_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_buy, parent, false);
         return new BuyItemViewHolder(view);
     }
 

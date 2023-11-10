@@ -1,7 +1,6 @@
 package com.ic.myshop.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
-import com.ic.myshop.activity.ProductActivity;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Product;
 
@@ -30,18 +28,8 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.Prod
         products = new ArrayList<>();
     }
 
-    public MyProductAdapter(Context context, List<Product> products) {
-        this.context = context;
-        this.products = products;
-    }
-
     public void addProduct(Product product) {
         this.products.add(product);
-        notifyDataSetChanged();
-    }
-
-    public void addProducts(List<Product> products) {
-        this.products.addAll(products);
         notifyDataSetChanged();
     }
 

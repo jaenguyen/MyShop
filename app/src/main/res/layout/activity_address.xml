@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/toolbar_account_setting"
-        layout="@layout/extra_toolbar" />
+        layout="@layout/toolbar_extra" />
 
     <TextView
         android:id="@+id/address"

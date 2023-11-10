@@ -24,29 +24,29 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private Context context;
     private List<Product> products;
+    private List<String> productIds;
 
     public ProductAdapter(Context context) {
         this.context = context;
         products = new ArrayList<>();
-    }
-
-    public ProductAdapter(Context context, List<Product> products) {
-        this.context = context;
-        this.products = products;
+        productIds = new ArrayList<>();
     }
 
     public void addProduct(Product product) {
+        if (isExist(product.getId())) return;
         this.products.add(product);
+        productIds.add(product.getId());
         notifyDataSetChanged();
     }
 
     public void clear() {
         this.products.clear();
+        this.productIds.clear();
+        notifyDataSetChanged();
     }
 
-    public void addProducts(List<Product> products) {
-        this.products.addAll(products);
-        notifyDataSetChanged();
+    public boolean isExist(String id) {
+        return productIds.contains(id);
     }
 
     @NonNull

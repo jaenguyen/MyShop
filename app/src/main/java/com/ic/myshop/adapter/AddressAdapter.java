@@ -4,17 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
-import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Address;
-import com.ic.myshop.output.BuyItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +23,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     public AddressAdapter(Context context) {
         this.context = context;
         addresses = new ArrayList<>();
-    }
-
-    public AddressAdapter(Context context, List<Address> addresses) {
-        this.context = context;
-        this.addresses = addresses;
     }
 
     public void addAddress(Address address) {
@@ -48,7 +39,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     @NonNull
     @Override
     public AddressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.address_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_address, parent, false);
         return new AddressViewHolder(view);
     }
 

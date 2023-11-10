@@ -19,6 +19,7 @@ public class OrderOutput implements Serializable {
     private Address address;
     private int status;
     private String imageUrl;
+    private int payment;
 
     private String nameProduct;
 
@@ -40,6 +41,7 @@ public class OrderOutput implements Serializable {
         this.status = order.getStatus();
         this.imageUrl = imageUrl;
         this.nameProduct = nameProduct;
+        this.payment = order.getPayment();
     }
 
     public OrderOutput(String productId, int quantity, long price, long totalPrice, String parentId, String sellerId, Address address) {
@@ -157,5 +159,13 @@ public class OrderOutput implements Serializable {
 
     public void setNameProduct(String nameProduct) {
         this.nameProduct = nameProduct;
+    }
+
+    public int getPayment() {
+        return payment;
+    }
+
+    public void setPayment(int payment) {
+        this.payment = payment;
     }
 }

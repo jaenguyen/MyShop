@@ -72,6 +72,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // slider
         viewPagerSlider = view.findViewById(R.id.view_pager_slider);
         circleIndicator = view.findViewById(R.id.circle_indicator);
         sliderAdapter = new SliderAdapter(getContext(), getSliderPhoto());

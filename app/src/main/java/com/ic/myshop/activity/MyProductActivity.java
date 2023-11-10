@@ -44,7 +44,7 @@ public class MyProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_product);
         init();
-        dbFactory.getProductsSelfDefault(maxScore, 4)
+        dbFactory.getProductsSelfDefault(maxScore, 6)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -121,7 +121,7 @@ public class MyProductActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dbFactory.getProductsSelfDefault(maxScore, 4)
+                dbFactory.getProductsSelfDefault(maxScore, 6)
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {

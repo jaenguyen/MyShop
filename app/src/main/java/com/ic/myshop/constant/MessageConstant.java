@@ -17,4 +17,5 @@ public class MessageConstant {
     public static final String NOT_SELECTED_PRODUCT = "Bạn vẫn chưa chọn sản phẩm nào để mua";
     public static final String NOT_HAVE_FUNCTION = "Tính năng đang phát triển";
     public static final String SOLD_OUT = "Sản phẩm đã hết hàng";
+    public static final String FAIL = "Có lỗi xảy ra";
 }

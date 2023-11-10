@@ -1,7 +1,9 @@
 package com.ic.myshop.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,16 +12,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.ic.myshop.R;
 import com.ic.myshop.constant.Constant;
+import com.ic.myshop.constant.Payment;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ConversionHelper;
+import com.ic.myshop.model.Product;
 import com.ic.myshop.output.OrderOutput;
 
 public class DetailConfirmOrderMainActivity extends AppCompatActivity {
 
     private TextView toolbarTitle, txtNameAddress, txtPhoneAddress, txtStreetAddress, txtName,
-            txtPrice, txtQuantity, totalPrice, txtId, txtCreatedTime;
+            txtPrice, txtQuantity, totalPrice, txtId, txtCreatedTime, txtPaymentForm;
     private ImageButton btnBack;
     private ImageView imageView;
     private Button btnCancel;
@@ -41,6 +48,7 @@ public class DetailConfirmOrderMainActivity extends AppCompatActivity {
         totalPrice.setText(String.format("₫ %s", ConversionHelper.formatNumber(orderOutput.getTotalPrice())));
         txtId.setText(orderOutput.getId());
         txtCreatedTime.setText(ConversionHelper.formatDate(orderOutput.getCreatedTime()));
+        txtPaymentForm.setText(Payment.valueOf(orderOutput.getPayment()));
         Glide.with(this).load(orderOutput.getImageUrl()).into(imageView);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +63,21 @@ public class DetailConfirmOrderMainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 dbFactory.updateStatusOrder(orderOutput.getId(), 1);
                 onBackPressed();
+            }
+        });
+
+        txtName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String productId = orderOutput.getProductId();
+                dbFactory.getProduct(productId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
+                        intent.putExtra("product", task.getResult().toObject(Product.class));
+                        startActivity(intent);
+                    }
+                });
             }
         });
     }
@@ -72,6 +95,7 @@ public class DetailConfirmOrderMainActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.total_price);
         txtId = findViewById(R.id.txt_id);
         txtCreatedTime = findViewById(R.id.txt_createdTime);
+        txtPaymentForm = findViewById(R.id.txt_payment_form);
         imageView = findViewById(R.id.image_view);
         btnCancel = findViewById(R.id.btn_cancel);
     }

@@ -24,12 +24,13 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/txt_addd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -39,9 +40,22 @@
                 android:textSize="18dp" />
 
             <TextView
+                android:id="@+id/txt_change_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txt_addd"
+                android:layout_alignParentRight="true"
+                android:gravity="end"
+                android:paddingRight="20dp"
+                android:text="Đổi địa chỉ"
+                android:textColor="@color/blue"
+                android:textSize="14dp" />
+
+            <TextView
                 android:id="@+id/txt_name_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/txt_addd"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black" />
 
@@ -49,6 +63,7 @@
                 android:id="@+id/txt_phone_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/txt_name_address"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black" />
 
@@ -56,9 +71,10 @@
                 android:id="@+id/txt_street_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/txt_phone_address"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="Tổng thanh toán: " />
+                android:text="Tổng tiền: " />
 
             <TextView
                 android:id="@+id/txt_total_price"
@@ -77,6 +93,17 @@
                 android:layout_weight="1"
                 android:text="₫ 0"
                 android:textColor="@color/primary_color" />
+
+            <TextView
+                android:id="@+id/btn_buy_by_zalo"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@color/blue"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Thanh toán bằng zalo"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/btn_buy"

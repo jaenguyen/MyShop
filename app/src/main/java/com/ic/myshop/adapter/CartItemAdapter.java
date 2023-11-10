@@ -117,7 +117,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     }
 
     public class CartItemViewHolder extends RecyclerView.ViewHolder implements
-            View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener{
+            View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 
         private CheckBox checkBox;
         private ImageView imageView;

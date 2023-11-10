@@ -8,31 +8,46 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.ic.myshop.R;
+import com.ic.myshop.adapter.AddressListAdapter;
 import com.ic.myshop.adapter.BuyItemAdapter;
 import com.ic.myshop.constant.Constant;
+import com.ic.myshop.constant.MessageConstant;
+import com.ic.myshop.constant.Payment;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
 import com.ic.myshop.output.BuyItem;
+import com.ic.myshop.zalo.CreateOrder;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import vn.zalopay.sdk.Environment;
+import vn.zalopay.sdk.ZaloPayError;
+import vn.zalopay.sdk.ZaloPaySDK;
+import vn.zalopay.sdk.listeners.PayOrderListener;
 
 public class BuyActivity extends AppCompatActivity {
 
     private long totalPrice = 0;
-    private TextView txtTotalPrice, btnBuy, toolbarTitle, txtNameAddress, txtPhoneAddress, txtStreetAddress;
+    private TextView txtTotalPrice, btnBuy, toolbarTitle, txtNameAddress, txtPhoneAddress,
+            txtStreetAddress, btnBuyByZalo, txtChangeAddress;
     private ImageButton btnBack;
     // rcv
     private RecyclerView rcvBuyItem;
@@ -42,7 +57,10 @@ public class BuyActivity extends AppCompatActivity {
     private static final DbFactory dbFactory = DbFactory.getInstance();
     private User user;
     private Address address;
+    private List<Address> addresses;
+    private AddressListAdapter addressAdapter;
     private Map<String, Integer> cartItems;
+    private boolean isBuyNow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +68,19 @@ public class BuyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_buy);
         init();
 
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        // ZaloPay SDK Init
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
+
         cartItems = (Map<String, Integer>) getIntent().getSerializableExtra("cartItems");
+        isBuyNow = getIntent().getBooleanExtra(Constant.BUY_NOW, false);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
-                startActivity(intent);
-                finish();
+                onBackPressed();
             }
         });
 
@@ -68,7 +91,8 @@ public class BuyActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot documentSnapshot = task.getResult();
                             user = documentSnapshot.toObject(User.class);
-                            List<Address> addresses = user.getAddresses();
+                            addresses = user.getAddresses();
+                            addresses = user.getAddresses();
                             if (addresses == null || addresses.isEmpty()) {
                                 // Tạo một Dialog
                                 AlertDialog.Builder builder = new AlertDialog.Builder(BuyActivity.this);
@@ -82,6 +106,7 @@ public class BuyActivity extends AppCompatActivity {
                                 Button btnAddAddress = dialogView.findViewById(R.id.btn_add_address);
                                 // Tạo và hiển thị dialog
                                 AlertDialog dialog = builder.create();
+                                dialog.setCanceledOnTouchOutside(false);
                                 dialog.show();
                                 // Thiết lập sự kiện cho nút add, remove
                                 btnAddAddress.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +116,7 @@ public class BuyActivity extends AppCompatActivity {
                                         String phone = txtPhone.getText().toString().trim();
                                         String street = txtStreet.getText().toString();
                                         address = new Address(name, phone, street);
-                                        txtNameAddress.setText(String.format("Họ tên: %s", address.getName()));
-                                        txtPhoneAddress.setText(String.format("Số điện thoại: %s", address.getPhone()));
-                                        txtStreetAddress.setText(String.format("Địa chỉ: %s", address.getStreet()));
+                                        changeAddress();
                                         user.addAddress(address);
                                         dbFactory.updateAddresses(user);
                                         dialog.dismiss();
@@ -101,9 +124,7 @@ public class BuyActivity extends AppCompatActivity {
                                 });
                             } else {
                                 address = user.getAddresses().get(0);
-                                txtNameAddress.setText(String.format("Họ tên: %s", address.getName()));
-                                txtPhoneAddress.setText(String.format("Số điện thoại: %s", address.getPhone()));
-                                txtStreetAddress.setText(String.format("Địa chỉ: %s", address.getStreet()));
+                                changeAddress();
                             }
                         }
                     }
@@ -131,22 +152,105 @@ public class BuyActivity extends AppCompatActivity {
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<BuyItem> buyItems = buyItemAdapter.getCartItems();
-                for (BuyItem buyItem : buyItems) {
-                    dbFactory.buyProduct(buyItem, address);
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                payment(Payment.COD.valueOf());
+            }
+        });
+
+        btnBuyByZalo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestZalo();
+            }
+        });
+
+        // đổi địa chỉ nhận hàng
+        txtChangeAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecyclerView recyclerView = new RecyclerView(getApplicationContext());
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                AlertDialog.Builder builder = new AlertDialog.Builder(BuyActivity.this);
+                builder.setView(recyclerView);
+                AlertDialog dialog = builder.create();
+                dialog.setTitle(Constant.EDIT_ADDRESS);
+                addressAdapter = new AddressListAdapter(addresses, new AddressListAdapter.OnAddressClickListener() {
+                    @Override
+                    public void onAddressClick(int position) {
+                        address = addresses.get(position);
+                        changeAddress();
+                        dialog.dismiss();
+                    }
+                });
+                recyclerView.setAdapter(addressAdapter);
+                dialog.show();
             }
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+    // set lại text address
+    private void changeAddress() {
+        txtNameAddress.setText(String.format("Họ tên: %s", address.getName()));
+        txtPhoneAddress.setText(String.format("Số điện thoại: %s", address.getPhone()));
+        txtStreetAddress.setText(String.format("Địa chỉ: %s", address.getStreet()));
+    }
+
+    // cập nhập đơn hàng, chuyển đến giao diện đơn hàng
+    private void payment(int payment) {
+        List<BuyItem> buyItems = buyItemAdapter.getCartItems();
+        List<String> orderIds = new ArrayList<>();
+        for (BuyItem buyItem : buyItems) {
+            orderIds.add(dbFactory.createOrder(buyItem, address, payment));
+            dbFactory.updateQuantityCartProduct(buyItem);
+        }
+        if (Payment.get(payment) == Payment.IMMEDIATELY) {
+            for (int i = 0; i < buyItems.size(); i++) {
+                BuyItem buyItem = buyItems.get(i);
+                dbFactory.addOrUpdateStatistics(orderIds.get(i), buyItem.getPrice() * buyItem.getQuantity(), buyItem.getParentId());
+            }
+        }
+        Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    // thanh toán = zalopay
+    private void requestZalo() {
+        CreateOrder orderApi = new CreateOrder();
+        try {
+            JSONObject data = orderApi.createOrder(String.valueOf(totalPrice));
+            String code = data.getString("return_code");
+            if (code.equals("1")) {
+                String token = data.getString("zp_trans_token");
+                ZaloPaySDK.getInstance().payOrder(this, token, "demozpdk://app", new PayOrderListener() {
+                    @Override
+                    public void onPaymentSucceeded(String s, String s1, String s2) {
+                        payment(Payment.IMMEDIATELY.valueOf());
+                    }
+
+                    @Override
+                    public void onPaymentCanceled(String s, String s1) {
+                        Toast.makeText(BuyActivity.this, MessageConstant.FAIL, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
+                        Toast.makeText(BuyActivity.this, MessageConstant.FAIL, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!isBuyNow) {
+            Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        super.onBackPressed();
     }
 
     private void init() {
@@ -158,11 +262,20 @@ public class BuyActivity extends AppCompatActivity {
         txtNameAddress = findViewById(R.id.txt_name_address);
         txtPhoneAddress = findViewById(R.id.txt_phone_address);
         txtStreetAddress = findViewById(R.id.txt_street_address);
+        txtChangeAddress = findViewById(R.id.txt_change_address);
         // rcv
         rcvBuyItem = findViewById(R.id.rcv_buy_item);
         linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rcvBuyItem.setLayoutManager(linearLayoutManager);
         buyItemAdapter = new BuyItemAdapter(this);
         rcvBuyItem.setAdapter(buyItemAdapter);
+        // zalo
+        btnBuyByZalo = findViewById(R.id.btn_buy_by_zalo);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        ZaloPaySDK.getInstance().onResult(intent);
     }
 }

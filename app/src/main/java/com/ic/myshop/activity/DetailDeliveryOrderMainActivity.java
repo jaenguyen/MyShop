@@ -1,5 +1,6 @@
 package com.ic.myshop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,19 +8,25 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.ic.myshop.R;
 import com.ic.myshop.constant.Constant;
+import com.ic.myshop.constant.Payment;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ConversionHelper;
+import com.ic.myshop.model.Product;
 import com.ic.myshop.output.OrderOutput;
 
 public class DetailDeliveryOrderMainActivity extends AppCompatActivity {
 
     private TextView toolbarTitle, txtNameAddress, txtPhoneAddress, txtStreetAddress, txtName,
-            txtPrice, txtQuantity, totalPrice, txtId, txtCreatedTime, txtUpdatedTime;
+            txtPrice, txtQuantity, totalPrice, txtId, txtCreatedTime, txtUpdatedTime, txtPaymentForm;
     private ImageButton btnBack;
     private ImageView imageView;
     private Button btnCancel;
@@ -42,6 +49,7 @@ public class DetailDeliveryOrderMainActivity extends AppCompatActivity {
         txtId.setText(orderOutput.getId());
         txtCreatedTime.setText(ConversionHelper.formatDate(orderOutput.getCreatedTime()));
         txtUpdatedTime.setText(ConversionHelper.formatDate(orderOutput.getUpdatedTime()));
+        txtPaymentForm.setText(Payment.valueOf(orderOutput.getPayment()));
         Glide.with(this).load(orderOutput.getImageUrl()).into(imageView);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +64,21 @@ public class DetailDeliveryOrderMainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 dbFactory.updateStatusOrder(orderOutput.getId(), 2);
                 onBackPressed();
+            }
+        });
+
+        txtName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String productId = orderOutput.getProductId();
+                dbFactory.getProduct(productId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
+                        intent.putExtra("product", task.getResult().toObject(Product.class));
+                        startActivity(intent);
+                    }
+                });
             }
         });
     }
@@ -74,6 +97,7 @@ public class DetailDeliveryOrderMainActivity extends AppCompatActivity {
         txtId = findViewById(R.id.txt_id);
         txtCreatedTime = findViewById(R.id.txt_createdTime);
         txtUpdatedTime = findViewById(R.id.txt_updatedTime);
+        txtPaymentForm = findViewById(R.id.txt_payment_form);
         imageView = findViewById(R.id.image_view);
         btnCancel = findViewById(R.id.btn_cancel);
     }

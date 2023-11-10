@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 if (itemId == R.id.navigation_home) {
                     viewPager.setCurrentItem(0);
-                } else if (itemId == R.id.navigation_notification) {
+                } else if (itemId == R.id.navigation_search) {
                     viewPager.setCurrentItem(1);
                 } else if (itemId == R.id.navigation_user) {
                     viewPager.setCurrentItem(2);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                         navView.getMenu().findItem(R.id.navigation_home).setChecked(true);
                         break;
                     case 1:
-                        navView.getMenu().findItem(R.id.navigation_notification).setChecked(true);
+                        navView.getMenu().findItem(R.id.navigation_search).setChecked(true);
                         break;
                     case 2:
                         navView.getMenu().findItem(R.id.navigation_user).setChecked(true);

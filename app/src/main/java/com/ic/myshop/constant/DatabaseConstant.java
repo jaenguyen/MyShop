@@ -10,4 +10,5 @@ public class DatabaseConstant {
     public static final String LIKES = "likes";
 
 
+    public static final String STATISTICS = "statistics";
 }

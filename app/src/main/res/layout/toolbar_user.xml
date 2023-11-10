@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_margin="15dp"
-        android:src="@drawable/ic_message" />
+        android:src="@drawable/ic_bell" />
 
     <ImageView
         android:id="@+id/avatar"

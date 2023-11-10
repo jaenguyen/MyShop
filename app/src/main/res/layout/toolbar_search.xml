@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="15dp"
-        android:text="@string/notification"
+        android:text="@string/search"
         android:textColor="@color/white"
         android:textSize="20dp" />
 
@@ -27,5 +27,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_margin="15dp"
-        android:src="@drawable/ic_message" />
+        android:src="@drawable/ic_bell" />
 </RelativeLayout>

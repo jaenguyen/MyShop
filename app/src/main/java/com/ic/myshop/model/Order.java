@@ -13,12 +13,13 @@ public class Order {
     private long updatedTime;
     private Address address;
     private int status;
+    private int payment;
 
     public Order() {
 
     }
 
-    public Order(String productId, int quantity, long price, long totalPrice, String parentId, String sellerId, Address address) {
+    public Order(String productId, int quantity, long price, long totalPrice, String parentId, String sellerId, Address address, int payment) {
         this.productId = productId;
         this.quantity = quantity;
         this.price = price;
@@ -29,6 +30,7 @@ public class Order {
         createdTime = System.currentTimeMillis();
         updatedTime = System.currentTimeMillis();
         this.address = address;
+        this.payment = payment;
     }
 
     public String getId() {
@@ -117,5 +119,13 @@ public class Order {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public int getPayment() {
+        return payment;
+    }
+
+    public void setPayment(int payment) {
+        this.payment = payment;
     }
 }

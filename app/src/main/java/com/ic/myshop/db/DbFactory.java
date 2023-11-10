@@ -23,10 +23,13 @@ import com.ic.myshop.model.Cart;
 import com.ic.myshop.model.Like;
 import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
+import com.ic.myshop.model.Statistics;
 import com.ic.myshop.model.User;
 import com.ic.myshop.output.BuyItem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DbFactory {
@@ -185,18 +188,25 @@ public class DbFactory {
     /*
         Order
      */
-    public void buyProduct(BuyItem buyItem, Address address) {
-        deleteCart(buyItem.getId());
-        createOrder(buyItem, address);
-        updateSellNumber(buyItem);
-    }
-
-    public void createOrder(BuyItem buyItem, Address address) {
+    public String createOrder(BuyItem buyItem, Address address, int payment) {
         Order order = new Order(buyItem.getId(), buyItem.getQuantity(), buyItem.getPrice(),
-                buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId(), address);
+                buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId(), address, payment);
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.ORDERS).document();
         order.setId(documentReference.getId());
         documentReference.set(order);
+        return order.getId();
+    }
+
+    public void updateQuantityCartProduct(BuyItem buyItem) {
+        deleteCart(buyItem.getId());
+        updateSellNumber(buyItem);
+    }
+
+    public void updateStatusOrder(String id, int status) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(InputParam.STATUS, status);
+        data.put(InputParam.UPDATED_TIME, System.currentTimeMillis());
+        firebaseFirestore.collection(DatabaseConstant.ORDERS).document(id).update(data);
     }
 
     /*
@@ -241,10 +251,12 @@ public class DbFactory {
         }
     }
 
-    public void updateStatusOrder(String id, int status) {
-        Map<String, Object> data = new HashMap<>();
-        data.put(InputParam.STATUS, status);
-        data.put(InputParam.UPDATED_TIME, System.currentTimeMillis());
-        firebaseFirestore.collection(DatabaseConstant.ORDERS).document(id).update(data);
+    /*
+        statistics
+     */
+    public void addOrUpdateStatistics(String orderId, long price, String sellerId) {
+        CollectionReference collectionReference = firebaseFirestore.collection(DatabaseConstant.STATISTICS);
+        collectionReference.add(new Statistics(orderId, getUserId(), price, 0, System.currentTimeMillis()));
+        collectionReference.add(new Statistics(orderId, sellerId, price, 1, System.currentTimeMillis()));
     }
 }

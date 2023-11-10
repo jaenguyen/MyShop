@@ -21,4 +21,5 @@ public class Constant {
     public static final String LIST_PRODUCT = "Danh sách sản phẩm";
     public static final String MY_ORDER = "Đơn hàng của tôi";
     public static final String ORDER_DETAIL = "Thông tin đơn hàng";
+    public static final String BUY_NOW = "Mua ngay";
 }

@@ -12,9 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.DetailConfirmOrderMainActivity;
+import com.ic.myshop.activity.ProductActivity;
 import com.ic.myshop.helper.ConversionHelper;
+import com.ic.myshop.model.Product;
 import com.ic.myshop.output.OrderOutput;
 
 import java.util.ArrayList;

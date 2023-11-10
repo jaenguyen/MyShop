@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,11 +27,13 @@ import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Product;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 public class ProductActivity extends AppCompatActivity {
     int quantity = 1;
-    private TextView toolbarTitle, txtName, txtPrice, txtSoldNumber, txtType, txtDescription;
+    private TextView toolbarTitle, txtName, txtPrice, txtSoldNumber, txtType, txtDescription, btnBuyNow;
     private ImageButton btnBack, btnAddToCart;
     private ImageView imageView, imageViewLike;
     private Product product;
@@ -149,6 +152,70 @@ public class ProductActivity extends AppCompatActivity {
                 });
             }
         });
+
+        btnBuyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quantity = 1;
+                // Tạo một Dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this);
+                // Inflate layout cho dialog từ tệp XML
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_cart, null);
+                builder.setView(dialogView);
+                // Khởi tạo các thành phần trong dialog
+                ImageView imageView1 = dialogView.findViewById(R.id.image_view);
+                TextView txtPrice1 = dialogView.findViewById(R.id.txt_price);
+                TextView txtSellNumber1 = dialogView.findViewById(R.id.txt_sell_number);
+                ImageView btnRemove1 = dialogView.findViewById(R.id.btn_remove);
+                ImageView btnAdd1 = dialogView.findViewById(R.id.btn_add);
+                TextView txtQuantity1 = dialogView.findViewById(R.id.txt_quantity);
+                Button btnAddToCart1 = dialogView.findViewById(R.id.btn_add_to_cart);
+                btnAddToCart1.setText(Constant.BUY_NOW);
+                // Set giá trị cho các thành phần trong dialog
+                Glide.with(getApplicationContext())
+                        .load(product.getImageUrl())
+                        .fitCenter()
+                        .into(imageView1);
+                txtPrice1.setText(String.format("₫ %s", ConversionHelper.formatNumber(product.getPrice())));
+                txtSellNumber1.setText(String.valueOf(product.getSellNumber()));
+                txtQuantity1.setText(String.valueOf(quantity));
+                // Thiết lập sự kiện cho nút add, remove
+                btnRemove1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (quantity > 1) {
+                            quantity--;
+                            txtQuantity1.setText(String.valueOf(quantity));
+                        }
+                    }
+                });
+                btnAdd1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (quantity < product.getSellNumber()) {
+                            quantity++;
+                            txtQuantity1.setText(String.valueOf(quantity));
+                        }
+                    }
+                });
+                // Tạo và hiển thị dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                btnAddToCart1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        HashMap<String, Integer> products = new HashMap<>();
+                        products.put(product.getId(), quantity);
+                        Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
+                        intent.putExtra("cartItems", (Serializable) products);
+                        intent.putExtra(Constant.BUY_NOW, true);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
     }
 
     private void init() {
@@ -163,6 +230,7 @@ public class ProductActivity extends AppCompatActivity {
         txtDescription = findViewById(R.id.txt_description);
         btnAddToCart = findViewById(R.id.btn_add_to_cart);
         imageViewLike = findViewById(R.id.image_view_like);
+        btnBuyNow = findViewById(R.id.btn_buy_now);
         db = FirebaseFirestore.getInstance();
     }
 }

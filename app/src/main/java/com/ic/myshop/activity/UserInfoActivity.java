@@ -32,6 +32,7 @@ import com.ic.myshop.R;
 import com.ic.myshop.auth.AuthService;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.DatabaseConstant;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Product;
@@ -41,7 +42,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private boolean getSuccess = false;
-    private TextView toolbarTitle, txtEmail, txtPhone, txtChangeAvatar, txtChangePassword;
+    private TextView toolbarTitle, txtEmail, txtPhone, txtChangeAvatar, txtChangePassword, txtName;
     private ImageButton btnBack;
     private ImageView avatar;
     private Button btnUpload;
@@ -141,7 +142,7 @@ public class UserInfoActivity extends AppCompatActivity {
                                 fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        dbFactory.updateAvatarUser(user.getId(), uri.toString());
+                                        dbFactory.updateFieldUser(user.getId(), InputParam.AVATAR, uri.toString());
                                     }
                                 });
                                 imageUri = null;
@@ -155,7 +156,10 @@ public class UserInfoActivity extends AppCompatActivity {
                         });
             }
             if (!user.getPhone().equals(txtPhone.getText().toString())) {
-                dbFactory.updatePhoneUser(user.getId(), txtPhone.getText().toString());
+                dbFactory.updateFieldUser(user.getId(), InputParam.PHONE, txtPhone.getText().toString());
+            }
+            if (!user.getName().equals(txtName.getText().toString())) {
+                dbFactory.updateFieldUser(user.getId(), InputParam.NAME, txtName.getText().toString());
             }
         }
     }
@@ -167,6 +171,7 @@ public class UserInfoActivity extends AppCompatActivity {
         avatar = findViewById(R.id.avatar);
         txtEmail = findViewById(R.id.txt_email);
         txtPhone = findViewById(R.id.txt_phone);
+        txtName = findViewById(R.id.txt_name);
         txtChangeAvatar = findViewById(R.id.txt_change_avatar);
         txtChangePassword = findViewById(R.id.txt_change_password);
         btnUpload = findViewById(R.id.btn_upload);

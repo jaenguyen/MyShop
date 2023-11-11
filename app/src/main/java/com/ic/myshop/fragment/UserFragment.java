@@ -23,6 +23,7 @@ import com.ic.myshop.activity.LikeProductsActivity;
 import com.ic.myshop.activity.MyOrderActivity;
 import com.ic.myshop.activity.MyProductActivity;
 import com.ic.myshop.activity.AccountSettingActivity;
+import com.ic.myshop.activity.StatisticsActivity;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.User;
@@ -30,7 +31,7 @@ import com.ic.myshop.model.User;
 public class UserFragment extends Fragment {
 
     private ImageView btnSetting, btnCart, avatar;
-    private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts, txtMyOrder;
+    private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts, txtMyOrder, txtName, txt_statistics;
     //db
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
@@ -51,9 +52,11 @@ public class UserFragment extends Fragment {
         txtAccountSetting = view.findViewById(R.id.txt_account_setting);
         txtMyProduct = view.findViewById(R.id.txt_my_product);
         avatar = view.findViewById(R.id.avatar);
+        txtName = view.findViewById(R.id.txt_name);
         txtEmail = view.findViewById(R.id.txt_email);
         txtLikeProducts = view.findViewById(R.id.txt_like_product);
         txtMyOrder = view.findViewById(R.id.txt_my_order);
+        txt_statistics = view.findViewById(R.id.txt_statistics);
         db = FirebaseFirestore.getInstance();
 
         // get info user
@@ -63,6 +66,7 @@ public class UserFragment extends Fragment {
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null && value.exists()) {
                             User user = value.toObject(User.class);
+                            txtName.setText(user.getName());
                             txtEmail.setText(user.getEmail());
                             Glide.with(getActivity())
                                     .load(user.getAvatar())
@@ -77,6 +81,7 @@ public class UserFragment extends Fragment {
         Intent intentCart = new Intent(getContext(), CartActivity.class);
         Intent intentLikeProducts = new Intent(getContext(), LikeProductsActivity.class);
         Intent intentMyOrder = new Intent(getContext(), MyOrderActivity.class);
+        Intent intentStatistics  = new Intent(getContext(), StatisticsActivity.class);
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +121,13 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(intentMyOrder);
+            }
+        });
+
+        txt_statistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intentStatistics);
             }
         });
     }

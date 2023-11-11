@@ -18,6 +18,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
+import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
 import com.ic.myshop.model.Like;
@@ -27,9 +28,7 @@ import com.ic.myshop.model.Statistics;
 import com.ic.myshop.model.User;
 import com.ic.myshop.output.BuyItem;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DbFactory {
@@ -69,12 +68,8 @@ public class DbFactory {
         documentReference.update("addresses", user.getAddresses());
     }
 
-    public void updatePhoneUser(String id, String phone) {
-        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update("phone", phone);
-    }
-
-    public void updateAvatarUser(String id, String avatar) {
-        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update("avatar", avatar);
+    public void updateFieldUser(String id, String field, String value) {
+        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update(field, value);
     }
 
     /*
@@ -258,5 +253,45 @@ public class DbFactory {
         CollectionReference collectionReference = firebaseFirestore.collection(DatabaseConstant.STATISTICS);
         collectionReference.add(new Statistics(orderId, getUserId(), price, 0, System.currentTimeMillis()));
         collectionReference.add(new Statistics(orderId, sellerId, price, 1, System.currentTimeMillis()));
+    }
+
+    // scope: 0->3, 1->6, 2->9, 3->12
+    // type: -1 -> all, 0-> -, 1 -> +
+    public Task<QuerySnapshot> getStatistics(String parentId, int scope, int type) {
+        long end = System.currentTimeMillis() - getTimestamp(scope);
+        if (type == 0) {
+            return getStatisticsDefault(parentId, end);
+        }
+        return firebaseFirestore.collection(DatabaseConstant.STATISTICS)
+                .whereEqualTo(InputParam.PARENT_ID, parentId)
+                .whereEqualTo(InputParam.TYPE, type == 1 ? 1 : 0)
+                .orderBy(InputParam.TIMESTAMP, Query.Direction.DESCENDING)
+                .startAfter(Long.MAX_VALUE)
+                .endAt(end)
+                .get();
+    }
+
+    public Task<QuerySnapshot> getStatisticsDefault(String parentId, long end) {
+        return firebaseFirestore.collection(DatabaseConstant.STATISTICS)
+                .whereEqualTo(InputParam.PARENT_ID, parentId)
+                .orderBy(InputParam.TIMESTAMP, Query.Direction.DESCENDING)
+                .startAfter(Long.MAX_VALUE)
+                .endAt(end)
+                .get();
+    }
+
+    public long getTimestamp(int scope) {
+        switch (scope) {
+            case 0:
+                return ConversionHelper.monthToMillisecond(3);
+            case 1:
+                return ConversionHelper.monthToMillisecond(6);
+            case 2:
+                return ConversionHelper.monthToMillisecond(9);
+            case 3:
+                return ConversionHelper.monthToMillisecond(12);
+            default:
+                return ConversionHelper.monthToMillisecond(3);
+        }
     }
 }

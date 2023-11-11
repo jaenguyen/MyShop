@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MyShop"
         tools:targetApi="31">
         <activity
+            android:name=".activity.StatisticsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.DetailCompleteOrderMainActivity"
             android:exported="false" />
         <activity
@@ -45,10 +48,13 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="demozpdk"
-                    android:host="app" />
+
+                <data
+                    android:host="app"
+                    android:scheme="demozpdk" />
             </intent-filter>
         </activity>
         <activity

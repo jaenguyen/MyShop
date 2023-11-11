@@ -202,12 +202,12 @@ public class BuyActivity extends AppCompatActivity {
             orderIds.add(dbFactory.createOrder(buyItem, address, payment));
             dbFactory.updateQuantityCartProduct(buyItem);
         }
-        if (Payment.get(payment) == Payment.IMMEDIATELY) {
+//        if (Payment.get(payment) == Payment.IMMEDIATELY) {
             for (int i = 0; i < buyItems.size(); i++) {
                 BuyItem buyItem = buyItems.get(i);
                 dbFactory.addOrUpdateStatistics(orderIds.get(i), buyItem.getPrice() * buyItem.getQuantity(), buyItem.getParentId());
             }
-        }
+//        }
         Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
         startActivity(intent);
         finish();

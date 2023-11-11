@@ -47,8 +47,8 @@ public class DetailCompleteOrderMainActivity extends AppCompatActivity {
         txtQuantity.setText(String.format("x%d", orderOutput.getQuantity()));
         totalPrice.setText(String.format("₫ %s", ConversionHelper.formatNumber(orderOutput.getTotalPrice())));
         txtId.setText(orderOutput.getId());
-        txtCreatedTime.setText(ConversionHelper.formatDate(orderOutput.getCreatedTime()));
-        txtUpdatedTime.setText(ConversionHelper.formatDate(orderOutput.getUpdatedTime()));
+        txtCreatedTime.setText(ConversionHelper.formatDateTime(orderOutput.getCreatedTime()));
+        txtUpdatedTime.setText(ConversionHelper.formatDateTime(orderOutput.getUpdatedTime()));
         txtPaymentForm.setText(Payment.valueOf(orderOutput.getPayment()));
         Glide.with(this).load(orderOutput.getImageUrl()).into(imageView);
 

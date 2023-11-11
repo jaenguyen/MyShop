@@ -14,4 +14,5 @@ public class InputParam {
     public static final String AVATAR = "avatar";
     public static final String NAME = "name";
     public static final String PHONE = "phone";
+    public static final String TIMESTAMP = "timestamp";
 }

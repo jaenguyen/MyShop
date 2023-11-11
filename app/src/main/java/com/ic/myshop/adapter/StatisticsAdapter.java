@@ -1,6 +1,5 @@
 package com.ic.myshop.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,11 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.St
 
     private Context context;
     private List<Statistics> statisticsList;
+
+    public StatisticsAdapter(Context context, List<Statistics> statisticsList) {
+        this.context = context;
+        this.statisticsList = statisticsList;
+    }
 
     public StatisticsAdapter(Context context) {
         this.context = context;

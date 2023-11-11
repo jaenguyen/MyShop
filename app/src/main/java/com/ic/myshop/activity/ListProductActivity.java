@@ -48,7 +48,7 @@ public class ListProductActivity extends AppCompatActivity {
         field = (String) getIntent().getSerializableExtra(InputParam.FIELD);
 
         init();
-        dbFactory.getListProduct(type, field, maxScore, 4).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        dbFactory.getListProduct(type, field, maxScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -122,7 +122,7 @@ public class ListProductActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dbFactory.getListProduct(type, field, maxScore, 4).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                dbFactory.getListProduct(type, field, maxScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {

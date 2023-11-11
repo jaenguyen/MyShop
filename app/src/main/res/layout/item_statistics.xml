@@ -8,13 +8,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
         <TextView
             android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:text="Thanh toán đơn hàng"
@@ -25,7 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_title"
-            android:layout_marginLeft="20dp"
             android:text="Mã đơn hàng: 231809381093" />
 
         <TextView
@@ -34,9 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
             android:text="+ 7,000,000 VNĐ"
             android:textColor="@color/green_pastel" />
 

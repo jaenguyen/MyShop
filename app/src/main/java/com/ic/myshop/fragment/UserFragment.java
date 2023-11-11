@@ -30,7 +30,7 @@ import com.ic.myshop.model.User;
 public class UserFragment extends Fragment {
 
     private ImageView btnSetting, btnCart, avatar;
-    private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts, txtMyOrder;
+    private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts, txtMyOrder, txtName;
     //db
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
@@ -51,6 +51,7 @@ public class UserFragment extends Fragment {
         txtAccountSetting = view.findViewById(R.id.txt_account_setting);
         txtMyProduct = view.findViewById(R.id.txt_my_product);
         avatar = view.findViewById(R.id.avatar);
+        txtName = view.findViewById(R.id.txt_name);
         txtEmail = view.findViewById(R.id.txt_email);
         txtLikeProducts = view.findViewById(R.id.txt_like_product);
         txtMyOrder = view.findViewById(R.id.txt_my_order);
@@ -63,6 +64,7 @@ public class UserFragment extends Fragment {
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null && value.exists()) {
                             User user = value.toObject(User.class);
+                            txtName.setText(user.getName());
                             txtEmail.setText(user.getEmail());
                             Glide.with(getActivity())
                                     .load(user.getAvatar())

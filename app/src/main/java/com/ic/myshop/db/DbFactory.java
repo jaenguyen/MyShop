@@ -69,12 +69,8 @@ public class DbFactory {
         documentReference.update("addresses", user.getAddresses());
     }
 
-    public void updatePhoneUser(String id, String phone) {
-        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update("phone", phone);
-    }
-
-    public void updateAvatarUser(String id, String avatar) {
-        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update("avatar", avatar);
+    public void updateFieldUser(String id, String field, String value) {
+        firebaseFirestore.collection(DatabaseConstant.USERS).document(id).update(field, value);
     }
 
     /*

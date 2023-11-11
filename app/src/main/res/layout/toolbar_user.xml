@@ -45,13 +45,25 @@
         android:src="@drawable/avatar_null" />
 
     <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/txt_email"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/avatar"
+        android:text="Jae"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/white"
+        android:textSize="13dp" />
+
+    <TextView
         android:id="@+id/txt_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_cart"
+        android:layout_alignBottom="@id/avatar"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_toEndOf="@id/avatar"
+        android:layout_toRightOf="@id/avatar"
         android:text="user@myshop.com"
         android:textColor="@color/white"
         android:textSize="13dp" />

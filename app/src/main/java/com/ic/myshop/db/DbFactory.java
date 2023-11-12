@@ -34,6 +34,7 @@ import java.util.Map;
 public class DbFactory {
 
     private static final DbFactory dbFactory = new DbFactory();
+    private static final SearchService searchService = SearchService.getInstance();
     private FirebaseFirestore firebaseFirestore;
     private FirebaseStorage firebaseStorage;
 
@@ -87,6 +88,8 @@ public class DbFactory {
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document();
         product.setId(documentReference.getId());
         documentReference.set(product);
+        // add to search
+        searchService.addProduct(product);
     }
 
     public Task<DocumentSnapshot> getProduct(String productId) {

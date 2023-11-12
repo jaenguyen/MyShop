@@ -39,6 +39,12 @@ public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdap
         notifyDataSetChanged();
     }
 
+    public void addProducts(List<Product> products) {
+        this.products.addAll(products);
+        for (Product product : products) productIds.add(product.getId());
+        notifyDataSetChanged();
+    }
+
     public void clear() {
         this.products.clear();
         this.productIds.clear();

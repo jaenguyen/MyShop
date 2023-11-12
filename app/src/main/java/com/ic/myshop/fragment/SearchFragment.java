@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,13 +25,22 @@ import com.ic.myshop.activity.CartActivity;
 import com.ic.myshop.adapter.SearchProductAdapter;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.db.DbFactory;
+import com.ic.myshop.helper.ApiService;
 import com.ic.myshop.model.Product;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchFragment extends Fragment {
 
     private ImageView btnCart;
     private RecyclerView rcvProduct;
-    protected LinearLayoutManager linearLayoutManager;
+    protected GridLayoutManager gridLayoutManager;
     private SearchProductAdapter productAdapter;
     private SearchView searchView;
     private FirebaseFirestore db;
@@ -51,8 +61,8 @@ public class SearchFragment extends Fragment {
         btnCart = view.findViewById(R.id.btn_cart);
         db = FirebaseFirestore.getInstance();
         rcvProduct = view.findViewById(R.id.rcv_search);
-        linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        rcvProduct.setLayoutManager(linearLayoutManager);
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        rcvProduct.setLayoutManager(gridLayoutManager);
         productAdapter = new SearchProductAdapter(getContext());
         rcvProduct.setAdapter(productAdapter);
 
@@ -69,49 +79,47 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (query.length() > 0) {
-                    db.collection(DatabaseConstant.PRODUCTS)
-                            .whereGreaterThanOrEqualTo("name", query)
-                            .whereLessThanOrEqualTo("name", query + "~")
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        productAdapter.clear();
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            Product product = document.toObject(Product.class);
-                                            productAdapter.addProduct(product);
-                                        }
-                                    } else {
-                                    }
-                                }
-                            });
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("name", query);
+                    ApiService.apiService.search(params).enqueue(new Callback<List<Product>>() {
+                        @Override
+                        public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                            productAdapter.clear();
+                            List<Product> products = response.body();
+                            productAdapter.addProducts(products);
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Product>> call, Throwable t) {
+
+                        }
+                    });
                 }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length() > 0) {
-                    db.collection(DatabaseConstant.PRODUCTS)
-                            .whereGreaterThanOrEqualTo("name", newText)
-                            .whereLessThanOrEqualTo("name", newText + '\uf8ff')
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        productAdapter.clear();
-
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            Product product = document.toObject(Product.class);
-                                            productAdapter.addProduct(product);
-                                        }
-                                    } else {
-                                    }
-                                }
-                            });
-                }
+//                if (newText.length() > 0) {
+//                    db.collection(DatabaseConstant.PRODUCTS)
+//                            .whereGreaterThanOrEqualTo("name", newText)
+//                            .whereLessThanOrEqualTo("name", newText + '\uf8ff')
+//                            .get()
+//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//                                        productAdapter.clear();
+//
+//                                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                                            Product product = document.toObject(Product.class);
+//                                            productAdapter.addProduct(product);
+//                                        }
+//                                    } else {
+//                                    }
+//                                }
+//                            });
+//                }
                 return false;
             }
         });

@@ -41,5 +41,11 @@
         <item>Tiền vào</item>
         <item>Tiền ra</item>
     </string-array>
-
+    <string-array name="sort">
+        <item>Mặc định</item>
+        <item>Nổi bật</item>
+        <item>Được yêu thích</item>
+        <item>Giá tăng dần</item>
+        <item>Giá giảm dần</item>
+    </string-array>
 </resources>

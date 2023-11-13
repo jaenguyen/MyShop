@@ -18,6 +18,8 @@ import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Product;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
@@ -82,6 +84,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public int getItemCount() {
         if (products != null) return products.size();
         return 0;
+    }
+
+    public void sort(int sortType) {
+        Comparator<Product> comparator = null;
+        switch (sortType) {
+            case 0:
+                comparator = Comparator.comparingLong(Product::getCreatedTime);
+                break;
+            case 1:
+                comparator = Comparator.comparingLong(Product::getSoldNumber);
+                break;
+            case 2:
+                comparator = Comparator.comparingLong(Product::getLikes);
+                break;
+            case 3:
+            case 4:
+                comparator = Comparator.comparingLong(Product::getPrice);
+                break;
+        }
+        if (sortType != 3) comparator = comparator.reversed();
+        Collections.sort(products, comparator);
+        notifyDataSetChanged();
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {

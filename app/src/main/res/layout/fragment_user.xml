@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Sản phẩm của tôi"
+                android:text="Cửa hàng của tôi"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
         </LinearLayout>

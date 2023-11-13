@@ -136,9 +136,9 @@ public class DbFactory {
                 .startAfter(from).limit(limit).get();
     }
 
-    public Task<QuerySnapshot> getProductsSelfDefault(long from, int limit) {
+    public Task<QuerySnapshot> getProductsSelfDefault(String parentId, long from, int limit) {
         return firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
-                .whereEqualTo(InputParam.PARENT_ID, dbFactory.getUserId())
+                .whereEqualTo(InputParam.PARENT_ID, parentId)
                 .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
                 .startAfter(from).limit(limit).get();
     }

@@ -21,16 +21,19 @@ import com.ic.myshop.R;
 import com.ic.myshop.activity.CartActivity;
 import com.ic.myshop.activity.LikeProductsActivity;
 import com.ic.myshop.activity.MyOrderActivity;
-import com.ic.myshop.activity.MyProductActivity;
+import com.ic.myshop.activity.MyShopActivity;
 import com.ic.myshop.activity.AccountSettingActivity;
 import com.ic.myshop.activity.StatisticsActivity;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.User;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserFragment extends Fragment {
 
-    private ImageView btnSetting, btnCart, avatar;
+    private ImageView btnSetting, btnCart;
+    private CircleImageView avatar;
     private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts, txtMyOrder, txtName, txt_statistics;
     //db
     private FirebaseFirestore db;
@@ -77,7 +80,7 @@ public class UserFragment extends Fragment {
                 });
 
         Intent intentAccountSetting = new Intent(getContext(), AccountSettingActivity.class);
-        Intent intentMyProduct = new Intent(getContext(), MyProductActivity.class);
+        Intent intentMyProduct = new Intent(getContext(), MyShopActivity.class);
         Intent intentCart = new Intent(getContext(), CartActivity.class);
         Intent intentLikeProducts = new Intent(getContext(), LikeProductsActivity.class);
         Intent intentMyOrder = new Intent(getContext(), MyOrderActivity.class);

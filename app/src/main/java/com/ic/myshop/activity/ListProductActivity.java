@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,12 +40,13 @@ public class ListProductActivity extends AppCompatActivity {
     private boolean isScrolling = false;
     private static final DbFactory dbFactory = DbFactory.getInstance();
     private String type, field;
+    private Spinner sortSpinner;
     FloatingActionButton btnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_product);
+        setContentView(R.layout.activity_my_shop);
 
         type = (String) getIntent().getSerializableExtra(InputParam.TYPE);
         field = (String) getIntent().getSerializableExtra(InputParam.FIELD);
@@ -101,6 +105,20 @@ public class ListProductActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // 0: nổi bật, 1: được yêu thích, 2: giá tăng dần, 3: giá giảm dần
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int sortType, long id) {
+                    productAdapter.sort(sortType);
+                    rcvProduct.scrollToPosition(0);
+                }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void init() {
@@ -115,6 +133,9 @@ public class ListProductActivity extends AppCompatActivity {
         rcvProduct.setAdapter(productAdapter);
         btnAdd = findViewById(R.id.btn_add);
         btnAdd.setVisibility(View.GONE);
+        sortSpinner = findViewById(R.id.sort_spinner);
+        sortSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_type_product,
+                getResources().getStringArray(R.array.sort)));
     }
 
     private void loadMoreProduct() {

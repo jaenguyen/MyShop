@@ -1,5 +1,6 @@
 package com.ic.myshop.activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,14 +25,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.DatabaseConstant;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Product;
+import com.ic.myshop.model.User;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProductActivity extends AppCompatActivity {
     int quantity = 1;
@@ -40,6 +47,11 @@ public class ProductActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
     boolean isLiked = false;
+    // shop
+    CircleImageView imgShop;
+    TextView txtNameShop;
+    Button btnViewShop;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +70,19 @@ public class ProductActivity extends AppCompatActivity {
             txtSoldNumber.setText(String.format("Đã bán %d", product.getSoldNumber()));
             txtType.setText(product.getType());
             txtDescription.setText(product.getDescription());
+
+            dbFactory.getUser(product.getParentId())
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            User user = task.getResult().toObject(User.class);
+                            Glide.with(getApplicationContext())
+                                    .load(user.getAvatar())
+                                    .fitCenter()
+                                    .into(imgShop);
+                            txtNameShop.setText(user.getName());
+                        }
+                    });
         }
 
         db.collection(DatabaseConstant.LIKES)
@@ -94,6 +119,10 @@ public class ProductActivity extends AppCompatActivity {
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (product.getParentId().equals(dbFactory.getUserId())) {
+                    Toast.makeText(ProductActivity.this, MessageConstant.OWN_PRODUCT, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 quantity = 1;
                 // Tạo một Dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this);
@@ -156,6 +185,10 @@ public class ProductActivity extends AppCompatActivity {
         btnBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (product.getParentId().equals(dbFactory.getUserId())) {
+                    Toast.makeText(ProductActivity.this, MessageConstant.OWN_PRODUCT, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 quantity = 1;
                 // Tạo một Dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this);
@@ -216,6 +249,15 @@ public class ProductActivity extends AppCompatActivity {
                 });
             }
         });
+
+        btnViewShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyShopActivity.class);
+                intent.putExtra(InputParam.USER_ID, product.getParentId());
+                startActivity(intent);
+            }
+        });
     }
 
     private void init() {
@@ -232,5 +274,8 @@ public class ProductActivity extends AppCompatActivity {
         imageViewLike = findViewById(R.id.image_view_like);
         btnBuyNow = findViewById(R.id.btn_buy_now);
         db = FirebaseFirestore.getInstance();
+        imgShop = findViewById(R.id.img_shop);
+        txtNameShop = findViewById(R.id.txt_name_shop);
+        btnViewShop = findViewById(R.id.btn_view_shop);
     }
 }

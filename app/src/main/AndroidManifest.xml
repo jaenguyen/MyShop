@@ -68,7 +68,7 @@
             android:name=".activity.AddProductActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MyProductActivity"
+            android:name=".activity.MyShopActivity"
             android:exported="false" />
         <activity
             android:name=".activity.AccountSettingActivity"

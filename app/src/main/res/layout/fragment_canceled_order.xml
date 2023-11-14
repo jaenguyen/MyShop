@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context=".fragment.CompletedOrderFragment">
+    tools:context=".fragment.order.CompletedOrderFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

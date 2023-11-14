@@ -8,7 +8,5 @@ public class DatabaseConstant {
     public static final String IMAGES = "images";
     public static final String ORDERS = "orders";
     public static final String LIKES = "likes";
-
-
     public static final String STATISTICS = "statistics";
 }

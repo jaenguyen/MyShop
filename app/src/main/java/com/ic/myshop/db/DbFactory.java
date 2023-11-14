@@ -96,6 +96,10 @@ public class DbFactory {
         return firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId).get();
     }
 
+    public Task<QuerySnapshot> getAllProducts() {
+        return firebaseFirestore.collection(DatabaseConstant.PRODUCTS).get();
+    }
+
     public void createCart(String userId) {
         String id = getCartId(userId);
         Cart cart = new Cart(id, userId);

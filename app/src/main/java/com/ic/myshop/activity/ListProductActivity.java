@@ -46,7 +46,7 @@ public class ListProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_shop);
+        setContentView(R.layout.layout_list_product);
 
         type = (String) getIntent().getSerializableExtra(InputParam.TYPE);
         field = (String) getIntent().getSerializableExtra(InputParam.FIELD);

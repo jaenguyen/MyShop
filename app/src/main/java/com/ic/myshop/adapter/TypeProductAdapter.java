@@ -19,25 +19,25 @@ import com.ic.myshop.output.TypeProductItem;
 
 import java.util.List;
 
-public class TypeProduceAdapter extends RecyclerView.Adapter<TypeProduceAdapter.AddressViewHolder> {
+public class TypeProductAdapter extends RecyclerView.Adapter<TypeProductAdapter.TypeProductItemViewHolder> {
 
     private Context context;
     private List<TypeProductItem> typeProductItems;
 
-    public TypeProduceAdapter(Context context, List<TypeProductItem> typeProductItems) {
+    public TypeProductAdapter(Context context, List<TypeProductItem> typeProductItems) {
         this.context = context;
         this.typeProductItems = typeProductItems;
     }
 
     @NonNull
     @Override
-    public AddressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TypeProductItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_type_product, parent, false);
-        return new AddressViewHolder(view);
+        return new TypeProductItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AddressViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TypeProductItemViewHolder holder, int position) {
         TypeProductItem typeProductItem = typeProductItems.get(position);
         if (typeProductItem == null) return;
         holder.name.setText(typeProductItem.getName());
@@ -58,12 +58,12 @@ public class TypeProduceAdapter extends RecyclerView.Adapter<TypeProduceAdapter.
         return 0;
     }
 
-    public class AddressViewHolder extends RecyclerView.ViewHolder {
+    public class TypeProductItemViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
         private ImageView image;
 
-        public AddressViewHolder(@NonNull View itemView) {
+        public TypeProductItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
             name = itemView.findViewById(R.id.name_type_product);

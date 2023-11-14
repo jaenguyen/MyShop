@@ -24,7 +24,7 @@ import com.ic.myshop.activity.CartActivity;
 import com.ic.myshop.activity.ListProductActivity;
 import com.ic.myshop.adapter.HomeProductAdapter;
 import com.ic.myshop.adapter.SliderAdapter;
-import com.ic.myshop.adapter.TypeProduceAdapter;
+import com.ic.myshop.adapter.TypeProductAdapter;
 import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.constant.TypeProduct;
 import com.ic.myshop.db.DbFactory;
@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
     private HomeProductAdapter hotProductAdapter;
     private HomeProductAdapter newProductAdapter;
     private HomeProductAdapter likedProductAdapter;
-    private TypeProduceAdapter typeProduceAdapter;
+    private TypeProductAdapter typeProduceAdapter;
     private TextView getAllHot;
     private TextView getAllNew;
     private TextView getAllLiked;
@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment {
         hotProductAdapter = new HomeProductAdapter(getContext());
         newProductAdapter = new HomeProductAdapter(getContext());
         likedProductAdapter = new HomeProductAdapter(getContext());
-        typeProduceAdapter = new TypeProduceAdapter(getContext(), getTypeProduct());
+        typeProduceAdapter = new TypeProductAdapter(getContext(), getTypeProduct());
         rcvHotProduct.setAdapter(hotProductAdapter);
         rcvNewProduct.setAdapter(newProductAdapter);
         rcvLikedProduct.setAdapter(likedProductAdapter);

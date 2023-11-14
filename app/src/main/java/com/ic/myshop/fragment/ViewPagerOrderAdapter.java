@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class ViewPagerOderAdapter extends FragmentStatePagerAdapter {
+public class ViewPagerOrderAdapter extends FragmentStatePagerAdapter {
 
 
-    public ViewPagerOderAdapter(@NonNull FragmentManager fm, int behavior) {
+    public ViewPagerOrderAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
 
@@ -23,6 +23,8 @@ public class ViewPagerOderAdapter extends FragmentStatePagerAdapter {
                 return new DeliveredOrderFragment();
             case 2:
                 return new CompletedOrderFragment();
+            case 3:
+                return new CanceledOrderFragment();
             default:
                 return new ConfirmgOrderFragment();
         }
@@ -30,7 +32,7 @@ public class ViewPagerOderAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Nullable
@@ -47,6 +49,8 @@ public class ViewPagerOderAdapter extends FragmentStatePagerAdapter {
             case 2:
                 title = "Đã hoàn thành";
                 break;
+            case 3:
+                title = "Đã hủy";
         }
         return title;
     }

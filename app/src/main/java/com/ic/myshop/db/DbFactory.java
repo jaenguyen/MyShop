@@ -102,10 +102,15 @@ public class DbFactory {
         firebaseFirestore.collection(DatabaseConstant.CARTS).document(id).set(cart);
     }
 
-    public void updateSellNumber(BuyItem buyItem) {
-        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(buyItem.getId());
-        documentReference.update("sellNumber", FieldValue.increment(buyItem.getQuantity() * -1));
-        // TODO: đánh giá cập nhập luôn số lượng bán
+    public void updateSellNumber(String productId, int quantity) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId);
+        documentReference.update("sellNumber", FieldValue.increment(quantity * -1));
+        // TODO: đánh giá cập nhập luôn số lượng bán => Không, bh đơn hàng chuyển status về 2 thì trừ
+    }
+
+    public void updateSoldNumber(String productId, int quantity) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId);
+        documentReference.update("soldNumber", FieldValue.increment(quantity));
     }
 
     public Task<QuerySnapshot> getListProduct(String type, String field, long from, int limit) {
@@ -195,9 +200,12 @@ public class DbFactory {
         return order.getId();
     }
 
-    public void updateQuantityCartProduct(BuyItem buyItem) {
+    public void updateQuantityProduct(BuyItem buyItem) {
+        // xóa sp trong giỏ
         deleteCart(buyItem.getId());
-        updateSellNumber(buyItem);
+        // trừ số lượng tồn
+        updateSellNumber(buyItem.getId(), buyItem.getQuantity());
+        // thêm số lượng bán
     }
 
     public void updateStatusOrder(String id, int status) {

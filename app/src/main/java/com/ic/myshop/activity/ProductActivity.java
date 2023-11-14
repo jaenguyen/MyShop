@@ -238,13 +238,13 @@ public class ProductActivity extends AppCompatActivity {
                 btnAddToCart1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.dismiss();
                         HashMap<String, Integer> products = new HashMap<>();
                         products.put(product.getId(), quantity);
                         Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
                         intent.putExtra("cartItems", (Serializable) products);
                         intent.putExtra(Constant.BUY_NOW, true);
                         startActivity(intent);
+                        dialog.dismiss();
                     }
                 });
             }

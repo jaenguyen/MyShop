@@ -20,6 +20,9 @@
             android:name=".activity.StatisticsActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.DetailCanceledOrderMainActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.DetailCompleteOrderMainActivity"
             android:exported="false" />
         <activity

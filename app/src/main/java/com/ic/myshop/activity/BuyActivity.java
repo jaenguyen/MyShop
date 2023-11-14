@@ -200,14 +200,18 @@ public class BuyActivity extends AppCompatActivity {
         List<String> orderIds = new ArrayList<>();
         for (BuyItem buyItem : buyItems) {
             orderIds.add(dbFactory.createOrder(buyItem, address, payment));
-            dbFactory.updateQuantityCartProduct(buyItem);
+            // khi tạo đơn hàng sẽ trừ số lượng trong kho
+            dbFactory.updateQuantityProduct(buyItem);
         }
-//        if (Payment.get(payment) == Payment.IMMEDIATELY) {
+        // nếu thực hiện thanh toán trực tiếp thì sẽ tạo thống kê lun
+        // không cho hủy đơn hàng đã thanh toán
+        // khi xác nhận giao hàng chỉ tạo hóa đơn cho đơn hàng COD
+        if (Payment.get(payment) == Payment.IMMEDIATELY) {
             for (int i = 0; i < buyItems.size(); i++) {
                 BuyItem buyItem = buyItems.get(i);
                 dbFactory.addOrUpdateStatistics(orderIds.get(i), buyItem.getPrice() * buyItem.getQuantity(), buyItem.getParentId());
             }
-//        }
+        }
         Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
         startActivity(intent);
         finish();

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.ic.myshop.R;
 import com.ic.myshop.constant.Constant;
-import com.ic.myshop.fragment.ViewPagerOderAdapter;
+import com.ic.myshop.fragment.ViewPagerOrderAdapter;
 
 public class MyOrderActivity extends AppCompatActivity {
 
@@ -27,7 +27,7 @@ public class MyOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_order);
         init();
 
-        ViewPagerOderAdapter viewPagerOderAdapter = new ViewPagerOderAdapter(getSupportFragmentManager(),
+        ViewPagerOrderAdapter viewPagerOderAdapter = new ViewPagerOrderAdapter(getSupportFragmentManager(),
                 FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(viewPagerOderAdapter);
         tabLayout.setupWithViewPager(viewPager);

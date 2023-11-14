@@ -63,6 +63,10 @@ public class DetailDeliveryOrderMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dbFactory.updateStatusOrder(orderOutput.getId(), 2);
+                dbFactory.updateSoldNumber(orderOutput.getProductId(), orderOutput.getQuantity());
+                if (orderOutput.getPayment() == Payment.COD.valueOf()) {
+                    dbFactory.addOrUpdateStatistics(orderOutput.getId(), orderOutput.getPrice() * orderOutput.getQuantity(), orderOutput.getSellerId());
+                }
                 onBackPressed();
             }
         });

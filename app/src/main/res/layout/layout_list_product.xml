@@ -5,16 +5,10 @@
 
     <LinearLayout
         android:id="@+id/ln_sort"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Danh sách sản phẩm"/>
 
         <TextView
             android:layout_width="wrap_content"

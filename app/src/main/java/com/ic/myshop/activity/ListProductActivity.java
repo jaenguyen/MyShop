@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
@@ -41,12 +40,11 @@ public class ListProductActivity extends AppCompatActivity {
     private static final DbFactory dbFactory = DbFactory.getInstance();
     private String type, field;
     private Spinner sortSpinner;
-    FloatingActionButton btnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_list_product);
+        setContentView(R.layout.activity_list_product);
 
         type = (String) getIntent().getSerializableExtra(InputParam.TYPE);
         field = (String) getIntent().getSerializableExtra(InputParam.FIELD);
@@ -131,8 +129,6 @@ public class ListProductActivity extends AppCompatActivity {
         rcvProduct.setLayoutManager(layoutManager);
         productAdapter = new ProductAdapter(this);
         rcvProduct.setAdapter(productAdapter);
-        btnAdd = findViewById(R.id.btn_add);
-        btnAdd.setVisibility(View.GONE);
         sortSpinner = findViewById(R.id.sort_spinner);
         sortSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_type_product,
                 getResources().getStringArray(R.array.sort)));

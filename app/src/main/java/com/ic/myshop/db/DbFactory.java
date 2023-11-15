@@ -18,6 +18,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
+import com.ic.myshop.constant.SortField;
+import com.ic.myshop.constant.TypeProduct;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
@@ -96,32 +98,25 @@ public class DbFactory {
         return firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId).get();
     }
 
+    public Task<QuerySnapshot> getAllProducts() {
+        return firebaseFirestore.collection(DatabaseConstant.PRODUCTS).get();
+    }
+
     public void createCart(String userId) {
         String id = getCartId(userId);
         Cart cart = new Cart(id, userId);
         firebaseFirestore.collection(DatabaseConstant.CARTS).document(id).set(cart);
     }
 
-    public void updateSellNumber(BuyItem buyItem) {
-        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(buyItem.getId());
-        documentReference.update("sellNumber", FieldValue.increment(buyItem.getQuantity() * -1));
-        // TODO: đánh giá cập nhập luôn số lượng bán
+    public void updateSellNumber(String productId, int quantity) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId);
+        documentReference.update("sellNumber", FieldValue.increment(quantity * -1));
+        // TODO: đánh giá cập nhập luôn số lượng bán => Không, bh đơn hàng chuyển status về 2 thì trừ
     }
 
-    public Task<QuerySnapshot> getListProduct(String type, String field, long from, int limit) {
-        if (type != null)
-            return getListProductByType(type, from, limit);
-        if (field != null && !field.equals(InputParam.CREATED_TIME)) {
-            return getListProductByField(field, from, limit);
-        }
-        return getProductsDefault(from, limit);
-    }
-
-    public Task<QuerySnapshot> getListProductByType(String type, long from, int limit) {
-        return firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
-                .whereEqualTo(InputParam.TYPE, type)
-                .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
-                .startAfter(from).limit(limit).get();
+    public void updateSoldNumber(String productId, int quantity) {
+        DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId);
+        documentReference.update("soldNumber", FieldValue.increment(quantity));
     }
 
     public Task<QuerySnapshot> getListProductByField(String field, long from, int limit) {
@@ -136,11 +131,44 @@ public class DbFactory {
                 .startAfter(from).limit(limit).get();
     }
 
-    public Task<QuerySnapshot> getProductsSelfDefault(long from, int limit) {
-        return firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
-                .whereEqualTo(InputParam.PARENT_ID, dbFactory.getUserId())
-                .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
-                .startAfter(from).limit(limit).get();
+    // TODO: 15/11
+    public Task<QuerySnapshot> getProducts(TypeProduct typeProduct, SortField sortField, long from, long to, int limit) {
+        if (sortField.equals(SortField.PRICE_LOW)) {
+            from = to;
+        }
+        Query query = firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
+                .orderBy(SortField.getField(sortField), SortField.getSortType(sortField) == 0 ? Query.Direction.ASCENDING : Query.Direction.DESCENDING)
+                .startAt(from);
+        if (sortField.equals(SortField.BEST_SELLERS)) {
+            query = query.endBefore(0);
+        }
+        if (!typeProduct.equals(TypeProduct.ALL)) {
+            query = query.whereEqualTo(InputParam.TYPE, TypeProduct.getName(typeProduct));
+        }
+        if (limit > 0) {
+            query = query.limit(limit);
+        }
+        return query.get();
+    }
+
+    public Task<QuerySnapshot> getProductsOfUser(String userId, TypeProduct typeProduct, SortField sortField, long from, long to, int limit) {
+        if (sortField.equals(SortField.PRICE_LOW)) {
+            from = to;
+        }
+        Query query = firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
+                .orderBy(SortField.getField(sortField), SortField.getSortType(sortField) == 0 ? Query.Direction.ASCENDING : Query.Direction.DESCENDING)
+                .startAt(from);
+        if (sortField.equals(SortField.BEST_SELLERS)) {
+            query = query.endBefore(0);
+        }
+        if (!typeProduct.equals(TypeProduct.ALL)) {
+            query = query.whereEqualTo(InputParam.TYPE, TypeProduct.getName(typeProduct));
+        }
+            query = query.whereEqualTo(InputParam.PARENT_ID, userId);
+        if (limit > 0) {
+            query = query.limit(limit);
+        }
+        return query.get();
     }
 
     /*
@@ -195,9 +223,12 @@ public class DbFactory {
         return order.getId();
     }
 
-    public void updateQuantityCartProduct(BuyItem buyItem) {
+    public void updateQuantityProduct(BuyItem buyItem) {
+        // xóa sp trong giỏ
         deleteCart(buyItem.getId());
-        updateSellNumber(buyItem);
+        // trừ số lượng tồn
+        updateSellNumber(buyItem.getId(), buyItem.getQuantity());
+        // thêm số lượng bán
     }
 
     public void updateStatusOrder(String id, int status) {

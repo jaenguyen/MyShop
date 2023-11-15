@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ic.myshop.R;
-import com.ic.myshop.fragment.ViewPagerAdapter;
+import com.ic.myshop.fragment.home.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

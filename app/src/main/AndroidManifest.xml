@@ -17,34 +17,40 @@
         android:theme="@style/Theme.MyShop"
         tools:targetApi="31">
         <activity
-            android:name=".activity.StatisticsActivity"
+            android:name=".activity.usecase.ListCategoryProductActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.DetailCompleteOrderMainActivity"
+            android:name=".activity.user.StatisticsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.DetailDeliveryOrderMainActivity"
+            android:name=".activity.order.DetailCanceledOrderMainActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.DetailConfirmOrderMainActivity"
+            android:name=".activity.order.DetailCompleteOrderMainActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MyOrderActivity"
+            android:name=".activity.order.DetailDeliveryOrderMainActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ListProductActivity"
+            android:name=".activity.order.DetailConfirmOrderMainActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.LikeProductsActivity"
+            android:name=".activity.user.MyOrderActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddressActivity"
+            android:name=".activity.usecase.ListProductActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.UserInfoActivity"
+            android:name=".activity.user.LikeProductsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.BuyActivity"
+            android:name=".activity.setting.AddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.setting.UserInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.usecase.BuyActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
@@ -59,28 +65,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ProductActivity"
+            android:name=".activity.usecase.ProductActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.CartActivity"
+            android:name=".activity.usecase.CartActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddProductActivity"
+            android:name=".activity.func.AddProductActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MyProductActivity"
+            android:name=".activity.user.MyShopActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AccountSettingActivity"
+            android:name=".activity.user.AccountSettingActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ForgotActivity"
+            android:name=".activity.func.ForgotActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.SignupActivity"
+            android:name=".activity.func.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.func.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"

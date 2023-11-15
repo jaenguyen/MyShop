@@ -18,4 +18,6 @@ public class MessageConstant {
     public static final String NOT_HAVE_FUNCTION = "Tính năng đang phát triển";
     public static final String SOLD_OUT = "Sản phẩm đã hết hàng";
     public static final String FAIL = "Có lỗi xảy ra";
+    public static final String OWN_PRODUCT = "Đây là sản phẩm của bạn";
+    public static final String CAN_NOT_CANCEL_IMMEDIATELY_ORDER = "Không thể hủy đơn hàng đã thanh toán";
 }

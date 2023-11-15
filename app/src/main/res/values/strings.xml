@@ -19,6 +19,7 @@
     <string name="product_image">Ảnh mô tả</string>
     <string name="add_product">Thêm địa chỉ</string>
     <string-array name="type">
+        <item>Tất cả</item>
         <item>Thời trang</item>
         <item>Điện tử</item>
         <item>Sức khỏe</item>
@@ -41,5 +42,11 @@
         <item>Tiền vào</item>
         <item>Tiền ra</item>
     </string-array>
-
+    <string-array name="sort">
+        <item>Mới nhất</item>
+        <item>Nổi bật</item>
+        <item>Được yêu thích</item>
+        <item>Giá tăng dần</item>
+        <item>Giá giảm dần</item>
+    </string-array>
 </resources>

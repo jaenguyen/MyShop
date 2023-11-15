@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MyProductActivity">
+    tools:context=".activity.user.MyShopActivity">
 
     <include
         android:id="@+id/toolbar_account_setting"
         layout="@layout/toolbar_extra" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_product"
+    <include
+        android:id="@+id/list_product"
+        layout="@layout/layout_list_product"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar_account_setting"

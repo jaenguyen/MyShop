@@ -57,6 +57,10 @@ public enum TypeProduct {
         return null;
     }
 
+    public static int getCode(TypeProduct typeProduct) {
+        return typeProduct.code;
+    }
+
     public static String getName(int code) {
         switch (code) {
             case 0:

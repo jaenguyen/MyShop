@@ -52,6 +52,12 @@ public class ListCategoryProductActivity extends AppCompatActivity {
 
         typeProduct = (TypeProduct) getIntent().getSerializableExtra(InputParam.TYPE);
         sortField = (SortField) getIntent().getSerializableExtra(InputParam.FIELD);
+        if (typeProduct == null) {
+            typeProduct = TypeProduct.ALL;
+        }
+        if (sortField == null) {
+            sortField = SortField.NEWEST_ARRIVALS;
+        }
         init();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +143,7 @@ public class ListCategoryProductActivity extends AppCompatActivity {
         sortSpinner = findViewById(R.id.sort_spinner);
         sortSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_type_product,
                 getResources().getStringArray(R.array.sort)));
-        sortSpinner.setSelection(SortField.getCode(SortField.NEWEST_ARRIVALS));
+        sortSpinner.setSelection(SortField.getCode(sortField));
     }
 
     private void loadMoreProduct() {

@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.usecase.ListCategoryProductActivity;
 import com.ic.myshop.constant.InputParam;
-import com.ic.myshop.constant.SortField;
 import com.ic.myshop.constant.TypeProduct;
 import com.ic.myshop.output.TypeProductItem;
 
@@ -49,7 +48,6 @@ public class TypeProductAdapter extends RecyclerView.Adapter<TypeProductAdapter.
             public void onClick(View view) {
                 Intent intent = new Intent(context, ListCategoryProductActivity.class);
                 intent.putExtra(InputParam.TYPE, TypeProduct.getTypeProduct(position + 1));
-                intent.putExtra(InputParam.FIELD, SortField.NEWEST_ARRIVALS);
                 context.startActivity(intent);
             }
         });

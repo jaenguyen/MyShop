@@ -24,6 +24,8 @@ import com.ic.myshop.R;
 import com.ic.myshop.adapter.product.ProductAdapter;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.InputParam;
+import com.ic.myshop.constant.SortField;
+import com.ic.myshop.constant.TypeProduct;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Product;
 
@@ -36,43 +38,27 @@ public class ListProductActivity extends AppCompatActivity {
     private GridLayoutManager layoutManager;
     private ProductAdapter productAdapter;
     private long maxScore = Long.MAX_VALUE;
+    private long minScore = 0;
     private boolean isScrolling = false;
     private static final DbFactory dbFactory = DbFactory.getInstance();
-    private String type, field;
-    private Spinner sortSpinner;
+    private TypeProduct typeProduct;
+    private SortField sortField;
+    private Spinner sortSpinner, categorySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_product);
 
-        type = (String) getIntent().getSerializableExtra(InputParam.TYPE);
-        field = (String) getIntent().getSerializableExtra(InputParam.FIELD);
-
+        typeProduct = (TypeProduct) getIntent().getSerializableExtra(InputParam.TYPE);
+        sortField = (SortField) getIntent().getSerializableExtra(InputParam.FIELD);
+        if (typeProduct == null) {
+            typeProduct = TypeProduct.ALL;
+        }
+        if (sortField == null) {
+            sortField = SortField.NEWEST_ARRIVALS;
+        }
         init();
-        dbFactory.getListProduct(type, field, maxScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Product product = document.toObject(Product.class);
-                        productAdapter.addProduct(product);
-                    }
-                    if (!task.getResult().isEmpty()) {
-                        if (type != null) {
-                            maxScore = task.getResult().getDocuments().
-                                    get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
-                        }
-                        if (field != null) {
-                            maxScore = task.getResult().getDocuments().
-                                    get(task.getResult().size() - 1).getLong(field);
-                        }
-                    }
-                } else {
-
-                }
-            }
-        });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,13 +90,76 @@ public class ListProductActivity extends AppCompatActivity {
             }
         });
 
-        // 0: nổi bật, 1: được yêu thích, 2: giá tăng dần, 3: giá giảm dần
+        // 0: ngày ra mắt, 1: nổi bật, 2: được yêu thích, 3: giá tăng dần, 4: giá giảm dần
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int sortType, long id) {
-                    productAdapter.sort(sortType);
-                    rcvProduct.scrollToPosition(0);
-                }
+                sortField = SortField.getSortField(sortType);
+                maxScore = Long.MAX_VALUE;
+                minScore = 0;
+                dbFactory.getProducts(typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            productAdapter.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                productAdapter.addProduct(product);
+                            }
+                            rcvProduct.scrollToPosition(0);
+                            if (!task.getResult().isEmpty()) {
+                                if (sortField == SortField.PRICE_LOW) {
+                                    minScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
+                                } else {
+                                    maxScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
+                                }
+                            }
+                        } else {
+
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int sortType, long id) {
+                typeProduct = TypeProduct.getTypeProduct(sortType);
+                maxScore = Long.MAX_VALUE;
+                minScore = 0;
+                dbFactory.getProducts(typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            productAdapter.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                productAdapter.addProduct(product);
+                            }
+                            rcvProduct.scrollToPosition(0);
+                            if (!task.getResult().isEmpty()) {
+                                if (sortField == SortField.PRICE_LOW) {
+                                    minScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
+                                } else {
+                                    maxScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
+                                }
+                            }
+                        } else {
+
+                        }
+                    }
+                });
+            }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -132,6 +181,11 @@ public class ListProductActivity extends AppCompatActivity {
         sortSpinner = findViewById(R.id.sort_spinner);
         sortSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_type_product,
                 getResources().getStringArray(R.array.sort)));
+        sortSpinner.setSelection(SortField.getCode(sortField));
+        categorySpinner = findViewById(R.id.category_spinner);
+        categorySpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_type_product,
+                getResources().getStringArray(R.array.type)));
+        categorySpinner.setSelection(TypeProduct.getCode(typeProduct));
     }
 
     private void loadMoreProduct() {
@@ -139,7 +193,7 @@ public class ListProductActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dbFactory.getListProduct(type, field, maxScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                dbFactory.getProducts(typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -149,13 +203,12 @@ public class ListProductActivity extends AppCompatActivity {
                             }
                             progressBar.setVisibility(View.GONE);
                             if (!task.getResult().isEmpty()) {
-                                if (type != null) {
+                                if (sortField == SortField.PRICE_LOW) {
+                                    minScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
+                                } else {
                                     maxScore = task.getResult().getDocuments().
-                                            get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
-                                }
-                                if (field != null) {
-                                    maxScore = task.getResult().getDocuments().
-                                            get(task.getResult().size() - 1).getLong(field);
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
                                 }
                             }
                         } else {

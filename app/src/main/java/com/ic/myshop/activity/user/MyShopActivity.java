@@ -29,6 +29,8 @@ import com.ic.myshop.activity.func.AddProductActivity;
 import com.ic.myshop.adapter.product.ProductAdapter;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.InputParam;
+import com.ic.myshop.constant.SortField;
+import com.ic.myshop.constant.TypeProduct;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
@@ -45,9 +47,12 @@ public class MyShopActivity extends AppCompatActivity {
     private GridLayoutManager layoutManager;
     private ProductAdapter productAdapter;
     private long maxScore = Long.MAX_VALUE;
+    private long minScore = 0;
     private boolean isScrolling = false;
     private static final DbFactory dbFactory = DbFactory.getInstance();
-    private Spinner sortSpinner;
+    private TypeProduct typeProduct;
+    private SortField sortField;
+    private Spinner sortSpinner, categorySpinner;
     private CircleImageView avatar;
     private TextView txtName;
     private TextView txtEmail;
@@ -57,11 +62,22 @@ public class MyShopActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_shop);
+
+        typeProduct = (TypeProduct) getIntent().getSerializableExtra(InputParam.TYPE);
+        sortField = (SortField) getIntent().getSerializableExtra(InputParam.FIELD);
+        if (typeProduct == null) {
+            typeProduct = TypeProduct.ALL;
+        }
+        if (sortField == null) {
+            sortField = SortField.NEWEST_ARRIVALS;
+        }
         init();
+
         userId = getIntent().getStringExtra(InputParam.USER_ID);
         if (userId == null || userId.isEmpty()) {
             userId = dbFactory.getUserId();
         }
+
         dbFactory.getUser(userId)
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -75,24 +91,82 @@ public class MyShopActivity extends AppCompatActivity {
                         txtEmail.setText(user.getEmail());
                     }
                 });
-        dbFactory.getProductsSelfDefault(userId, maxScore, 6)
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int sortType, long id) {
+                sortField = SortField.getSortField(sortType);
+                maxScore = Long.MAX_VALUE;
+                minScore = 0;
+                dbFactory.getProducts(typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            productAdapter.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Product product = document.toObject(Product.class);
                                 productAdapter.addProduct(product);
                             }
+                            rcvProduct.scrollToPosition(0);
                             if (!task.getResult().isEmpty()) {
-                                maxScore = task.getResult().getDocuments().
-                                        get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
+                                if (sortField == SortField.PRICE_LOW) {
+                                    minScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
+                                } else {
+                                    maxScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
+                                }
                             }
                         } else {
 
                         }
                     }
                 });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int sortType, long id) {
+                typeProduct = TypeProduct.getTypeProduct(sortType);
+                maxScore = Long.MAX_VALUE;
+                minScore = 0;
+                dbFactory.getProducts(typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            productAdapter.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                productAdapter.addProduct(product);
+                            }
+                            rcvProduct.scrollToPosition(0);
+                            if (!task.getResult().isEmpty()) {
+                                if (sortField == SortField.PRICE_LOW) {
+                                    minScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
+                                } else {
+                                    maxScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
+                                }
+                            }
+                        } else {
+
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,20 +206,6 @@ public class MyShopActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        // 0: nổi bật, 1: được yêu thích, 2: giá tăng dần, 3: giá giảm dần
-        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int sortType, long id) {
-                productAdapter.sort(sortType);
-                rcvProduct.scrollToPosition(0);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     private void init() {
@@ -162,6 +222,11 @@ public class MyShopActivity extends AppCompatActivity {
         sortSpinner = findViewById(R.id.sort_spinner);
         sortSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_type_product,
                 getResources().getStringArray(R.array.sort)));
+        sortSpinner.setSelection(SortField.getCode(sortField));
+        categorySpinner = findViewById(R.id.category_spinner);
+        categorySpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_type_product,
+                getResources().getStringArray(R.array.type)));
+        categorySpinner.setSelection(TypeProduct.getCode(typeProduct));
         avatar = findViewById(R.id.avatar);
         txtName = findViewById(R.id.txt_name);
         txtEmail = findViewById(R.id.txt_email);
@@ -172,25 +237,29 @@ public class MyShopActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dbFactory.getProductsSelfDefault(userId, maxScore, 6)
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Product product = document.toObject(Product.class);
-                                        productAdapter.addProduct(product);
-                                    }
-                                    progressBar.setVisibility(View.GONE);
-                                    if (!task.getResult().isEmpty()) {
-                                        maxScore = task.getResult().getDocuments().
-                                                get(task.getResult().size() - 1).getLong(InputParam.CREATED_TIME);
-                                    }
+                dbFactory.getProducts(typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                productAdapter.addProduct(product);
+                            }
+                            progressBar.setVisibility(View.GONE);
+                            if (!task.getResult().isEmpty()) {
+                                if (sortField == SortField.PRICE_LOW) {
+                                    minScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
                                 } else {
-                                    isScrolling = false;
+                                    maxScore = task.getResult().getDocuments().
+                                            get(task.getResult().size() - 1).getLong(SortField.getField(sortField));
                                 }
                             }
-                        });
+                        } else {
+                            isScrolling = false;
+                        }
+                    }
+                });
             }
         }, 2000);
     }

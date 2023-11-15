@@ -26,6 +26,7 @@ import com.ic.myshop.adapter.product.HomeProductAdapter;
 import com.ic.myshop.adapter.filter.SliderAdapter;
 import com.ic.myshop.adapter.filter.TypeProductAdapter;
 import com.ic.myshop.constant.InputParam;
+import com.ic.myshop.constant.SortField;
 import com.ic.myshop.constant.TypeProduct;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Product;
@@ -148,7 +149,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), ListProductActivity.class);
-                intent.putExtra(InputParam.FIELD, InputParam.SOLD_NUMBER);
+                intent.putExtra(InputParam.FIELD, SortField.BEST_SELLERS);
                 startActivity(intent);
             }
         });
@@ -156,7 +157,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), ListProductActivity.class);
-                intent.putExtra(InputParam.FIELD, InputParam.CREATED_TIME);
+                intent.putExtra(InputParam.FIELD, SortField.NEWEST_ARRIVALS);
                 startActivity(intent);
             }
         });
@@ -164,7 +165,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), ListProductActivity.class);
-                intent.putExtra(InputParam.FIELD, InputParam.LIKES);
+                intent.putExtra(InputParam.FIELD, SortField.MOST_LIKES);
                 startActivity(intent);
             }
         });

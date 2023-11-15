@@ -119,22 +119,6 @@ public class DbFactory {
         documentReference.update("soldNumber", FieldValue.increment(quantity));
     }
 
-    public Task<QuerySnapshot> getListProduct(String type, String field, long from, int limit) {
-        if (type != null)
-            return getListProductByType(type, from, limit);
-        if (field != null && !field.equals(InputParam.CREATED_TIME)) {
-            return getListProductByField(field, from, limit);
-        }
-        return getProductsDefault(from, limit);
-    }
-
-    public Task<QuerySnapshot> getListProductByType(String type, long from, int limit) {
-        return firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
-                .whereEqualTo(InputParam.TYPE, type)
-                .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
-                .startAfter(from).limit(limit).get();
-    }
-
     public Task<QuerySnapshot> getListProductByField(String field, long from, int limit) {
         return firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
                 .orderBy(field, Query.Direction.DESCENDING)
@@ -143,13 +127,6 @@ public class DbFactory {
 
     public Task<QuerySnapshot> getProductsDefault(long from, int limit) {
         return firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
-                .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
-                .startAfter(from).limit(limit).get();
-    }
-
-    public Task<QuerySnapshot> getProductsSelfDefault(String parentId, long from, int limit) {
-        return firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
-                .whereEqualTo(InputParam.PARENT_ID, parentId)
                 .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
                 .startAfter(from).limit(limit).get();
     }
@@ -168,6 +145,26 @@ public class DbFactory {
         if (!typeProduct.equals(TypeProduct.ALL)) {
             query = query.whereEqualTo(InputParam.TYPE, TypeProduct.getName(typeProduct));
         }
+        if (limit > 0) {
+            query = query.limit(limit);
+        }
+        return query.get();
+    }
+
+    public Task<QuerySnapshot> getProductsOfUser(String userId, TypeProduct typeProduct, SortField sortField, long from, long to, int limit) {
+        if (sortField.equals(SortField.PRICE_LOW)) {
+            from = to;
+        }
+        Query query = firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
+                .orderBy(SortField.getField(sortField), SortField.getSortType(sortField) == 0 ? Query.Direction.ASCENDING : Query.Direction.DESCENDING)
+                .startAt(from);
+        if (sortField.equals(SortField.BEST_SELLERS)) {
+            query = query.endBefore(0);
+        }
+        if (!typeProduct.equals(TypeProduct.ALL)) {
+            query = query.whereEqualTo(InputParam.TYPE, TypeProduct.getName(typeProduct));
+        }
+            query = query.whereEqualTo(InputParam.PARENT_ID, userId);
         if (limit > 0) {
             query = query.limit(limit);
         }

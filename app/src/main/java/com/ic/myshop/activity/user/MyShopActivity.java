@@ -71,12 +71,12 @@ public class MyShopActivity extends AppCompatActivity {
         if (sortField == null) {
             sortField = SortField.NEWEST_ARRIVALS;
         }
-        init();
-
         userId = getIntent().getStringExtra(InputParam.USER_ID);
         if (userId == null || userId.isEmpty()) {
             userId = dbFactory.getUserId();
         }
+
+        init();
 
         dbFactory.getUser(userId)
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -98,7 +98,7 @@ public class MyShopActivity extends AppCompatActivity {
                 sortField = SortField.getSortField(sortType);
                 maxScore = Long.MAX_VALUE;
                 minScore = 0;
-                dbFactory.getProducts(typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                dbFactory.getProductsOfUser(userId, typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -136,7 +136,7 @@ public class MyShopActivity extends AppCompatActivity {
                 typeProduct = TypeProduct.getTypeProduct(sortType);
                 maxScore = Long.MAX_VALUE;
                 minScore = 0;
-                dbFactory.getProducts(typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                dbFactory.getProductsOfUser(userId, typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -237,7 +237,7 @@ public class MyShopActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dbFactory.getProducts(typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                dbFactory.getProductsOfUser(userId, typeProduct, sortField, maxScore, minScore, 6).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {

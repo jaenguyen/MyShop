@@ -42,7 +42,7 @@
         <item>Tiền ra</item>
     </string-array>
     <string-array name="sort">
-        <item>Mặc định</item>
+        <item>Mới nhất</item>
         <item>Nổi bật</item>
         <item>Được yêu thích</item>
         <item>Giá tăng dần</item>

@@ -190,12 +190,12 @@ public class HomeFragment extends Fragment {
 
     public List<TypeProductItem> getTypeProduct() {
         List<TypeProductItem> typeProducts = new ArrayList<>();
-        typeProducts.add(new TypeProductItem(TypeProduct.FASHION, R.drawable.tp_1));
-        typeProducts.add(new TypeProductItem(TypeProduct.ELECTRONIC, R.drawable.tp_2));
-        typeProducts.add(new TypeProductItem(TypeProduct.BEAUTY, R.drawable.tp_3));
-        typeProducts.add(new TypeProductItem(TypeProduct.HEALTHY, R.drawable.tp_4));
-        typeProducts.add(new TypeProductItem(TypeProduct.SPORT, R.drawable.tp_5));
-        typeProducts.add(new TypeProductItem(TypeProduct.OTHERS, R.drawable.tp_6));
+        typeProducts.add(new TypeProductItem(TypeProduct.getName(TypeProduct.FASHION), R.drawable.tp_1));
+        typeProducts.add(new TypeProductItem(TypeProduct.getName(TypeProduct.ELECTRONIC), R.drawable.tp_2));
+        typeProducts.add(new TypeProductItem(TypeProduct.getName(TypeProduct.HEALTHY), R.drawable.tp_3));
+        typeProducts.add(new TypeProductItem(TypeProduct.getName(TypeProduct.BEAUTY), R.drawable.tp_4));
+        typeProducts.add(new TypeProductItem(TypeProduct.getName(TypeProduct.SPORT), R.drawable.tp_5));
+        typeProducts.add(new TypeProductItem(TypeProduct.getName(TypeProduct.OTHERS), R.drawable.tp_6));
         return typeProducts;
     }
 }

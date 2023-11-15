@@ -18,6 +18,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
+import com.ic.myshop.constant.SortField;
+import com.ic.myshop.constant.TypeProduct;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
@@ -150,6 +152,26 @@ public class DbFactory {
                 .whereEqualTo(InputParam.PARENT_ID, parentId)
                 .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
                 .startAfter(from).limit(limit).get();
+    }
+
+    // TODO: 15/11
+    public Task<QuerySnapshot> getProducts(TypeProduct typeProduct, SortField sortField, long from, long to, int limit) {
+        if (sortField.equals(SortField.PRICE_LOW)) {
+            from = to;
+        }
+        Query query = firebaseFirestore.collection(DatabaseConstant.PRODUCTS)
+                .orderBy(SortField.getField(sortField), SortField.getSortType(sortField) == 0 ? Query.Direction.ASCENDING : Query.Direction.DESCENDING)
+                .startAt(from);
+        if (sortField.equals(SortField.BEST_SELLERS)) {
+            query = query.endBefore(0);
+        }
+        if (!typeProduct.equals(TypeProduct.ALL)) {
+            query = query.whereEqualTo(InputParam.TYPE, TypeProduct.getName(typeProduct));
+        }
+        if (limit > 0) {
+            query = query.limit(limit);
+        }
+        return query.get();
     }
 
     /*

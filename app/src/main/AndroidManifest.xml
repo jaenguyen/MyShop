@@ -17,6 +17,9 @@
         android:theme="@style/Theme.MyShop"
         tools:targetApi="31">
         <activity
+            android:name=".activity.usecase.ListCategoryProductActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.user.StatisticsActivity"
             android:exported="false" />
         <activity

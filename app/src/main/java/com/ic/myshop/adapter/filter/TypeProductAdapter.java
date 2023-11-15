@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
-import com.ic.myshop.activity.usecase.ListProductActivity;
+import com.ic.myshop.activity.usecase.ListCategoryProductActivity;
 import com.ic.myshop.constant.InputParam;
+import com.ic.myshop.constant.SortField;
+import com.ic.myshop.constant.TypeProduct;
 import com.ic.myshop.output.TypeProductItem;
 
 import java.util.List;
@@ -45,8 +47,9 @@ public class TypeProductAdapter extends RecyclerView.Adapter<TypeProductAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ListProductActivity.class);
-                intent.putExtra(InputParam.TYPE, typeProductItems.get(position).getName());
+                Intent intent = new Intent(context, ListCategoryProductActivity.class);
+                intent.putExtra(InputParam.TYPE, TypeProduct.getTypeProduct(position + 1));
+                intent.putExtra(InputParam.FIELD, SortField.NEWEST_ARRIVALS);
                 context.startActivity(intent);
             }
         });

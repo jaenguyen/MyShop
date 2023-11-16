@@ -15,4 +15,5 @@ public class InputParam {
     public static final String NAME = "name";
     public static final String PHONE = "phone";
     public static final String TIMESTAMP = "timestamp";
+    public static final String SELLER_ID = "sellerId";
 }

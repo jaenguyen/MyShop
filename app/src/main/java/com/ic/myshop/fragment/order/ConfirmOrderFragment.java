@@ -22,7 +22,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
-import com.ic.myshop.adapter.order.DvOrderAdapter;
+import com.ic.myshop.adapter.order.CfOrderAdapter;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.db.DbFactory;
@@ -30,11 +30,11 @@ import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.output.OrderOutput;
 
-public class DeliveredOrderFragment extends Fragment {
+public class ConfirmOrderFragment extends Fragment {
 
-    private RecyclerView rcvDvOrder;
+    private RecyclerView rcvCfOrder;
     private LinearLayoutManager linearLayoutManager;
-    private DvOrderAdapter dvOrderAdapter;
+    private CfOrderAdapter cfOrderAdapter;
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
@@ -48,20 +48,21 @@ public class DeliveredOrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rcvDvOrder = view.findViewById(R.id.rcv_cf_order);
-        linearLayoutManager = new LinearLayoutManager(getContext(), androidx.recyclerview.widget.RecyclerView.VERTICAL, false);
-        rcvDvOrder.setLayoutManager(linearLayoutManager);
-        dvOrderAdapter = new DvOrderAdapter(getContext());
-        rcvDvOrder.setAdapter(dvOrderAdapter);
+        rcvCfOrder = view.findViewById(R.id.rcv_cf_order);
+        linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        rcvCfOrder.setLayoutManager(linearLayoutManager);
+        cfOrderAdapter = new CfOrderAdapter(getContext());
+        rcvCfOrder.setAdapter(cfOrderAdapter);
         db = FirebaseFirestore.getInstance();
+
         db.collection(DatabaseConstant.ORDERS)
                 .whereEqualTo(InputParam.PARENT_ID, dbFactory.getUserId())
-                .whereEqualTo(InputParam.STATUS, 1)
+                .whereEqualTo(InputParam.STATUS, 0)
                 .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        dvOrderAdapter.clear();
+                        cfOrderAdapter.clear();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
                             Order order = documentSnapshot.toObject(Order.class);
                             dbFactory.getProduct(order.getProductId())
@@ -69,7 +70,7 @@ public class DeliveredOrderFragment extends Fragment {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                             Product product = task.getResult().toObject(Product.class);
-                                            dvOrderAdapter.addOrder(new OrderOutput(order, product.getImageUrl(), product.getName()));
+                                            cfOrderAdapter.addOrder(new OrderOutput(order, product.getImageUrl(), product.getName()));
                                         }
                                     });
                         }
@@ -85,14 +86,14 @@ public class DeliveredOrderFragment extends Fragment {
                         boolean notStatus = true;
                         for (QueryDocumentSnapshot documentSnapshot : value) {
                             Order order = documentSnapshot.toObject(Order.class);
-                            if (order.getStatus() == 1) {
+                            if (order.getStatus() == 0) {
                                 notStatus = false;
                                 break;
                             }
                         }
                         if (notStatus) {
-                            dvOrderAdapter.clear();
-                            dvOrderAdapter.notifyDataSetChanged();
+                            cfOrderAdapter.clear();
+                            cfOrderAdapter.notifyDataSetChanged();
                         }
                     }
                 });

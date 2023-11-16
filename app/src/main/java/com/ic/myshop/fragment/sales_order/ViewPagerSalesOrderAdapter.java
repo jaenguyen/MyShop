@@ -1,4 +1,4 @@
-package com.ic.myshop.fragment.order;
+package com.ic.myshop.fragment.sales_order;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class ViewPagerOrderAdapter extends FragmentStatePagerAdapter {
+public class ViewPagerSalesOrderAdapter extends FragmentStatePagerAdapter {
 
 
-    public ViewPagerOrderAdapter(@NonNull FragmentManager fm, int behavior) {
+    public ViewPagerSalesOrderAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
 
@@ -18,15 +18,15 @@ public class ViewPagerOrderAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new ConfirmOrderFragment();
+                return new ConfirmSOrderFragment();
             case 1:
-                return new DeliveredOrderFragment();
+                return new DeliveredSOrderFragment();
             case 2:
-                return new CompletedOrderFragment();
+                return new CompletedSOrderFragment();
             case 3:
-                return new CanceledOrderFragment();
+                return new CanceledSOrderFragment();
             default:
-                return new ConfirmOrderFragment();
+                return new ConfirmSOrderFragment();
         }
     }
 

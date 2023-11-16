@@ -1,16 +1,15 @@
-package com.ic.myshop.fragment.order;
+package com.ic.myshop.fragment.sales_order;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,6 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ic.myshop.R;
 import com.ic.myshop.adapter.order.DvOrderAdapter;
+import com.ic.myshop.adapter.sales_order.DvSOrderAdapter;
 import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.db.DbFactory;
@@ -30,11 +30,11 @@ import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.output.OrderOutput;
 
-public class DeliveredOrderFragment extends Fragment {
+public class DeliveredSOrderFragment extends Fragment {
 
     private RecyclerView rcvDvOrder;
     private LinearLayoutManager linearLayoutManager;
-    private DvOrderAdapter dvOrderAdapter;
+    private DvSOrderAdapter dvOrderAdapter;
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
@@ -49,13 +49,13 @@ public class DeliveredOrderFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rcvDvOrder = view.findViewById(R.id.rcv_cf_order);
-        linearLayoutManager = new LinearLayoutManager(getContext(), androidx.recyclerview.widget.RecyclerView.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rcvDvOrder.setLayoutManager(linearLayoutManager);
-        dvOrderAdapter = new DvOrderAdapter(getContext());
+        dvOrderAdapter = new DvSOrderAdapter(getContext());
         rcvDvOrder.setAdapter(dvOrderAdapter);
         db = FirebaseFirestore.getInstance();
         db.collection(DatabaseConstant.ORDERS)
-                .whereEqualTo(InputParam.PARENT_ID, dbFactory.getUserId())
+                .whereEqualTo(InputParam.SELLER_ID, dbFactory.getUserId())
                 .whereEqualTo(InputParam.STATUS, 1)
                 .orderBy(InputParam.CREATED_TIME, Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -78,7 +78,7 @@ public class DeliveredOrderFragment extends Fragment {
 
         // TODO: FIX CODE
         db.collection(DatabaseConstant.ORDERS)
-                .whereEqualTo(InputParam.PARENT_ID, dbFactory.getUserId())
+                .whereEqualTo(InputParam.SELLER_ID, dbFactory.getUserId())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

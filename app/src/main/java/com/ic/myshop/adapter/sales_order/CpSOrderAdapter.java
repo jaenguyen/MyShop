@@ -1,4 +1,4 @@
-package com.ic.myshop.adapter.order;
+package com.ic.myshop.adapter.sales_order;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,19 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
-import com.ic.myshop.activity.order.DetailCanceledOrderMainActivity;
+import com.ic.myshop.activity.order.DetailCompleteOrderMainActivity;
+import com.ic.myshop.activity.sales_order.DetailCompleteSOrderMainActivity;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.output.OrderOutput;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CcOrderAdapter extends RecyclerView.Adapter<CcOrderAdapter.CfOrderViewHolder> {
+public class CpSOrderAdapter extends RecyclerView.Adapter<CpSOrderAdapter.CfOrderViewHolder> {
 
     private Context context;
     private List<OrderOutput> orders;
 
-    public CcOrderAdapter(Context context) {
+    public CpSOrderAdapter(Context context) {
         this.context = context;
         orders = new ArrayList<>();
     }
@@ -43,7 +44,7 @@ public class CcOrderAdapter extends RecyclerView.Adapter<CcOrderAdapter.CfOrderV
     @NonNull
     @Override
     public CfOrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_canceled_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_complete_sales_order, parent, false);
         return new CfOrderViewHolder(view);
     }
 
@@ -64,7 +65,7 @@ public class CcOrderAdapter extends RecyclerView.Adapter<CcOrderAdapter.CfOrderV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, DetailCanceledOrderMainActivity.class);
+                Intent intent = new Intent(context, DetailCompleteSOrderMainActivity.class);
                 intent.putExtra("order", orders.get(position));
                 context.startActivity(intent);
             }

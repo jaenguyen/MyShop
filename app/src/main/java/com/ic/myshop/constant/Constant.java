@@ -26,4 +26,5 @@ public class Constant {
     public static final String RECEIVE_ORDER = "Nhận tiền từ đơn hàng";
     public static final String STATISTICS = "Thống kê";
     public static final String MY_SHOP = "Cửa hàng của tôi";
+    public static final String MY_SALES_ORDER = "Đơn bán của tôi";
 }

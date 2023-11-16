@@ -35,7 +35,7 @@ public class UserFragment extends Fragment {
 
     private ImageView btnSetting, btnCart;
     private CircleImageView avatar;
-    private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts, txtMyOrder, txtName, txt_statistics, txtMySOrder;
+    private TextView txtAccountSetting, txtMyProduct, txtEmail, txtLikeProducts, txtMyOrder, txtName, txtStatistics, txtMySOrder;
     //db
     private FirebaseFirestore db;
     private static final DbFactory dbFactory = DbFactory.getInstance();
@@ -60,7 +60,7 @@ public class UserFragment extends Fragment {
         txtEmail = view.findViewById(R.id.txt_email);
         txtLikeProducts = view.findViewById(R.id.txt_like_product);
         txtMyOrder = view.findViewById(R.id.txt_my_order);
-        txt_statistics = view.findViewById(R.id.txt_statistics);
+        txtStatistics = view.findViewById(R.id.txt_statistics);
         txtMySOrder = view.findViewById(R.id.txt_my_sales_order);
         db = FirebaseFirestore.getInstance();
 
@@ -130,7 +130,7 @@ public class UserFragment extends Fragment {
             }
         });
 
-        txt_statistics.setOnClickListener(new View.OnClickListener() {
+        txtStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(intentStatistics);

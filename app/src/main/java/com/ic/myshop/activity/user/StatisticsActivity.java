@@ -30,15 +30,13 @@ import java.util.List;
 public class StatisticsActivity extends AppCompatActivity {
 
     private TextView toolbarTitle, txtTransaction;
-    private Spinner timestampSpinner;
-    private Spinner typeSpinner;
+    private Spinner timestampSpinner, typeSpinner;
     private ImageButton btnBack;
     RecyclerView recyclerView;
     StatisticsGroupAdapter statisticsGroupAdapter;
     LinearLayoutManager layoutManager;
     private List<Statistics> statisticsList;
-    private int typeScope = 0;
-    private int typeTrans = 0;
+    private int typeScope = 0, typeTrans = 0;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override

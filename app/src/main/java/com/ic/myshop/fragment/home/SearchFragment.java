@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.usecase.CartActivity;
 import com.ic.myshop.adapter.product.ProductAdapter;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ApiService;
 import com.ic.myshop.model.Product;
@@ -74,7 +75,7 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 if (query.length() > 0) {
                     Map<String, Object> params = new HashMap<>();
-                    params.put("name", query);
+                    params.put(InputParam.NAME, query);
                     ApiService.apiService.search(params).enqueue(new Callback<List<Product>>() {
                         @Override
                         public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {

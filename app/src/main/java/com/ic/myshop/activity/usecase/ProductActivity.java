@@ -41,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProductActivity extends AppCompatActivity {
     int quantity = 1;
-    private TextView toolbarTitle, txtName, txtPrice, txtSoldNumber, txtType, txtDescription, btnBuyNow;
+    private TextView toolbarTitle, txtName, txtPrice, txtSoldNumber, txtType, txtDescription, btnBuyNow, txtNameShop;
     private ImageButton btnBack, btnAddToCart;
     private ImageView imageView, imageViewLike;
     private Product product;
@@ -50,7 +50,6 @@ public class ProductActivity extends AppCompatActivity {
     boolean isLiked = false;
     // shop
     CircleImageView imgShop;
-    TextView txtNameShop;
     Button btnViewShop;
 
 
@@ -87,8 +86,8 @@ public class ProductActivity extends AppCompatActivity {
         }
 
         db.collection(DatabaseConstant.LIKES)
-                .whereEqualTo("userId", dbFactory.getUserId())
-                .whereEqualTo("productId", product.getId())
+                .whereEqualTo(InputParam.USER_ID, dbFactory.getUserId())
+                .whereEqualTo(InputParam.PRODUCT_ID, product.getId())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -242,7 +241,7 @@ public class ProductActivity extends AppCompatActivity {
                         HashMap<String, Integer> products = new HashMap<>();
                         products.put(product.getId(), quantity);
                         Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
-                        intent.putExtra("cartItems", (Serializable) products);
+                        intent.putExtra(InputParam.CART_ITEMS, (Serializable) products);
                         intent.putExtra(Constant.BUY_NOW, true);
                         startActivity(intent);
                         dialog.dismiss();

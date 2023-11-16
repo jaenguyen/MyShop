@@ -68,7 +68,7 @@ public class DbFactory {
 
     public void updateAddresses(User user) {
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.USERS).document(getUserId());
-        documentReference.update("addresses", user.getAddresses());
+        documentReference.update(InputParam.ADDRESSES, user.getAddresses());
     }
 
     public void updateFieldUser(String id, String field, String value) {
@@ -110,13 +110,13 @@ public class DbFactory {
 
     public void updateSellNumber(String productId, int quantity) {
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId);
-        documentReference.update("sellNumber", FieldValue.increment(quantity * -1));
+        documentReference.update(InputParam.SELL_NUMBER, FieldValue.increment(quantity * -1));
         // TODO: đánh giá cập nhập luôn số lượng bán => Không, bh đơn hàng chuyển status về 2 thì trừ
     }
 
     public void updateSoldNumber(String productId, int quantity) {
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId);
-        documentReference.update("soldNumber", FieldValue.increment(quantity));
+        documentReference.update(InputParam.SOLD_NUMBER, FieldValue.increment(quantity));
     }
 
     public Task<QuerySnapshot> getListProductByField(String field, long from, int limit) {
@@ -245,8 +245,8 @@ public class DbFactory {
         CollectionReference collectionReference = firebaseFirestore.collection(DatabaseConstant.LIKES);
         if (isLiked) {
             collectionReference
-                    .whereEqualTo("userId", userId)
-                    .whereEqualTo("productId", productId)
+                    .whereEqualTo(InputParam.USER_ID, userId)
+                    .whereEqualTo(InputParam.PRODUCT_ID, productId)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {

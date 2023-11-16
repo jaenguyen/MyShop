@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.order.DetailConfirmOrderMainActivity;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.output.OrderOutput;
 
@@ -64,7 +65,7 @@ public class CfOrderAdapter extends RecyclerView.Adapter<CfOrderAdapter.CfOrderV
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailConfirmOrderMainActivity.class);
-                intent.putExtra("order", orders.get(position));
+                intent.putExtra(InputParam.ORDER, orders.get(position));
                 context.startActivity(intent);
             }
         });

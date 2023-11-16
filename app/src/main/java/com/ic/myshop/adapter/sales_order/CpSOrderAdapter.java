@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.order.DetailCompleteOrderMainActivity;
 import com.ic.myshop.activity.sales_order.DetailCompleteSOrderMainActivity;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.output.OrderOutput;
 
@@ -66,7 +67,7 @@ public class CpSOrderAdapter extends RecyclerView.Adapter<CpSOrderAdapter.CfOrde
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailCompleteSOrderMainActivity.class);
-                intent.putExtra("order", orders.get(position));
+                intent.putExtra(InputParam.ORDER, orders.get(position));
                 context.startActivity(intent);
             }
         });

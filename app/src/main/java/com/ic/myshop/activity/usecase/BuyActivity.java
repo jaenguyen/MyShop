@@ -23,6 +23,7 @@ import com.ic.myshop.activity.user.MyOrderActivity;
 import com.ic.myshop.adapter.address.AddressListAdapter;
 import com.ic.myshop.adapter.product.BuyItemAdapter;
 import com.ic.myshop.constant.Constant;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.constant.Payment;
 import com.ic.myshop.db.DbFactory;
@@ -75,7 +76,7 @@ public class BuyActivity extends AppCompatActivity {
         // ZaloPay SDK Init
         ZaloPaySDK.init(2553, Environment.SANDBOX);
 
-        cartItems = (Map<String, Integer>) getIntent().getSerializableExtra("cartItems");
+        cartItems = (Map<String, Integer>) getIntent().getSerializableExtra(InputParam.CART_ITEMS);
         isBuyNow = getIntent().getBooleanExtra(Constant.BUY_NOW, false);
 
         btnBack.setOnClickListener(new View.OnClickListener() {

@@ -17,6 +17,15 @@
         android:theme="@style/Theme.MyShop"
         tools:targetApi="31">
         <activity
+            android:name=".push.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activity.user.MySOrderActivity"
             android:exported="false" />
         <activity

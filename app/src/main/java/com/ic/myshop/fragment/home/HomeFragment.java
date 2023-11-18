@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.usecase.CartActivity;
 import com.ic.myshop.activity.usecase.ListProductActivity;
@@ -92,6 +94,22 @@ public class HomeFragment extends Fragment {
         rcvNewProduct.setAdapter(newProductAdapter);
         rcvLikedProduct.setAdapter(likedProductAdapter);
         rcvTypeProduct.setAdapter(typeProduceAdapter);
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        // Log and toast
+                        Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         dbFactory.getListProductByField(InputParam.SOLD_NUMBER, Long.MAX_VALUE, 10)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

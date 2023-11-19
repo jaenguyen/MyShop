@@ -18,11 +18,17 @@ import retrofit2.http.QueryMap;
 
 public interface ApiService {
     public static final String URL = "http://10.0.2.2:8080/apis/";
+    public static final String URL1 = "http://10.0.2.2:8088/apis/";
 
     Gson gson = new GsonBuilder().create();
 
     ApiService apiService = new Retrofit.Builder()
             .baseUrl(URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(ApiService.class);
+    ApiService apiService2 = new Retrofit.Builder()
+            .baseUrl(URL1)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -35,4 +41,7 @@ public interface ApiService {
 
     @GET("search")
     Call<List<Product>> search(@QueryMap Map<String, Object> params);
+
+    @POST("push")
+    Call<String> push(@QueryMap Map<String, String> params);
 }

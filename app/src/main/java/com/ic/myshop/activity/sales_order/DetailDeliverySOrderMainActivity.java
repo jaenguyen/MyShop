@@ -30,7 +30,6 @@ public class DetailDeliverySOrderMainActivity extends AppCompatActivity {
             txtPrice, txtQuantity, totalPrice, txtId, txtCreatedTime, txtUpdatedTime, txtPaymentForm;
     private ImageButton btnBack;
     private ImageView imageView;
-    private Button btnCancel;
     private OrderOutput orderOutput;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
@@ -57,18 +56,6 @@ public class DetailDeliverySOrderMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onBackPressed();
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                dbFactory.updateStatusOrder(orderOutput.getId(), 2);
-//                dbFactory.updateSoldNumber(orderOutput.getProductId(), orderOutput.getQuantity());
-//                if (orderOutput.getPayment() == Payment.COD.valueOf()) {
-//                    dbFactory.addOrUpdateStatistics(orderOutput.getId(), orderOutput.getPrice() * orderOutput.getQuantity(), orderOutput.getSellerId());
-//                }
-//                onBackPressed();
             }
         });
 
@@ -104,6 +91,5 @@ public class DetailDeliverySOrderMainActivity extends AppCompatActivity {
         txtUpdatedTime = findViewById(R.id.txt_updatedTime);
         txtPaymentForm = findViewById(R.id.txt_payment_form);
         imageView = findViewById(R.id.image_view);
-        btnCancel = findViewById(R.id.btn_cancel);
     }
 }

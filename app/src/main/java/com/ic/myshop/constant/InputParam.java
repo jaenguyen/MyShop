@@ -24,4 +24,5 @@ public class InputParam {
     public static final String CART_ITEMS = "cartItems";
     public static final String SELL_NUMBER = "sellNumber";
     public static final String ADDRESSES = "addresses";
+    public static final String ORDER_ID = "orderId";
 }

@@ -215,13 +215,13 @@ public class DbFactory {
     /*
         Order
      */
-    public String createOrder(BuyItem buyItem, Address address, int payment) {
+    public Order createOrder(BuyItem buyItem, Address address, int payment) {
         Order order = new Order(buyItem.getId(), buyItem.getQuantity(), buyItem.getPrice(),
                 buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId(), address, payment);
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.ORDERS).document();
         order.setId(documentReference.getId());
         documentReference.set(order);
-        return order.getId();
+        return order;
     }
 
     public void updateQuantityProduct(BuyItem buyItem) {

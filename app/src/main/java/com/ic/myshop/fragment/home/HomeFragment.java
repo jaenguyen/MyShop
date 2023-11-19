@@ -95,22 +95,6 @@ public class HomeFragment extends Fragment {
         rcvLikedProduct.setAdapter(likedProductAdapter);
         rcvTypeProduct.setAdapter(typeProduceAdapter);
 
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            return;
-                        }
-
-                        // Get new FCM registration token
-                        String token = task.getResult();
-
-                        // Log and toast
-                        Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
         dbFactory.getListProductByField(InputParam.SOLD_NUMBER, Long.MAX_VALUE, 10)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

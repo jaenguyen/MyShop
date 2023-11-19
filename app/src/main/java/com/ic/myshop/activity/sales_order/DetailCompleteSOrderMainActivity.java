@@ -30,7 +30,6 @@ public class DetailCompleteSOrderMainActivity extends AppCompatActivity {
             txtPrice, txtQuantity, totalPrice, txtId, txtCreatedTime, txtUpdatedTime, txtPaymentForm;
     private ImageButton btnBack;
     private ImageView imageView;
-    private Button btnCancel;
     private OrderOutput orderOutput;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
@@ -74,13 +73,6 @@ public class DetailCompleteSOrderMainActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: XEM THONG KE
-            }
-        });
     }
 
     private void init() {
@@ -99,6 +91,5 @@ public class DetailCompleteSOrderMainActivity extends AppCompatActivity {
         txtUpdatedTime = findViewById(R.id.txt_updatedTime);
         txtPaymentForm = findViewById(R.id.txt_payment_form);
         imageView = findViewById(R.id.image_view);
-        btnCancel = findViewById(R.id.btn_cancel);
     }
 }

@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ic.myshop.R;
+import com.ic.myshop.activity.MainActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 

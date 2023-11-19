@@ -14,6 +14,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
@@ -164,7 +165,7 @@ public class DbFactory {
         if (!typeProduct.equals(TypeProduct.ALL)) {
             query = query.whereEqualTo(InputParam.TYPE, TypeProduct.getName(typeProduct));
         }
-            query = query.whereEqualTo(InputParam.PARENT_ID, userId);
+        query = query.whereEqualTo(InputParam.PARENT_ID, userId);
         if (limit > 0) {
             query = query.limit(limit);
         }
@@ -327,5 +328,44 @@ public class DbFactory {
             default:
                 return ConversionHelper.monthToMillisecond(3);
         }
+    }
+
+    // token
+    public void addToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        String token = task.getResult();
+                        DocumentReference docRef = firebaseFirestore.collection("tokens").document(getUserId());
+                        // Sử dụng một Map để cập nhật trường "tokens" và xóa token cần xóa
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("tokens", FieldValue.arrayUnion(token));
+                        docRef.update(updates);
+
+                    }
+                });
+    }
+
+    public void deleteToken(String userId) {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        String token = task.getResult();
+                        DocumentReference docRef = firebaseFirestore.collection("tokens").document(userId);
+                        // Sử dụng một Map để cập nhật trường "tokens" và xóa token cần xóa
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("tokens", FieldValue.arrayRemove(token));
+                        docRef.update(updates);
+
+                    }
+                });
     }
 }

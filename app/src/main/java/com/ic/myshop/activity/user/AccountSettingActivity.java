@@ -17,6 +17,7 @@ import com.ic.myshop.activity.func.LoginActivity;
 import com.ic.myshop.auth.AuthService;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.MessageConstant;
+import com.ic.myshop.db.DbFactory;
 
 public class AccountSettingActivity extends AppCompatActivity {
 
@@ -24,6 +25,7 @@ public class AccountSettingActivity extends AppCompatActivity {
     private ImageButton btnBack;
     private Button btnLogout;
     private static final AuthService authService = AuthService.getInstance();
+    private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dbFactory.deleteToken(dbFactory.getUserId());
                 authService.logout();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);

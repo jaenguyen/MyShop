@@ -23,14 +23,18 @@ import com.ic.myshop.activity.user.MyOrderActivity;
 import com.ic.myshop.adapter.address.AddressListAdapter;
 import com.ic.myshop.adapter.product.BuyItemAdapter;
 import com.ic.myshop.constant.Constant;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.constant.Payment;
 import com.ic.myshop.db.DbFactory;
+import com.ic.myshop.helper.ApiService;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Address;
+import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
 import com.ic.myshop.output.BuyItem;
+import com.ic.myshop.push.MessagePush;
 import com.ic.myshop.zalo.CreateOrder;
 
 import org.json.JSONObject;
@@ -39,6 +43,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import vn.zalopay.sdk.Environment;
 import vn.zalopay.sdk.ZaloPayError;
 import vn.zalopay.sdk.ZaloPaySDK;
@@ -75,7 +82,7 @@ public class BuyActivity extends AppCompatActivity {
         // ZaloPay SDK Init
         ZaloPaySDK.init(2553, Environment.SANDBOX);
 
-        cartItems = (Map<String, Integer>) getIntent().getSerializableExtra("cartItems");
+        cartItems = (Map<String, Integer>) getIntent().getSerializableExtra(InputParam.CART_ITEMS);
         isBuyNow = getIntent().getBooleanExtra(Constant.BUY_NOW, false);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -200,9 +207,23 @@ public class BuyActivity extends AppCompatActivity {
         List<BuyItem> buyItems = buyItemAdapter.getCartItems();
         List<String> orderIds = new ArrayList<>();
         for (BuyItem buyItem : buyItems) {
-            orderIds.add(dbFactory.createOrder(buyItem, address, payment));
+            Order order = dbFactory.createOrder(buyItem, address, payment);
+            orderIds.add(order.getId());
             // khi tạo đơn hàng sẽ trừ số lượng trong kho
             dbFactory.updateQuantityProduct(buyItem);
+            // send notify
+            ApiService.apiService2.push(MessagePush.getParams(order.getSellerId(), order.getId(), order.getStatus()))
+                    .enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            System.out.println(response.body());
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            System.out.println(t.getMessage());
+                        }
+                    });
         }
         // nếu thực hiện thanh toán trực tiếp thì sẽ tạo thống kê lun
         // không cho hủy đơn hàng đã thanh toán
@@ -213,6 +234,7 @@ public class BuyActivity extends AppCompatActivity {
                 dbFactory.addOrUpdateStatistics(orderIds.get(i), buyItem.getPrice() * buyItem.getQuantity(), buyItem.getParentId());
             }
         }
+
         Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
         startActivity(intent);
         finish();

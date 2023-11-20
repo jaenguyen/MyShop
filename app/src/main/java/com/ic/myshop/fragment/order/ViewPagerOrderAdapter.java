@@ -6,11 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.ic.myshop.fragment.order.CanceledOrderFragment;
-import com.ic.myshop.fragment.order.CompletedOrderFragment;
-import com.ic.myshop.fragment.order.ConfirmgOrderFragment;
-import com.ic.myshop.fragment.order.DeliveredOrderFragment;
-
 public class ViewPagerOrderAdapter extends FragmentStatePagerAdapter {
 
 
@@ -23,7 +18,7 @@ public class ViewPagerOrderAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new ConfirmgOrderFragment();
+                return new ConfirmOrderFragment();
             case 1:
                 return new DeliveredOrderFragment();
             case 2:
@@ -31,7 +26,7 @@ public class ViewPagerOrderAdapter extends FragmentStatePagerAdapter {
             case 3:
                 return new CanceledOrderFragment();
             default:
-                return new ConfirmgOrderFragment();
+                return new ConfirmOrderFragment();
         }
     }
 

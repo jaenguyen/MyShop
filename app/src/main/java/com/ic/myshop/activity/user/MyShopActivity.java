@@ -39,7 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyShopActivity extends AppCompatActivity {
 
-    private TextView toolbarTitle;
+    private TextView toolbarTitle, txtName, txtEmail;
     private ImageButton btnBack;
     private FloatingActionButton btnAddProduct;
     private ProgressBar progressBar;
@@ -54,8 +54,6 @@ public class MyShopActivity extends AppCompatActivity {
     private SortField sortField;
     private Spinner sortSpinner, categorySpinner;
     private CircleImageView avatar;
-    private TextView txtName;
-    private TextView txtEmail;
     private String userId;
 
     @Override

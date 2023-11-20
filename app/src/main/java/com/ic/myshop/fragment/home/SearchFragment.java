@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.usecase.CartActivity;
 import com.ic.myshop.adapter.product.ProductAdapter;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ApiService;
 import com.ic.myshop.model.Product;
@@ -37,8 +38,6 @@ public class SearchFragment extends Fragment {
     protected GridLayoutManager gridLayoutManager;
     private ProductAdapter productAdapter;
     private SearchView searchView;
-    private FirebaseFirestore db;
-    private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Nullable
     @Override
@@ -53,7 +52,6 @@ public class SearchFragment extends Fragment {
 
         searchView = view.findViewById(R.id.search_view);
         btnCart = view.findViewById(R.id.btn_cart);
-        db = FirebaseFirestore.getInstance();
         rcvProduct = view.findViewById(R.id.rcv_search);
         gridLayoutManager = new GridLayoutManager(getContext(), 2);
         rcvProduct.setLayoutManager(gridLayoutManager);
@@ -74,7 +72,7 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 if (query.length() > 0) {
                     Map<String, Object> params = new HashMap<>();
-                    params.put("name", query);
+                    params.put(InputParam.NAME, query);
                     ApiService.apiService.search(params).enqueue(new Callback<List<Product>>() {
                         @Override
                         public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
@@ -94,26 +92,6 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                if (newText.length() > 0) {
-//                    db.collection(DatabaseConstant.PRODUCTS)
-//                            .whereGreaterThanOrEqualTo("name", newText)
-//                            .whereLessThanOrEqualTo("name", newText + '\uf8ff')
-//                            .get()
-//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                    if (task.isSuccessful()) {
-//                                        productAdapter.clear();
-//
-//                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                            Product product = document.toObject(Product.class);
-//                                            productAdapter.addProduct(product);
-//                                        }
-//                                    } else {
-//                                    }
-//                                }
-//                            });
-//                }
                 return false;
             }
         });

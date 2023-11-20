@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ic.myshop.R;
+import com.ic.myshop.constant.Constant;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Product;
 
@@ -184,7 +185,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-            MenuItem deleteCartItem = contextMenu.add(Menu.NONE, 1, 1, "Xóa khỏi giỏ hàng");
+            MenuItem deleteCartItem = contextMenu.add(Menu.NONE, 1, 1, Constant.DELETE_FROM_CART);
             deleteCartItem.setOnMenuItemClickListener(this);
         }
     }

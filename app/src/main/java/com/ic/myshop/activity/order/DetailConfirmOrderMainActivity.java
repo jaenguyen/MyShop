@@ -22,9 +22,15 @@ import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.constant.Payment;
 import com.ic.myshop.db.DbFactory;
+import com.ic.myshop.helper.ApiService;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Product;
+import com.ic.myshop.push.MessagePush;
 import com.ic.myshop.output.OrderOutput;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailConfirmOrderMainActivity extends AppCompatActivity {
 
@@ -69,7 +75,21 @@ public class DetailConfirmOrderMainActivity extends AppCompatActivity {
                     Toast.makeText(DetailConfirmOrderMainActivity.this, MessageConstant.CAN_NOT_CANCEL_IMMEDIATELY_ORDER, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                dbFactory.updateStatusOrder(orderOutput.getId(), -1);
+                int status = -1;
+                dbFactory.updateStatusOrder(orderOutput.getId(), status);
+                // send notify
+                ApiService.apiService2.push(MessagePush.getParams(orderOutput.getSellerId(), orderOutput.getId(), status))
+                        .enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                System.out.println(response.body());
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                System.out.println(t.getMessage());
+                            }
+                        });
                 onBackPressed();
             }
         });

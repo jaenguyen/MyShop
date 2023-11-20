@@ -19,6 +19,7 @@ import com.ic.myshop.activity.MainActivity;
 import com.ic.myshop.auth.AuthService;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.MessageConstant;
+import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.validator.AuthValidator;
 
 public class LoginActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtEmail, txtPassword;
     private Button btnLogin;
     private static final AuthService authService = AuthService.getInstance();
+    private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(),
                                                 MessageConstant.LOGIN_SUCCESS,
                                                 Toast.LENGTH_LONG).show();
+                                        dbFactory.addToken();
                                         startActivity(intent);
                                         finish();
                                     } else {

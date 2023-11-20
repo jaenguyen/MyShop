@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.usecase.CartActivity;
 import com.ic.myshop.activity.usecase.ListProductActivity;
@@ -45,21 +47,12 @@ public class HomeFragment extends Fragment {
     private SliderAdapter sliderAdapter;
     private ImageView btnCart;
     // rcv hot product
-    private RecyclerView rcvHotProduct;
-    private RecyclerView rcvNewProduct;
-    private RecyclerView rcvLikedProduct;
-    private RecyclerView rcvTypeProduct;
-    private LinearLayoutManager linearLayoutManager1;
-    private LinearLayoutManager linearLayoutManager2;
-    private LinearLayoutManager linearLayoutManager3;
-    private LinearLayoutManager linearLayoutManager4;
-    private HomeProductAdapter hotProductAdapter;
-    private HomeProductAdapter newProductAdapter;
-    private HomeProductAdapter likedProductAdapter;
+    private RecyclerView rcvHotProduct, rcvNewProduct, rcvLikedProduct, rcvTypeProduct;
+    private LinearLayoutManager linearLayoutManager1, linearLayoutManager2, linearLayoutManager3,
+            linearLayoutManager4;
+    private HomeProductAdapter hotProductAdapter, newProductAdapter, likedProductAdapter;
     private TypeProductAdapter typeProduceAdapter;
-    private TextView getAllHot;
-    private TextView getAllNew;
-    private TextView getAllLiked;
+    private TextView getAllHot, getAllNew, getAllLiked;
     private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Nullable

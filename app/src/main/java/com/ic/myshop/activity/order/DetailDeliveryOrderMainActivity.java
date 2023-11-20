@@ -20,9 +20,15 @@ import com.ic.myshop.activity.usecase.ProductActivity;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.Payment;
 import com.ic.myshop.db.DbFactory;
+import com.ic.myshop.helper.ApiService;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Product;
+import com.ic.myshop.push.MessagePush;
 import com.ic.myshop.output.OrderOutput;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailDeliveryOrderMainActivity extends AppCompatActivity {
 
@@ -63,11 +69,25 @@ public class DetailDeliveryOrderMainActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int status = 2;
                 dbFactory.updateStatusOrder(orderOutput.getId(), 2);
                 dbFactory.updateSoldNumber(orderOutput.getProductId(), orderOutput.getQuantity());
                 if (orderOutput.getPayment() == Payment.COD.valueOf()) {
                     dbFactory.addOrUpdateStatistics(orderOutput.getId(), orderOutput.getPrice() * orderOutput.getQuantity(), orderOutput.getSellerId());
                 }
+                // send notify
+                ApiService.apiService2.push(MessagePush.getParams(orderOutput.getSellerId(), orderOutput.getId(), status))
+                        .enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                System.out.println(response.body());
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                System.out.println(t.getMessage());
+                            }
+                        });
                 onBackPressed();
             }
         });

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -20,9 +21,11 @@ import com.ic.myshop.R;
 import com.ic.myshop.adapter.address.AddressAdapter;
 import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.DatabaseConstant;
+import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Address;
 import com.ic.myshop.model.User;
+import com.ic.myshop.validator.AuthValidator;
 
 import java.util.List;
 
@@ -85,11 +88,15 @@ public class AddressActivity extends AppCompatActivity {
                         String name = txtName.getText().toString().trim();
                         String phone = txtPhone.getText().toString().trim();
                         String street = txtStreet.getText().toString();
-                        Address address = new Address(name, phone, street);
-                        user.addAddress(address);
-                        dbFactory.updateAddresses(user);
-                        addressAdapter.addAddress(address);
-                        dialog.dismiss();
+                        if (AuthValidator.checkPhone(phone)) {
+                            Address address = new Address(name, phone, street);
+                            user.addAddress(address);
+                            dbFactory.updateAddresses(user);
+                            addressAdapter.addAddress(address);
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, Constant.PHONE), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }

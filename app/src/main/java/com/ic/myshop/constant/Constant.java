@@ -28,4 +28,5 @@ public class Constant {
     public static final String MY_SHOP = "Cửa hàng của tôi";
     public static final String MY_SALES_ORDER = "Đơn bán của tôi";
     public static final String DELETE_FROM_CART = "Xóa khỏi giỏ hàng";
+    public static final Object NAME = "tên người dùng";
 }

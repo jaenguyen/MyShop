@@ -25,6 +25,7 @@ import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
 import com.ic.myshop.model.Like;
+import com.ic.myshop.model.Notify;
 import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.Statistics;
@@ -32,6 +33,7 @@ import com.ic.myshop.model.User;
 import com.ic.myshop.output.BuyItem;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DbFactory {
@@ -365,6 +367,33 @@ public class DbFactory {
                         updates.put("tokens", FieldValue.arrayRemove(token));
                         docRef.update(updates);
 
+                    }
+                });
+    }
+
+    // notify
+    public Task<QuerySnapshot> getNotifications() {
+        return firebaseFirestore.collection(DatabaseConstant.NOTIFICATIONS)
+                .whereEqualTo(InputParam.PARENT_ID, getUserId())
+                .orderBy(InputParam.TIMESTAMP, Query.Direction.DESCENDING)
+                .get();
+    }
+
+    public void updateNotify(Notify notify) {
+        firebaseFirestore.collection(DatabaseConstant.NOTIFICATIONS).document(notify.getId())
+                .update(InputParam.UNREAD, false);
+    }
+
+    public void markAllReadNotify() {
+        firebaseFirestore.collection(DatabaseConstant.NOTIFICATIONS)
+                .whereEqualTo(InputParam.PARENT_ID, getUserId())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<Notify> notifies = task.getResult().toObjects(Notify.class);
+                        for (Notify notify : notifies) {
+                            updateNotify(notify);
+                        }
                     }
                 });
     }

@@ -35,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(0);
                 } else if (itemId == R.id.navigation_search) {
                     viewPager.setCurrentItem(1);
-                } else if (itemId == R.id.navigation_user) {
+                } else if (itemId == R.id.navigation_notify) {
                     viewPager.setCurrentItem(2);
+                } else if (itemId == R.id.navigation_user) {
+                    viewPager.setCurrentItem(3);
                 }
                 return true;
             }
@@ -64,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
                         navView.getMenu().findItem(R.id.navigation_search).setChecked(true);
                         break;
                     case 2:
+                        navView.getMenu().findItem(R.id.navigation_notify).setChecked(true);
+                        break;
+                    case 3:
                         navView.getMenu().findItem(R.id.navigation_user).setChecked(true);
                         break;
                 }

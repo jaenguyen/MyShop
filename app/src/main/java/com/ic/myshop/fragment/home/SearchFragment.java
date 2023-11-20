@@ -38,8 +38,6 @@ public class SearchFragment extends Fragment {
     protected GridLayoutManager gridLayoutManager;
     private ProductAdapter productAdapter;
     private SearchView searchView;
-    private FirebaseFirestore db;
-    private static final DbFactory dbFactory = DbFactory.getInstance();
 
     @Nullable
     @Override
@@ -54,7 +52,6 @@ public class SearchFragment extends Fragment {
 
         searchView = view.findViewById(R.id.search_view);
         btnCart = view.findViewById(R.id.btn_cart);
-        db = FirebaseFirestore.getInstance();
         rcvProduct = view.findViewById(R.id.rcv_search);
         gridLayoutManager = new GridLayoutManager(getContext(), 2);
         rcvProduct.setLayoutManager(gridLayoutManager);
@@ -95,26 +92,6 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                if (newText.length() > 0) {
-//                    db.collection(DatabaseConstant.PRODUCTS)
-//                            .whereGreaterThanOrEqualTo("name", newText)
-//                            .whereLessThanOrEqualTo("name", newText + '\uf8ff')
-//                            .get()
-//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                    if (task.isSuccessful()) {
-//                                        productAdapter.clear();
-//
-//                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                            Product product = document.toObject(Product.class);
-//                                            productAdapter.addProduct(product);
-//                                        }
-//                                    } else {
-//                                    }
-//                                }
-//                            });
-//                }
                 return false;
             }
         });

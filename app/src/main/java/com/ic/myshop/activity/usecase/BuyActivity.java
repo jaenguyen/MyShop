@@ -34,7 +34,7 @@ import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
 import com.ic.myshop.output.BuyItem;
-import com.ic.myshop.push.Notify;
+import com.ic.myshop.push.MessagePush;
 import com.ic.myshop.zalo.CreateOrder;
 
 import org.json.JSONObject;
@@ -212,7 +212,7 @@ public class BuyActivity extends AppCompatActivity {
             // khi tạo đơn hàng sẽ trừ số lượng trong kho
             dbFactory.updateQuantityProduct(buyItem);
             // send notify
-            ApiService.apiService2.push(Notify.params(order.getSellerId(), order.getId(), order.getStatus()))
+            ApiService.apiService2.push(MessagePush.getParams(order.getSellerId(), order.getId(), order.getStatus()))
                     .enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {

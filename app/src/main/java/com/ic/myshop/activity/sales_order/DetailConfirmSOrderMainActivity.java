@@ -25,7 +25,7 @@ import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ApiService;
 import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Product;
-import com.ic.myshop.push.Notify;
+import com.ic.myshop.push.MessagePush;
 import com.ic.myshop.output.OrderOutput;
 
 import retrofit2.Call;
@@ -72,7 +72,7 @@ public class DetailConfirmSOrderMainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int status = 1;
                 dbFactory.updateStatusOrder(orderOutput.getId(), status);
-                ApiService.apiService2.push(Notify.params(orderOutput.getParentId(), orderOutput.getId(), status))
+                ApiService.apiService2.push(MessagePush.getParams(orderOutput.getParentId(), orderOutput.getId(), status))
                         .enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {

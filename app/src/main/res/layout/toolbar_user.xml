@@ -19,20 +19,12 @@
         android:id="@+id/btn_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="15dp"
-        android:layout_toLeftOf="@id/btn_chat"
         android:src="@drawable/ic_cart" />
-
-    <ImageView
-        android:id="@+id/btn_chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="15dp"
-        android:src="@drawable/ic_bell" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
@@ -51,9 +43,9 @@
         android:layout_above="@id/txt_email"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_toRightOf="@id/avatar"
         android:text="Jae"
-        android:layout_marginBottom="10dp"
         android:textColor="@color/white"
         android:textSize="13dp" />
 

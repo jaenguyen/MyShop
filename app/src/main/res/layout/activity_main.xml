@@ -20,5 +20,6 @@
         app:itemBackground="@color/white"
         app:itemIconTint="@color/bottom_nav_custom_color"
         app:itemTextColor="@color/bottom_nav_custom_color"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>

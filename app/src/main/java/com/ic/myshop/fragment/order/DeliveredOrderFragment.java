@@ -41,7 +41,7 @@ public class DeliveredOrderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_confirmg_order, container, false);
+        return inflater.inflate(R.layout.fragment_confirm_order, container, false);
     }
 
     @Override

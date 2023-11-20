@@ -14,6 +14,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ic.myshop.constant.DatabaseConstant;
@@ -24,6 +25,7 @@ import com.ic.myshop.helper.ConversionHelper;
 import com.ic.myshop.model.Address;
 import com.ic.myshop.model.Cart;
 import com.ic.myshop.model.Like;
+import com.ic.myshop.model.Notify;
 import com.ic.myshop.model.Order;
 import com.ic.myshop.model.Product;
 import com.ic.myshop.model.Statistics;
@@ -31,6 +33,7 @@ import com.ic.myshop.model.User;
 import com.ic.myshop.output.BuyItem;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DbFactory {
@@ -68,7 +71,7 @@ public class DbFactory {
 
     public void updateAddresses(User user) {
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.USERS).document(getUserId());
-        documentReference.update("addresses", user.getAddresses());
+        documentReference.update(InputParam.ADDRESSES, user.getAddresses());
     }
 
     public void updateFieldUser(String id, String field, String value) {
@@ -110,13 +113,13 @@ public class DbFactory {
 
     public void updateSellNumber(String productId, int quantity) {
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId);
-        documentReference.update("sellNumber", FieldValue.increment(quantity * -1));
+        documentReference.update(InputParam.SELL_NUMBER, FieldValue.increment(quantity * -1));
         // TODO: đánh giá cập nhập luôn số lượng bán => Không, bh đơn hàng chuyển status về 2 thì trừ
     }
 
     public void updateSoldNumber(String productId, int quantity) {
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.PRODUCTS).document(productId);
-        documentReference.update("soldNumber", FieldValue.increment(quantity));
+        documentReference.update(InputParam.SOLD_NUMBER, FieldValue.increment(quantity));
     }
 
     public Task<QuerySnapshot> getListProductByField(String field, long from, int limit) {
@@ -164,7 +167,7 @@ public class DbFactory {
         if (!typeProduct.equals(TypeProduct.ALL)) {
             query = query.whereEqualTo(InputParam.TYPE, TypeProduct.getName(typeProduct));
         }
-            query = query.whereEqualTo(InputParam.PARENT_ID, userId);
+        query = query.whereEqualTo(InputParam.PARENT_ID, userId);
         if (limit > 0) {
             query = query.limit(limit);
         }
@@ -214,13 +217,13 @@ public class DbFactory {
     /*
         Order
      */
-    public String createOrder(BuyItem buyItem, Address address, int payment) {
+    public Order createOrder(BuyItem buyItem, Address address, int payment) {
         Order order = new Order(buyItem.getId(), buyItem.getQuantity(), buyItem.getPrice(),
                 buyItem.getPrice() * buyItem.getQuantity(), getUserId(), buyItem.getParentId(), address, payment);
         DocumentReference documentReference = firebaseFirestore.collection(DatabaseConstant.ORDERS).document();
         order.setId(documentReference.getId());
         documentReference.set(order);
-        return order.getId();
+        return order;
     }
 
     public void updateQuantityProduct(BuyItem buyItem) {
@@ -245,8 +248,8 @@ public class DbFactory {
         CollectionReference collectionReference = firebaseFirestore.collection(DatabaseConstant.LIKES);
         if (isLiked) {
             collectionReference
-                    .whereEqualTo("userId", userId)
-                    .whereEqualTo("productId", productId)
+                    .whereEqualTo(InputParam.USER_ID, userId)
+                    .whereEqualTo(InputParam.PRODUCT_ID, productId)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -327,5 +330,71 @@ public class DbFactory {
             default:
                 return ConversionHelper.monthToMillisecond(3);
         }
+    }
+
+    // token
+    public void addToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        String token = task.getResult();
+                        DocumentReference docRef = firebaseFirestore.collection("tokens").document(getUserId());
+                        // Sử dụng một Map để cập nhật trường "tokens" và xóa token cần xóa
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("tokens", FieldValue.arrayUnion(token));
+                        docRef.update(updates);
+
+                    }
+                });
+    }
+
+    public void deleteToken(String userId) {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        String token = task.getResult();
+                        DocumentReference docRef = firebaseFirestore.collection("tokens").document(userId);
+                        // Sử dụng một Map để cập nhật trường "tokens" và xóa token cần xóa
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("tokens", FieldValue.arrayRemove(token));
+                        docRef.update(updates);
+
+                    }
+                });
+    }
+
+    // notify
+    public Task<QuerySnapshot> getNotifications() {
+        return firebaseFirestore.collection(DatabaseConstant.NOTIFICATIONS)
+                .whereEqualTo(InputParam.PARENT_ID, getUserId())
+                .orderBy(InputParam.TIMESTAMP, Query.Direction.DESCENDING)
+                .get();
+    }
+
+    public void updateNotify(Notify notify) {
+        firebaseFirestore.collection(DatabaseConstant.NOTIFICATIONS).document(notify.getId())
+                .update(InputParam.UNREAD, false);
+    }
+
+    public void markAllReadNotify() {
+        firebaseFirestore.collection(DatabaseConstant.NOTIFICATIONS)
+                .whereEqualTo(InputParam.PARENT_ID, getUserId())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<Notify> notifies = task.getResult().toObjects(Notify.class);
+                        for (Notify notify : notifies) {
+                            updateNotify(notify);
+                        }
+                    }
+                });
     }
 }

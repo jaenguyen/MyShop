@@ -78,7 +78,7 @@ public class DetailCanceledOrderMainActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: XEM THONG KE
+                // TODO: Mua lai
             }
         });
     }

@@ -6,21 +6,36 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyShop"
         tools:targetApi="31">
         <activity
+            android:name=".activity.user.MySOrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.usecase.ListCategoryProductActivity"
             android:exported="false" />
         <activity
             android:name=".activity.user.StatisticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.sales_order.DetailCanceledSOrderMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.sales_order.DetailCompleteSOrderMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.sales_order.DetailDeliverySOrderMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.sales_order.DetailConfirmSOrderMainActivity"
             android:exported="false" />
         <activity
             android:name=".activity.order.DetailCanceledOrderMainActivity"
@@ -100,6 +115,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_bell" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/primary_color" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <service
+            android:name=".push.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

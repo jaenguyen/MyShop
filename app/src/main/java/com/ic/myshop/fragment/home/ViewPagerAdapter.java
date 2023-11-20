@@ -5,10 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.ic.myshop.fragment.home.HomeFragment;
-import com.ic.myshop.fragment.home.SearchFragment;
-import com.ic.myshop.fragment.home.UserFragment;
-
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
@@ -24,6 +20,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return new SearchFragment();
             case 2:
+                return new NotifyFragment();
+            case 3:
                 return new UserFragment();
             default:
                 return new HomeFragment();
@@ -32,6 +30,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 }

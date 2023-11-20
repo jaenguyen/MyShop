@@ -9,4 +9,5 @@ public class DatabaseConstant {
     public static final String ORDERS = "orders";
     public static final String LIKES = "likes";
     public static final String STATISTICS = "statistics";
+    public static final String NOTIFICATIONS = "notifications";
 }

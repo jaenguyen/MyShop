@@ -19,6 +19,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.ic.myshop.R;
 import com.ic.myshop.adapter.product.CartItemAdapter;
 import com.ic.myshop.constant.Constant;
+import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ConversionHelper;
@@ -163,7 +164,7 @@ public class CartActivity extends AppCompatActivity {
                     Toast.makeText(CartActivity.this, MessageConstant.NOT_SELECTED_PRODUCT, Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
-                    intent.putExtra("cartItems", (Serializable) cartItemAdapter.getBuyProducts(selected));
+                    intent.putExtra(InputParam.CART_ITEMS, (Serializable) cartItemAdapter.getBuyProducts(selected));
                     startActivity(intent);
                     finish();
                 }

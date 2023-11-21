@@ -34,6 +34,7 @@ import com.ic.myshop.constant.Constant;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.model.Product;
+import com.ic.myshop.validator.AuthValidator;
 
 public class AddProductActivity extends AppCompatActivity {
 
@@ -123,7 +124,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void uploadProduct() {
-        if (imageUri != null) { // TODO: BỔ SUNG VALIDATE
+        if (canAdd()) {
             StorageReference fileReference = dbFactory.getStorageReference(getFileExtension(imageUri));
             uploadTask = fileReference.putFile(imageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -140,6 +141,8 @@ public class AddProductActivity extends AppCompatActivity {
                                     Product product = new Product(name, description, price, sellNumber,
                                             type, uri.toString(), dbFactory.getUserId());
                                     dbFactory.addProduct(product);
+                                    Toast.makeText(getApplicationContext(), MessageConstant.UPLOAD_SUCCESS, Toast.LENGTH_SHORT).show();
+                                    onBackPressed();
                                 }
                             });
                         }
@@ -157,6 +160,8 @@ public class AddProductActivity extends AppCompatActivity {
                             progressBar.setProgress((int) progress);
                         }
                     });
+        } else {
+            Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, "các trường"), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -165,5 +170,15 @@ public class AddProductActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MyShopActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public boolean canAdd() {
+        if (imageUri == null
+                || AuthValidator.isNone(txtName.getText().toString())
+                || AuthValidator.isNone(txtDescription.getText().toString())
+                || AuthValidator.isNone(txtPrice.getText().toString())
+                || AuthValidator.isNone(txtSellNumber.getText().toString()))
+            return false;
+        return true;
     }
 }

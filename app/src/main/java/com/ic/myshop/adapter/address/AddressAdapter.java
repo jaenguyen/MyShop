@@ -1,7 +1,10 @@
 package com.ic.myshop.adapter.address;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ic.myshop.R;
+import com.ic.myshop.constant.Constant;
 import com.ic.myshop.model.Address;
 
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     private Context context;
     private List<Address> addresses;
+    private AddressClickListener addressClickListener;
 
     public AddressAdapter(Context context) {
         this.context = context;
@@ -27,6 +32,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     public void addAddress(Address address) {
         this.addresses.add(address);
+        notifyDataSetChanged();
+    }
+
+    public void removeAddress(Address address) {
+        this.addresses.remove(address);
         notifyDataSetChanged();
     }
 
@@ -62,7 +72,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         return addresses;
     }
 
-    public class AddressViewHolder extends RecyclerView.ViewHolder {
+    public class AddressViewHolder extends RecyclerView.ViewHolder implements
+            View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 
         private TextView name;
         private TextView phone;
@@ -75,6 +86,36 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             name = itemView.findViewById(R.id.txt_name_address);
             phone = itemView.findViewById(R.id.txt_phone_address);
             street = itemView.findViewById(R.id.txt_street_address);
+            itemView.setOnCreateContextMenuListener(this);
         }
+
+        @Override
+        public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+            if (addressClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    switch (menuItem.getItemId()) {
+                        case 1:
+                            addressClickListener.onDeleteAddress(position);
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            MenuItem deleteAddress = contextMenu.add(Menu.NONE, 1, 1, Constant.DELETE_ADDRESS);
+            deleteAddress.setOnMenuItemClickListener(this);
+        }
+    }
+
+    public interface AddressClickListener {
+        void onDeleteAddress(int position);
+    }
+
+    public void setAddressClickListener(AddressClickListener listener) {
+        this.addressClickListener = listener;
     }
 }

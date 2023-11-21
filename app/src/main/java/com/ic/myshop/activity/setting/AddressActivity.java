@@ -65,6 +65,13 @@ public class AddressActivity extends AppCompatActivity {
                     }
                 });
 
+        addressAdapter.setAddressClickListener(new AddressAdapter.AddressClickListener() {
+            @Override
+            public void onDeleteAddress(int position) {
+                removeAddress(position);
+            }
+        });
+
         btnAddAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,5 +123,12 @@ public class AddressActivity extends AppCompatActivity {
         rcvAddressItem.setAdapter(addressAdapter);
 
         db = FirebaseFirestore.getInstance();
+    }
+
+    private void removeAddress(int position) {
+        Address address = addressAdapter.getAddresses().get(position);
+        addressAdapter.removeAddress(address);
+        user.removeAddress(address);
+        dbFactory.updateAddresses(user);
     }
 }

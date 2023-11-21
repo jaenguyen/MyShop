@@ -234,7 +234,7 @@ public class BuyActivity extends AppCompatActivity {
                 dbFactory.addOrUpdateStatistics(orderIds.get(i), buyItem.getPrice() * buyItem.getQuantity(), buyItem.getParentId());
             }
         }
-
+        Toast.makeText(this, MessageConstant.ORDER_SUCCESS, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
         startActivity(intent);
         finish();

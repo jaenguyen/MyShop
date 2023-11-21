@@ -24,9 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.ic.myshop.R;
 import com.ic.myshop.auth.AuthService;
@@ -35,8 +33,8 @@ import com.ic.myshop.constant.DatabaseConstant;
 import com.ic.myshop.constant.InputParam;
 import com.ic.myshop.constant.MessageConstant;
 import com.ic.myshop.db.DbFactory;
-import com.ic.myshop.model.Product;
 import com.ic.myshop.model.User;
+import com.ic.myshop.validator.AuthValidator;
 
 public class UserInfoActivity extends AppCompatActivity {
 
@@ -133,6 +131,12 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private void uploadUser() {
         if (getSuccess) {
+            String phone = txtPhone.getText().toString();
+            String name = txtName.getText().toString();
+            if (!user.getPhone().equals(phone) && !user.getName().equals(name)) {
+                Toast.makeText(getApplicationContext(), "Bạn chưa thay đổi thông tin", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (imageUri != null) {
                 StorageReference fileReference = dbFactory.getStorageReference(getFileExtension(imageUri));
                 fileReference.putFile(imageUri)
@@ -155,11 +159,16 @@ public class UserInfoActivity extends AppCompatActivity {
                             }
                         });
             }
-            if (!user.getPhone().equals(txtPhone.getText().toString())) {
-                dbFactory.updateFieldUser(user.getId(), InputParam.PHONE, txtPhone.getText().toString());
+
+            if (AuthValidator.checkPhone(phone)) {
+                dbFactory.updateFieldUser(user.getId(), InputParam.PHONE, phone);
+            } else {
+                Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, Constant.PHONE), Toast.LENGTH_SHORT).show();
             }
-            if (!user.getName().equals(txtName.getText().toString())) {
-                dbFactory.updateFieldUser(user.getId(), InputParam.NAME, txtName.getText().toString());
+            if (!AuthValidator.isNone(name)) {
+                dbFactory.updateFieldUser(user.getId(), InputParam.NAME, name);
+            } else {
+                Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, Constant.NAME), Toast.LENGTH_SHORT).show();
             }
         }
     }

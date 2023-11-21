@@ -41,6 +41,10 @@ public class User implements Serializable {
         this.addresses.add(address);
     }
 
+    public void removeAddress(Address address) {
+        this.addresses.remove(address);
+    }
+
     public String getId() {
         return id;
     }

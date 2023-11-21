@@ -71,7 +71,7 @@
         android:layout_below="@id/txt_phone"
         android:layout_marginLeft="36dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/ic_password_login" />
+        android:src="@drawable/ic_location" />
 
     <EditText
         android:id="@+id/txt_street"

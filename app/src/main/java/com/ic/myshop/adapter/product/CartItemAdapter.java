@@ -31,6 +31,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     private Context context;
     private List<Product> products;
     private Map<String, Integer> quantityProducts;
+    private Map<String, Product> mapProducts;
     private List<String> selected;
 
     // event
@@ -41,10 +42,15 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         products = new ArrayList<>();
         quantityProducts = new HashMap<>();
         selected = new ArrayList<>();
+        mapProducts = new HashMap<>();
     }
 
     public Product getProduct(int position) {
         return products.get(position);
+    }
+
+    public Product getProduct(String id) {
+        return mapProducts.get(id);
     }
 
     public List<String> getSelected() {
@@ -73,6 +79,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public void addCartItem(Product product, int quantity) {
         this.products.add(product);
         quantityProducts.put(product.getId(), quantity);
+        mapProducts.put(product.getId(), product);
         notifyDataSetChanged();
     }
 
@@ -80,6 +87,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         products.remove(product);
         selected.remove(product.getId());
         quantityProducts.remove(product.getId());
+        mapProducts.remove(product.getId());
         notifyDataSetChanged();
     }
 

@@ -163,8 +163,16 @@ public class CartActivity extends AppCompatActivity {
                 if (selected == null || selected.isEmpty()) {
                     Toast.makeText(CartActivity.this, MessageConstant.NOT_SELECTED_PRODUCT, Toast.LENGTH_SHORT).show();
                 } else {
+                    Map<String, Integer> cartItemBuy= cartItemAdapter.getBuyProducts(selected);
+                    for (String productId : cartItemBuy.keySet()) {
+                        Product product = cartItemAdapter.getProduct(productId);
+                        if (cartItemBuy.get(productId) > product.getSellNumber()) {
+                            Toast.makeText(CartActivity.this, String.format(MessageConstant.NOT_ENOUGH_QUANTITY, product.getName()), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
                     Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
-                    intent.putExtra(InputParam.CART_ITEMS, (Serializable) cartItemAdapter.getBuyProducts(selected));
+                    intent.putExtra(InputParam.CART_ITEMS, (Serializable) cartItemBuy);
                     startActivity(intent);
                     finish();
                 }

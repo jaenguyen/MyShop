@@ -167,7 +167,7 @@ public class CartActivity extends AppCompatActivity {
                     for (String productId : cartItemBuy.keySet()) {
                         Product product = cartItemAdapter.getProduct(productId);
                         if (cartItemBuy.get(productId) > product.getSellNumber()) {
-                            Toast.makeText(CartActivity.this, String.format(MessageConstant.NOT_ENOUGH_QUANTITY_PRODUCT, product.getName()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CartActivity.this, String.format(MessageConstant.NOT_ENOUGH_QUANTITY, product.getName()), Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }

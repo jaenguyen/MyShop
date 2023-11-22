@@ -172,7 +172,10 @@ public class ProductActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (product.getSellNumber() < 1) {
                             Toast.makeText(ProductActivity.this, MessageConstant.SOLD_OUT, Toast.LENGTH_SHORT).show();
-                        } else {
+                        } else if (quantity > product.getSellNumber()) {
+                            Toast.makeText(ProductActivity.this, MessageConstant.NOT_ENOUGH_QUANTITY, Toast.LENGTH_SHORT).show();
+                        }
+                        else {
                             dbFactory.updateCart(product.getId(), quantity);
                             dialog.dismiss();
                             Toast.makeText(ProductActivity.this, MessageConstant.ADD_TO_CART, Toast.LENGTH_SHORT).show();
@@ -238,13 +241,19 @@ public class ProductActivity extends AppCompatActivity {
                 btnAddToCart1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        HashMap<String, Integer> products = new HashMap<>();
-                        products.put(product.getId(), quantity);
-                        Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
-                        intent.putExtra(InputParam.CART_ITEMS, (Serializable) products);
-                        intent.putExtra(Constant.BUY_NOW, true);
-                        startActivity(intent);
-                        dialog.dismiss();
+                        if (product.getSellNumber() < 1) {
+                            Toast.makeText(ProductActivity.this, MessageConstant.SOLD_OUT, Toast.LENGTH_SHORT).show();
+                        } else if (quantity > product.getSellNumber()) {
+                            Toast.makeText(ProductActivity.this, MessageConstant.NOT_ENOUGH_QUANTITY, Toast.LENGTH_SHORT).show();
+                        } else {
+                            HashMap<String, Integer> products = new HashMap<>();
+                            products.put(product.getId(), quantity);
+                            Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
+                            intent.putExtra(InputParam.CART_ITEMS, (Serializable) products);
+                            intent.putExtra(Constant.BUY_NOW, true);
+                            startActivity(intent);
+                            dialog.dismiss();
+                        }
                     }
                 });
             }

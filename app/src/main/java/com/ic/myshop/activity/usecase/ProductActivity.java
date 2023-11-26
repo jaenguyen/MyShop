@@ -42,7 +42,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProductActivity extends AppCompatActivity {
     int quantity = 1;
     private TextView toolbarTitle, txtName, txtPrice, txtSoldNumber, txtType, txtDescription, btnBuyNow, txtNameShop;
-    private ImageButton btnBack, btnAddToCart;
+    private ImageButton btnBack, btnAddToCart, btnChat;
     private ImageView imageView, imageViewLike;
     private Product product;
     private FirebaseFirestore db;
@@ -262,6 +262,14 @@ public class ProductActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ProductActivity.this, "Tính năng đang phát triển",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void init() {
@@ -281,5 +289,6 @@ public class ProductActivity extends AppCompatActivity {
         imgShop = findViewById(R.id.img_shop);
         txtNameShop = findViewById(R.id.txt_name_shop);
         btnViewShop = findViewById(R.id.btn_view_shop);
+        btnChat = findViewById(R.id.chat);
     }
 }

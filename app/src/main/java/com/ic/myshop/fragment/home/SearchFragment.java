@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,12 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.ic.myshop.R;
 import com.ic.myshop.activity.usecase.CartActivity;
 import com.ic.myshop.adapter.product.ProductAdapter;
 import com.ic.myshop.constant.InputParam;
-import com.ic.myshop.db.DbFactory;
 import com.ic.myshop.helper.ApiService;
 import com.ic.myshop.model.Product;
 
@@ -38,6 +37,7 @@ public class SearchFragment extends Fragment {
     protected GridLayoutManager gridLayoutManager;
     private ProductAdapter productAdapter;
     private SearchView searchView;
+    private TextView txtEmptySearch;
 
     @Nullable
     @Override
@@ -50,6 +50,7 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        txtEmptySearch = view.findViewById(R.id.txt_empty_search);
         searchView = view.findViewById(R.id.search_view);
         btnCart = view.findViewById(R.id.btn_cart);
         rcvProduct = view.findViewById(R.id.rcv_search);
@@ -79,6 +80,11 @@ public class SearchFragment extends Fragment {
                             productAdapter.clear();
                             List<Product> products = response.body();
                             productAdapter.addProducts(products);
+                            if (products.isEmpty()) {
+                                txtEmptySearch.setVisibility(View.VISIBLE);
+                            } else {
+                                txtEmptySearch.setVisibility(View.GONE);
+                            }
                         }
 
                         @Override
@@ -95,5 +101,6 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
+
     }
 }

@@ -42,7 +42,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProductActivity extends AppCompatActivity {
     int quantity = 1;
     private TextView toolbarTitle, txtName, txtPrice, txtSoldNumber, txtType, txtDescription, btnBuyNow, txtNameShop;
-    private ImageButton btnBack, btnAddToCart;
+    private ImageButton btnBack, btnAddToCart, btnChat;
     private ImageView imageView, imageViewLike;
     private Product product;
     private FirebaseFirestore db;
@@ -238,13 +238,17 @@ public class ProductActivity extends AppCompatActivity {
                 btnAddToCart1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        HashMap<String, Integer> products = new HashMap<>();
-                        products.put(product.getId(), quantity);
-                        Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
-                        intent.putExtra(InputParam.CART_ITEMS, (Serializable) products);
-                        intent.putExtra(Constant.BUY_NOW, true);
-                        startActivity(intent);
-                        dialog.dismiss();
+                        if (product.getSellNumber() < 1) {
+                            Toast.makeText(ProductActivity.this, MessageConstant.SOLD_OUT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            HashMap<String, Integer> products = new HashMap<>();
+                            products.put(product.getId(), quantity);
+                            Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
+                            intent.putExtra(InputParam.CART_ITEMS, (Serializable) products);
+                            intent.putExtra(Constant.BUY_NOW, true);
+                            startActivity(intent);
+                            dialog.dismiss();
+                        }
                     }
                 });
             }
@@ -256,6 +260,14 @@ public class ProductActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MyShopActivity.class);
                 intent.putExtra(InputParam.USER_ID, product.getParentId());
                 startActivity(intent);
+            }
+        });
+
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ProductActivity.this, "Tính năng đang phát triển",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -277,5 +289,6 @@ public class ProductActivity extends AppCompatActivity {
         imgShop = findViewById(R.id.img_shop);
         txtNameShop = findViewById(R.id.txt_name_shop);
         btnViewShop = findViewById(R.id.btn_view_shop);
+        btnChat = findViewById(R.id.chat);
     }
 }

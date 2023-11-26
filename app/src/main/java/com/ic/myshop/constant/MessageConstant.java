@@ -22,4 +22,5 @@ public class MessageConstant {
     public static final String CAN_NOT_CANCEL_IMMEDIATELY_ORDER = "Không thể hủy đơn hàng đã thanh toán";
     public static final String ORDER_TO_DELIVERY = "Đơn hàng đã được chuyển đi";
     public static final String NOT_ENOUGH_QUANTITY = "Sản phẩm %s không đủ số lượng bạn chọn";
+    public static final String ORDER_SUCCESS = "Đặt hàng thành công";
 }

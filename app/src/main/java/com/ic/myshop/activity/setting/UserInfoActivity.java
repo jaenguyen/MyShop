@@ -74,6 +74,7 @@ public class UserInfoActivity extends AppCompatActivity {
                             user = value.toObject(User.class);
                             txtEmail.setText(user.getEmail());
                             txtPhone.setText(user.getPhone());
+                            txtName.setText(user.getName());
                             Glide.with(getApplicationContext())
                                     .load(user.getAvatar())
                                     .fitCenter()
@@ -94,6 +95,7 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 authService.resetPassword(txtEmail.getText().toString());
+                Toast.makeText(UserInfoActivity.this, "Đã gửi email thay đổi mật khẩu", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -131,12 +133,6 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private void uploadUser() {
         if (getSuccess) {
-            String phone = txtPhone.getText().toString();
-            String name = txtName.getText().toString();
-            if (!user.getPhone().equals(phone) && !user.getName().equals(name)) {
-                Toast.makeText(getApplicationContext(), "Bạn chưa thay đổi thông tin", Toast.LENGTH_SHORT).show();
-                return;
-            }
             if (imageUri != null) {
                 StorageReference fileReference = dbFactory.getStorageReference(getFileExtension(imageUri));
                 fileReference.putFile(imageUri)
@@ -160,11 +156,7 @@ public class UserInfoActivity extends AppCompatActivity {
                         });
             }
 
-            if (AuthValidator.checkPhone(phone)) {
-                dbFactory.updateFieldUser(user.getId(), InputParam.PHONE, phone);
-            } else {
-                Toast.makeText(getApplicationContext(), String.format(MessageConstant.ENTER_AGAIN, Constant.PHONE), Toast.LENGTH_SHORT).show();
-            }
+            String name = txtName.getText().toString();
             if (!AuthValidator.isNone(name)) {
                 dbFactory.updateFieldUser(user.getId(), InputParam.NAME, name);
             } else {

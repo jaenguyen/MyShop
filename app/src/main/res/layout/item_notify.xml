@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="20dp"
+            android:text="Trạng thái đơn hàng"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/txt_body"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_title"
+            android:paddingLeft="20dp"
+            android:text="Đơn hàng 1103200111022001 cần được xác nhận" />
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txt_body"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:paddingRight="20dp"
+            android:text="12:46" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/txt_body"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
